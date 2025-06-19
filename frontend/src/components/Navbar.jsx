@@ -1,27 +1,69 @@
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom";
+import "../styles/components/Navbar.css";
+import namedLogo from "../assets/logo-name.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const isLoggedIn = true; // Replace with actual auth logic
+  const userName = "Sajith"; // Replace with actual user name logic
+  const userMode = "Admin"; // Replace with actual user mode logic
 
   return (
-    <div className="navbar">
-        <div className="logo-container"></div>
-        <div className="nav-links">
-            <ul>
-                <NavLink to='/dashboard'><li>API Dashboard</li></NavLink>
-                <NavLink to= '/manage'><li>Manage Users</li></NavLink>
+    <div className="navbar-container">
+      {/* Logo button that navigates to home */}
+      <button className="logo-container" onClick={() => navigate("/")}>
+        <img src={namedLogo} alt="logo" className="logo" />
+      </button>
 
-            </ul>
-        </div>
-        <div className="current-user">
-            <button onClick={() => navigate('/register')}>Get Started</button>
-            <button onClick={() => navigate('/login')}>Login</button>
-            <button onClick={() => navigate('/profile')}>Profile</button>
-        </div>
-        
+      {/* Navigation links */}
+      <div className="nav-links">
+        <ul>
+          <li>
+            <NavLink to="/dashboard" className="navbar-link">API Dashboard</NavLink>
+          </li>
+          <li>
+            <NavLink to="/manage" className="navbar-link">Manage Users</NavLink>
+          </li>
+        </ul>
+      </div>
+
+      {/* Current user controls */}
+      <div className="current-user-button-container">
+        {isLoggedIn ? (
+          <>
+            <button
+              onClick={() => navigate("/register")}
+              className="mode-link-button"
+            >
+              <p className="usermode">{userMode}</p>
+            </button>
+            <button
+              onClick={() => navigate("/profile")}
+              className="profile-link-button"
+            >
+              <p className="username">{userName}</p>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => navigate("/register")}
+              className="get-started-button"
+            >
+              Get Started
+            </button>
+            <button
+              onClick={() => navigate("/login")}
+              className="login-button"
+            >
+              Login
+            </button>
+          </>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
