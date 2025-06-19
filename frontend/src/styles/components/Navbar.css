@@ -17,3 +17,19 @@
     height: 200px;
     width: auto;
 }
+
+ul{
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+ul li{
+    display: inline-flex;
+    margin: 0 10px;
+
+}
+
+a.active{
+    color: green;
+}
