@@ -1,30 +1,25 @@
-import React from 'react'
-import '../styles/components/Navbar.css' 
-import logo from '../assets/logo-name.png'  
-import { NavLink, useNavigate } from 'react-router-dom'
-
-
+import { NavLink, useNavigate } from "react-router-dom"
 
 const Navbar = () => {
 
     const navigate = useNavigate();
+
   return (
-    <div>
-        <div className="container">
-            <div className="logo-container">
-                <img src={logo} alt="Logo" className="logo" />
-            </div>
-            <div className="link-container"></div>
-                <ul>
-                    <NavLink to='/'><li>Home</li></NavLink>
-                    <NavLink to='/support'><li>Support</li></NavLink>
-                    <NavLink to='/contact'><li>Contact</li></NavLink>
-                </ul>
-            <div className="user-container">
-                {/* Button for login, replaces the histroy recorded */}
-                <button onClick={() => navigate('/login', {replace:true})}>Login</button>
-            </div>
+    <div className="navbar">
+        <div className="logo-container"></div>
+        <div className="nav-links">
+            <ul>
+                <NavLink to='/dashboard'><li>API Dashboard</li></NavLink>
+                <NavLink to= '/manage'><li>Manage Users</li></NavLink>
+
+            </ul>
         </div>
+        <div className="current-user">
+            <button onClick={() => navigate('/register')}>Get Started</button>
+            <button onClick={() => navigate('/login')}>Login</button>
+            <button onClick={() => navigate('/profile')}>Profile</button>
+        </div>
+        
     </div>
   )
 }

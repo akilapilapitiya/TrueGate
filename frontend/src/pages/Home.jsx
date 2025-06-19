@@ -1,10 +1,11 @@
-import '../styles/pages/Home.css'
+import React from 'react'
+import Navbar from '../components/Navbar'
 
 const Home = () => {
   return (
-    <div>     
+    <div>
         Home
-    </div>
+        </div>
   )
 }
 
