@@ -1,0 +1,111 @@
+.navbar-container{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--navbar-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: #5f19e0 0px 0px 10px  ;
+}
+
+.logo-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.logo-container .logo{
+    height: 250px;
+    width: auto;
+}
+
+.nav-links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-links ul{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+
+a.navbar-link{
+    font-size: 1.2rem;
+    font-weight: 400;
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 10px ;
+    text-decoration: none;
+    color: var(--navbar-link-color);
+}
+
+a:hover{
+    color: var(--navbar-link-hover-color);
+    
+}
+
+.current-user-button-container{
+    margin-right: 20px;
+    height: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center; 
+    margin:0 20px;
+}
+
+.login-button{
+    background-color: var(--navbar-button-color);
+    color: var(--navbar-button-font-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.get-started-button{
+    background-color: var(--navbar-button-color);
+    color: var(--navbar-button-font-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.profile-link-button{
+    background-color: var(--navbar-button-color);
+    color: var(--navbar-button-font-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.mode-link-button{
+    background-color: var(--navbar-button-color);
+    color: var(--navbar-button-font-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+
