@@ -21,10 +21,11 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    
 }
 
 .logo-container .logo{
-    height: 250px;
+    height: 50px;
     width: auto;
 }
 
