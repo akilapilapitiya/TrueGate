@@ -1,11 +1,11 @@
-import React, { use } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 const NotFound = () => {
 
-    const navigate = useNavigate();
-
-  return (
+    const navigate = useNavigate() 
+    return (
     <div>
         <h2>404 | Page Not Found</h2>
         <br />

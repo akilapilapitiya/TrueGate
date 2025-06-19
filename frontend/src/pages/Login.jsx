@@ -1,4 +1,4 @@
-import '../styles/pages/Login.css'
+import React from 'react'
 
 const Login = () => {
   return (
