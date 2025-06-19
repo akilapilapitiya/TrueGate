@@ -5,7 +5,7 @@ import namedLogo from "../assets/logo-name.png";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const isLoggedIn = true; // Replace with actual auth logic
+  const isLoggedIn = false; // Replace with actual auth logic
   const userName = "Sajith"; // Replace with actual user name logic
   const userMode = "Admin"; // Replace with actual user mode logic
 
