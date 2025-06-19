@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #b4e7ff;
+    height: 50px;
+}
+
+.logo-container{
+    display: flex;
+    align-items: center;
+    background: #1f1717;
+    height: 50px;
+}
+
+.logo{
+    height: 200px;
+    width: auto;
+}
