@@ -28,6 +28,10 @@ const Register = () => {
   // Validate all inputs
   const message = checkInputData(firstName.current.value, surName.current.value, day.current.value,  month.current.value, year.current.value, selectedGender, password.current.value, rePassword.current.value)
   setErrorMessage(message);
+  if (message) return; // If there's an error, do not proceed
+
+    //Sign Up Logic
+      
   }
 
   return (

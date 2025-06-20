@@ -1,9 +1,9 @@
 [
   {
     "email": "admin@tg.com",
-    "password": "admin123",
-    "firstName": "First-Admin",
-    "surname": "Last-Admin",
+    "password": "Admin@123",
+    "firstName": "Sajith",
+    "surname": "Premadasa",
     "birthDate": 12,
     "birthMonth": 10,
     "birthYear": 2012,
@@ -12,9 +12,9 @@
   },
   {
     "email": "client@tg.com",
-    "password": "client123",
-    "firstName": "First-Client",
-    "surname": "Last-Client",
+    "password": "Client@123",
+    "firstName": "Mahinda",
+    "surname": "Rajapaksha",
     "birthDate": 2,
     "birthMonth": 5,
     "birthYear": 2000,
