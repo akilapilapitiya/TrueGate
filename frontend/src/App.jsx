@@ -25,6 +25,7 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="manage" element={<UserManage />} />
         <Route path="resetpassword" element={<PasswordReset/>}/>
+        <Route path="usermanage" element={<UserManage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     )

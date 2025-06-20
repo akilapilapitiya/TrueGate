@@ -10,7 +10,7 @@
     "gender": "M",
     "role": "admin"
   },
-  {
+  { 
     "email": "client@tg.com",
     "password": "Client@123",
     "firstName": "Mahinda",

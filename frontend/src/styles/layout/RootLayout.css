@@ -4,11 +4,18 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body{
+.row-body{
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+.column-body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
 }
 
 .navbar{
@@ -20,6 +27,17 @@ body{
     width: 100%;
     min-height: 90vh;
 }
+
+.left-navbar{
+    height: 100vh;
+    width: 20vw;
+}
+
+.dashboard-main-body{
+    height:100vh;
+    width: 80vw;
+}
+
 
 
 

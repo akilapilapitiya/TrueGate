@@ -1,0 +1,9 @@
+.dashboard-container {
+    width: 100%;
+    min-height: 98vh;
+    padding-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
