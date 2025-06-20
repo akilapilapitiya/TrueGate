@@ -73,6 +73,17 @@
     0%;
     height: 40px;
 }
+
+.error-message{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.error-text{
+    font-weight: 600;
+    color: red;
+}
     
 
     

@@ -122,3 +122,14 @@ label{
 a{
     text-decoration: none;
 }
+
+.error-message{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.error-text{
+    font-weight: 600;
+    color: red;
+}
