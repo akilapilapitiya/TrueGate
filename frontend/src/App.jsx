@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import UserManage from "./pages/UserManage";
 import NotFound from "./components/NotFound";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<Profile />} />
         <Route path="manage" element={<UserManage />} />
+        <Route path="resetpassword" element={<PasswordReset/>}/>
         <Route path="*" element={<NotFound />} />
       </Route>
     )
