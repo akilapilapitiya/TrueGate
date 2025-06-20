@@ -6,7 +6,6 @@
     background-color: var(--background-color);
     display: flex;
     flex-direction:  row;
-
 }
 
 .register-info{
@@ -14,10 +13,7 @@
     flex: 5;
     background-color: var(--primary-panel-color);
     border-radius: 10px;
-    
-
 }
-
 
 .register-form{
     margin: 10px 10px;
