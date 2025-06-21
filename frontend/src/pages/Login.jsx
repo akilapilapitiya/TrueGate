@@ -1,82 +1,89 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/pages/Login.css';
-import {checkLogInValidateData} from '../utils/Validate'
+import { checkLogInValidateData } from '../utils/Validate';
 import { useRef, useState } from 'react';
 
-// Firebase 
+// Firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/Firebase";
+import Loading from '../components/Loading'; // make sure you have this component!
 
 const Login = () => {
+  const navigate = useNavigate();
 
   // State messages
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false); // loading state for login process
 
   // Hook References for inputs
   const email = useRef(null);
   const password = useRef(null);
 
   // Login Button Logic
-  const handleLogInClick = () => {
+  const handleLogInClick = async () => {
+    setErrorMessage(null);  // reset error
+    setLoading(true);       // show loading spinner
+
     // Validate Data
     const message = checkLogInValidateData(email.current.value, password.current.value);
-    setErrorMessage(message);
-    if (message) return; // If message stop operating foward
+    if (message) {
+      setErrorMessage(message);
+      setLoading(false);
+      return; // stop here if validation fails
+    }
 
-    //Login Logic  ################ Firebase
-    signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/dashboard"); // Redirect to dashboard after login
-        
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMessage(errorCode + " - " + errorMessage)
-      });
-
-    
-  }
-
-  const navigate = useNavigate();
+    // Login Logic with Firebase
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
+      console.log(userCredential.user);
+      setLoading(false);
+      navigate("/dashboard"); // Redirect to dashboard after login
+    } catch (error) {
+      setErrorMessage(error.code + " - " + error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className='login-container'>
-      <div className="login-form">
-        <form action="#" onSubmit={(e) => e.preventDefault()} className=''>
-
-          <div className="email-input">
-            <input type="email" placeholder='Email address' ref={email} />
-          </div>
-          <div className="password-input">
-            <input type="password" placeholder='Password' ref={password}/>
-          </div>
-          <div className="error-message">
-            <p className='error-message'>{errorMessage}</p>
-          </div>
-          <div className="process-options-container">
-              <button className='log-in-button' onClick={handleLogInClick}>Log in</button>
-              <NavLink to="/resetpassword" >Forgotten password?</NavLink>
-          </div>
-          <hr />
-          <div className="process-divert-options-container">
-            <button
-              onClick={() => navigate("/register")}
-              className="create-new-account-button"
-            >
-              Create new account
-            </button>
-          </div>
-
-
-            
-        </form>
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="login-form">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogInClick();
+            }}
+          >
+            <div className="email-input">
+              <input type="email" placeholder='Email address' ref={email} />
+            </div>
+            <div className="password-input">
+              <input type="password" placeholder='Password' ref={password} />
+            </div>
+            <div className="error-message">
+              <p className='error-message'>{errorMessage}</p>
+            </div>
+            <div className="process-options-container">
+              <button type="submit" className='log-in-button'>Log in</button>
+              <NavLink to="/resetpassword">Forgotten password?</NavLink>
+            </div>
+            <hr />
+            <div className="process-divert-options-container">
+              <button
+                type="button"
+                onClick={() => navigate("/register")}
+                className="create-new-account-button"
+              >
+                Create new account
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

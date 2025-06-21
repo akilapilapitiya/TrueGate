@@ -46,12 +46,14 @@ const Navbar = () => {
         )}
         
         <div className="current-user-button-container">
-          <button
+          {location.pathname !== "/profile" && (
+            <button
             onClick={() => navigate("/profile")}
-            className="profile-link-button"
-          >
+            className="profile-link-button">
             <p className="username">{user.firstName}</p>
           </button>
+          )}
+          
           <button onClick={handleSignOut} className="logout-button">
             Logout
           </button>

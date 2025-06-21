@@ -5,11 +5,11 @@ import { useRef, useState } from 'react';
 
 import {createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../utils/Firebase";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
 
-  // State messages
+  // Error State messages
   const [errorMessage, setErrorMessage] = useState(null)
   
   // Hook References for inputs
