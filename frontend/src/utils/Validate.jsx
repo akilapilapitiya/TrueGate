@@ -28,3 +28,21 @@ export const checkSignUpValidateData = (email, password, rePassword, firstName, 
     return null;
 } 
 
+export const profileUpdateValidateData = (firstName, surName, contact) => {
+  // Clean input
+  const cleanFirstName = firstName.trim();
+  const cleanSurName = surName.trim();
+  const cleanContact = contact.trim();
+
+  // Regex
+  const isFirstNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(cleanFirstName);
+  const isSurNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(cleanSurName);
+  const isContactValid = /^\d{10}$/.test(cleanContact);
+
+  if (!isFirstNameValid) return "First name is not valid";
+  if (!isSurNameValid) return "Surname is not valid";
+  if (!isContactValid) return "Contact number is not valid";
+  return null;
+};
+
+
