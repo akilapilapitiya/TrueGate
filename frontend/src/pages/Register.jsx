@@ -3,6 +3,10 @@ import '../styles/pages/Register.css';
 import { checkSignUpValidateData } from '../utils/Validate';
 import { useRef, useState } from 'react';
 
+import {createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../utils/Firebase";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+
 const Register = () => {
 
   // State messages
@@ -22,11 +26,77 @@ const Register = () => {
   const modeClient = useRef(null);
 
 
-  const handleSignUpClick = () =>{
-    // Validate inputs
-    const message = checkSignUpValidateData(email.current.value, password.current.value, rePassword.current.value, firstName.current.value, surName.current.value, dob.current.value, contact.current.value);  
-    setErrorMessage(message)
-  }
+
+
+
+  const handleSignUpClick = () => {
+  // Get gender and mode
+  const gender = genderMale.current.checked
+    ? "male"
+    : genderFemale.current.checked
+    ? "female"
+    : null;
+
+  const mode = modeAdmin.current.checked
+    ? "admin"
+    : modeClient.current.checked
+    ? "client"
+    : null;
+
+    const dobDate = dob.current.value ? new Date(dob.current.value) : null;
+
+  // Validate inputs
+  const message = checkSignUpValidateData(
+    email.current.value,
+    password.current.value,
+    rePassword.current.value,
+    firstName.current.value,
+    surName.current.value,
+    dob.current.value,
+    contact.current.value
+  );
+  setErrorMessage(message);
+
+  if (message) return; // Stop if validation error
+
+  // Sign Up Logic
+  createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      // Update profile
+      updateProfile(user, {
+        displayName: firstName.current.value,
+        phoneNumber: contact.current.value,
+      })
+        .then(() => {
+          // Proper setDoc syntax with data object inside parentheses:
+          setDoc(doc(db, "users", user.uid), {
+            firstName: firstName.current.value,
+            surName: surName.current.value,
+            dob:dobDate ? dobDate.toISOString() : null,
+            gender: gender,
+            mode: mode,
+            contact: contact.current.value,
+            email: email.current.value,
+            // Add other fields you want to store here
+          })
+            .then(() => {
+              navigate("/dashboard"); // Redirect after Firestore doc creation
+            })
+            .catch((error) => {
+              setErrorMessage("Failed to save user data: " + error.message);
+            });
+        })
+        .catch((error) => {
+          setErrorMessage("Profile update failed: " + error.message);
+        });
+    })
+    .catch((error) => {
+      setErrorMessage(error.code + " - " + error.message);
+    });
+};
+
 
   const navigate = useNavigate();
   return (
@@ -56,10 +126,10 @@ const Register = () => {
             <label htmlFor="gender">Gender</label>
             <div className="gender-instances">
               <div className="gender-button">
-              <input type="radio" name='gender' value='male' checked/>  Male
+              <input type="radio" name='gender' value='male' ref={genderMale} defaultChecked/>  Male
             </div>
             <div className="gender-button">
-              <input type="radio" name='gender' value='female'/>  Female
+              <input type="radio" name='gender' ref={genderFemale} value='female'/>  Female
             </div>
           </div> 
           </div>
@@ -67,10 +137,10 @@ const Register = () => {
             <label htmlFor="mode">User Mode</label>
             <div className="mode-instances">
               <div className="mode-button">
-              <input type="radio" name='mode' value='admin'/> Administrator
+              <input type="radio" name='mode' value='admin' ref={modeAdmin}/> Administrator
             </div>
             <div className="mode-button">
-              <input type="radio" name='mode' value='client' checked/>  Client
+              <input type="radio" name='mode' value='client' ref={modeClient} defaultChecked/>  Client
             </div>
           </div> 
           </div>

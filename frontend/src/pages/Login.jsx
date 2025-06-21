@@ -3,6 +3,10 @@ import '../styles/pages/Login.css';
 import {checkLogInValidateData} from '../utils/Validate'
 import { useRef, useState } from 'react';
 
+// Firebase 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/Firebase";
+
 const Login = () => {
 
   // State messages
@@ -17,6 +21,23 @@ const Login = () => {
     // Validate Data
     const message = checkLogInValidateData(email.current.value, password.current.value);
     setErrorMessage(message);
+    if (message) return; // If message stop operating foward
+
+    //Login Logic  ################ Firebase
+    signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        navigate("/dashboard"); // Redirect to dashboard after login
+        
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorCode + " - " + errorMessage)
+      });
+
     
   }
 
