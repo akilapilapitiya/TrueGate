@@ -10,7 +10,7 @@ import { doc, setDoc } from "firebase/firestore";
 const Register = () => {
 
   // Error State messages
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
   
   // Hook References for inputs
   const email = useRef(null);
