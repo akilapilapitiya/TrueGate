@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react';
 import '../styles/pages/Profile.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { profileUpdateValidateData } from '../utils/Validate';
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../utils/Firebase";
+import { auth, db } from "../utils/Firebase";
 import Loading from '../components/Loading';
+import { addUser } from '../utils/UserSlice';
+import DeleteConfirmModal from '../components/modals/DeleteConfirmModal';
+import { deleteUser } from 'firebase/auth';
+import SuccessModal from '../components/modals/SuccessModal';
 
 const Profile = () => {
   const store = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null); 
   const [editMode, setEditMode] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     surName: '',
@@ -61,7 +68,13 @@ const Profile = () => {
       const userDocRef = doc(db, "users", store.uid);
       await updateDoc(userDocRef, { firstName, surName, contact });
 
-      console.log("Firestore user profile updated!");
+      //Manually update Redux store
+    dispatch(addUser({
+      ...store, // preserve existing data
+      firstName,
+      surName,
+      contact
+    }));
       setEditMode(false);
     } catch (error) {
       setErrorMessage("Failed to update profile: " + error.message);
@@ -69,8 +82,22 @@ const Profile = () => {
   };
 
   const handleProfileDelete = () => {
-    // your logic to delete user
+    const user = auth.currentUser;
+    if (!user) {
+      setErrorMessage("No authenticated user found.");
+      return;
+    }
+
+    deleteUser(user)
+      .then(() => {
+        dispatch(addUser(null)); // Clear Redux store
+        setShowSuccessModal(true); // Show success modal
+      })
+      .catch((error) => {
+        setErrorMessage("Failed to delete user: " + error.message);
+      });
   };
+
 
   return (
     <div className='profile-container'>
@@ -127,10 +154,26 @@ const Profile = () => {
           <div className="action-buttons">
             <button className='change-info-button' onClick={() => setEditMode(true)}>Change Personal Info</button>
             <button className='change-password-button' onClick={() => navigate('/resetpassword')}>Change Password</button>
-            <button className='delete-account-button' onClick={handleProfileDelete}>Delete Account</button>
+            <button className='delete-account-button' onClick={() => setShowDeleteModal(true)}>Delete Account</button>
           </div>
         </div>
       )}
+      {showDeleteModal && (
+        <DeleteConfirmModal
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleProfileDelete}
+        />
+      )}
+      {showSuccessModal &&(
+        <SuccessModal 
+          message="Your account has been deleted successfully!" 
+          onClose={() => {
+            setShowSuccessModal(false);
+            navigate("/login"); // optional navigation after close
+          }} 
+        />
+      )}
+      
     </div>
   );
 };

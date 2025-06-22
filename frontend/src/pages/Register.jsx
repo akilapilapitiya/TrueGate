@@ -10,7 +10,7 @@ import { doc, setDoc } from "firebase/firestore";
 const Register = () => {
 
   // Error State messages
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
   
   // Hook References for inputs
   const email = useRef(null);
@@ -70,7 +70,6 @@ const Register = () => {
         phoneNumber: contact.current.value,
       })
         .then(() => {
-          // Proper setDoc syntax with data object inside parentheses:
           setDoc(doc(db, "users", user.uid), {
             firstName: firstName.current.value,
             surName: surName.current.value,
@@ -79,7 +78,6 @@ const Register = () => {
             mode: mode,
             contact: contact.current.value,
             email: email.current.value,
-            // Add other fields you want to store here
           })
             .then(() => {
               navigate("/dashboard"); // Redirect after Firestore doc creation

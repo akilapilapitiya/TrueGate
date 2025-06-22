@@ -45,4 +45,14 @@ export const profileUpdateValidateData = (firstName, surName, contact) => {
   return null;
 };
 
+export const newPasswordValidateData = (newPassword, reNewPassword) => {
+    const isPasswordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(newPassword);
+    const isRePasswordValid = (newPassword == reNewPassword);
+
+    if (!isPasswordValid) return "Password is not valid";
+    if (!isRePasswordValid) return "Re-entered password does not match";
+    return null;
+}
+
+
 

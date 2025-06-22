@@ -15,16 +15,17 @@ import UserManage from "./pages/UserManage";
 import NotFound from "./components/NotFound";
 import PasswordReset from "./pages/PasswordReset";
 import ErrorPage from "./pages/ErrorPage";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="dashboard" element={<ProtectedRoute requireAdmin={true} ><Dashboard /></ProtectedRoute>} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="manage" element={<UserManage />} />
+      <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="manage" element={<ProtectedRoute requireAdmin={true} ><UserManage /></ProtectedRoute>} />
       <Route path="resetpassword" element={<PasswordReset />} />
       <Route path="error" element={<ErrorPage/>} />
       <Route path="*" element={<NotFound />} />
