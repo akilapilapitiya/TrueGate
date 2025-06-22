@@ -36,7 +36,6 @@ const Register = () => {
 
   return (
     <div className='register-container'>
-      <div className="register-info">Welcome to Bla Bla Bla Only Admins can Add Another Admin</div>
       <div className="register-form">
         <form action="#" onSubmit={(e) => e.preventDefault()}>
           <div className="header-box">
@@ -49,11 +48,7 @@ const Register = () => {
           </div>
           <div className="dob-input">
             <label htmlFor="dob">Date of Birth</label>
-            <div className="date-fields">
-            <input type="number" name="day" placeholder="DD" maxlength="2" size="2" min="1" max="31" ref={day}/>
-            <input type="number" name="month" placeholder="MM" maxlength="2" size="2" min="1" max="12" ref={month}/>
-            <input type="number" name="year" placeholder="YYYY" maxlength="4" size="4" min="1900" max="2099" ref={year}/>
-            </div>   
+
           </div>
           <div className="gender-input">
             <label htmlFor="gender">Gender</label>
@@ -64,8 +59,18 @@ const Register = () => {
             <div className="gender-button">
               <input type="radio" name='gender' value='female' ref={genderFemale}/>  Female
             </div>
+          </div> 
           </div>
-            
+          <div className="mode-input">
+            <label htmlFor="mode">User Mode</label>
+            <div className="mode-instances">
+              <div className="mode-button">
+              <input type="radio" name='mode' value='admin'/> Administrator
+            </div>
+            <div className="mode-button">
+              <input type="radio" name='mode' value='client'/>  Client
+            </div>
+          </div> 
           </div>
             <div className="password-input">
               <input type="password" placeholder='Password' ref={password}/>
@@ -78,9 +83,6 @@ const Register = () => {
               <button className='sign-up-button' onClick={handleSignInButtonClick}>Sign Up</button>
               <NavLink to="/login" >Already have an Account?</NavLink>
             </div>
-            
-            
-          
         </form>
       </div>
     </div>
