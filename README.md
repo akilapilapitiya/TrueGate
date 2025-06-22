@@ -14,15 +14,15 @@ It serves as a development playground for adding, testing, and integrating front
 
 > **Requirements:**  
 > - Node.js installed (for npm dependencies)
-
-1. Navigate to the frontend directory:  
-   cd frontend
-
-2. Install Dependancies:
-    npm install
-
-3. Start the development server:
-    npm run dev
+>
+> 1. Navigate to the frontend directory:  
+> cd frontend
+>
+> 2. Install Dependancies:
+> npm install
+>
+> 3. Start the development server:
+> npm run dev
 
 ### Back End
 Coming Soon.....
