@@ -70,7 +70,6 @@ const Register = () => {
         phoneNumber: contact.current.value,
       })
         .then(() => {
-          // Proper setDoc syntax with data object inside parentheses:
           setDoc(doc(db, "users", user.uid), {
             firstName: firstName.current.value,
             surName: surName.current.value,
@@ -79,7 +78,6 @@ const Register = () => {
             mode: mode,
             contact: contact.current.value,
             email: email.current.value,
-            // Add other fields you want to store here
           })
             .then(() => {
               navigate("/dashboard"); // Redirect after Firestore doc creation
