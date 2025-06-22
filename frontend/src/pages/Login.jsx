@@ -7,9 +7,12 @@ import { useRef, useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/Firebase";
 import Loading from '../components/Loading'; // make sure you have this component!
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/UserSlice'; // Redux action to add user data
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // State messages
   const [errorMessage, setErrorMessage] = useState(null);
@@ -35,9 +38,15 @@ const Login = () => {
     // Login Logic with Firebase
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
-      console.log(userCredential.user);
+      
+      // Update Redux 
+      dispatch(addUser({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email
+      }));
+
       setLoading(false);
-      navigate("/dashboard"); // Redirect to dashboard after login
+      navigate("/profile"); // Redirect to profile after login
     } catch (error) {
       setErrorMessage(error.code + " - " + error.message);
       setLoading(false);
