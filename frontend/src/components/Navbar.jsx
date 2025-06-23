@@ -11,13 +11,14 @@ const Navbar = () => {
   const location = useLocation();
 
   const handleSignOut = () => {
-    signOut(auth).then(() => {
-      navigate("/login"); // Redirect to login after sign out
-    })
-    .catch((error) => {
-      navigate("/error"); // navigate to an error page
-    });
-  }
+    signOut(auth)
+      .then(() => {
+        navigate("/login"); // Redirect to login after sign out
+      })
+      .catch((error) => {
+        navigate("/error"); // navigate to an error page
+      });
+  };
 
   return (
     <div className="navbar-container">
@@ -25,65 +26,59 @@ const Navbar = () => {
       <button className="logo-container" onClick={() => navigate("/")}>
         <img src={namedLogo} alt="logo" className="logo" />
       </button>
-   
+
       {user ? (
-      <>
-        {user.mode === "admin" && (
-          <div className="nav-links">
-            <ul>
-              <li>
-                <NavLink to="/dashboard" className="navbar-link">
-                  API Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/manage" className="navbar-link">
-                  Manage Users
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        )}
-        
-        <div className="current-user-button-container">
-          {location.pathname !== "/profile" && (
-            <button
-            onClick={() => navigate("/profile")}
-            className="profile-link-button">
-            <p className="username">{user.firstName}</p>
-          </button>
+        <>
+          {user.mode === "admin" && (
+            <div className="nav-links">
+              <ul>
+                <li>
+                  <NavLink to="/dashboard" className="navbar-link">
+                    API Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/manage" className="navbar-link">
+                    Manage Users
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
           )}
-          
-          <button onClick={handleSignOut} className="logout-button">
-            Logout
-          </button>
+
+          <div className="current-user-button-container">
+            {location.pathname !== "/profile" && (
+              <button
+                onClick={() => navigate("/profile")}
+                className="profile-link-button"
+              >
+                <p className="username">{user.firstName}</p>
+              </button>
+            )}
+
+            <button onClick={handleSignOut} className="logout-button">
+              Logout
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="current-user-button-container">
+          {location.pathname !== "/register" && (
+            <button
+              onClick={() => navigate("/register")}
+              className="get-started-button"
+            >
+              Get Started
+            </button>
+          )}
+
+          {location.pathname !== "/login" && (
+            <button onClick={() => navigate("/login")} className="login-button">
+              Login
+            </button>
+          )}
         </div>
-      </>
-    ) : (
-      <div className="current-user-button-container">
-        {location.pathname !== "/register" && (
-          <button
-          onClick={() => navigate("/register")}
-          className="get-started-button"
-        >
-          Get Started
-        </button>
-        )}
-        
-        {location.pathname !== "/login" && (
-          <button
-          onClick={() => navigate("/login")}
-          className="login-button"
-        >
-          Login
-        </button>
-        )}
-        
-      </div>
-    )}
-
-
-      
+      )}
     </div>
   );
 };

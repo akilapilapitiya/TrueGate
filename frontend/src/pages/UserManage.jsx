@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { auth, db } from '../utils/Firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import '../styles/pages/UserManage.css';
-import SuccessModal from '../components/modals/SuccessModal';
-import { deleteUser } from 'firebase/auth';
+import { useEffect, useState } from "react";
+import { auth, db } from "../utils/Firebase";
+import { collection, getDocs } from "firebase/firestore";
+import "../styles/pages/UserManage.css";
+import SuccessModal from "../components/modals/SuccessModal";
+import { deleteUser } from "firebase/auth";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
@@ -11,11 +11,11 @@ const UserManage = () => {
   const [editMode, setEditMode] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
-    firstName: '',
-    surName: '',
-    contact: ''
+    firstName: "",
+    surName: "",
+    contact: "",
   });
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -23,15 +23,15 @@ const UserManage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'users'));
-        const usersArray = querySnapshot.docs.map(doc => ({
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const usersArray = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
         setUsers(usersArray);
         setFilteredUsers(usersArray); // Set initially
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
       }
     };
 
@@ -48,9 +48,9 @@ const UserManage = () => {
   const handleEditClick = (userDoc) => {
     setSelectedUserId(userDoc.id);
     setFormData({
-      firstName: userDoc.firstName || '',
-      surName: userDoc.surName || '',
-      contact: userDoc.contact || ''
+      firstName: userDoc.firstName || "",
+      surName: userDoc.surName || "",
+      contact: userDoc.contact || "",
     });
     setEditMode(true);
   };
@@ -70,7 +70,9 @@ const UserManage = () => {
         const userDocRef = doc(db, 'users', userId);
         await deleteDoc(userDocRef);
         */
-        console.log(`User deleted from Firebase Auth (not Firestore): ${user.uid}`);
+        console.log(
+          `User deleted from Firebase Auth (not Firestore): ${user.uid}`
+        );
         setShowSuccessModal(true);
       })
       .catch((error) => {
@@ -102,17 +104,18 @@ const UserManage = () => {
   // Search function
   const handleUserSearch = () => {
     const term = searchTerm.toLowerCase();
-    const results = users.filter(user =>
-      (user.firstName && user.firstName.toLowerCase().includes(term)) ||
-      (user.surName && user.surName.toLowerCase().includes(term)) ||
-      (user.email && user.email.toLowerCase().includes(term)) ||
-      (user.contact && user.contact.toLowerCase().includes(term))
+    const results = users.filter(
+      (user) =>
+        (user.firstName && user.firstName.toLowerCase().includes(term)) ||
+        (user.surName && user.surName.toLowerCase().includes(term)) ||
+        (user.email && user.email.toLowerCase().includes(term)) ||
+        (user.contact && user.contact.toLowerCase().includes(term))
     );
     setFilteredUsers(results);
   };
 
   return (
-    <div className='user-manage-container'>
+    <div className="user-manage-container">
       {!editMode ? (
         <div className="display-users">
           <div className="header">
@@ -121,9 +124,9 @@ const UserManage = () => {
           </div>
 
           <div className="search-box">
-            <input 
-              type="text" 
-              placeholder="Search users..." 
+            <input
+              type="text"
+              placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -149,17 +152,21 @@ const UserManage = () => {
                     <td colSpan="7">No users found.</td>
                   </tr>
                 ) : (
-                  filteredUsers.map(user => (
+                  filteredUsers.map((user) => (
                     <tr key={user.id}>
                       <td>{user.firstName}</td>
                       <td>{user.surName}</td>
                       <td>{user.email}</td>
                       <td>12-10-2024</td>
                       <td>22-06-2025</td>
-                      <td>{user.mode || 'client'}</td>
+                      <td>{user.mode || "client"}</td>
                       <td>
-                        <button onClick={() => handleEditClick(user)}>Edit</button>
-                        <button onClick={() => handleDeleteProfile(user.id)}>Delete</button>
+                        <button onClick={() => handleEditClick(user)}>
+                          Edit
+                        </button>
+                        <button onClick={() => handleDeleteProfile(user.id)}>
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -202,8 +209,16 @@ const UserManage = () => {
               <p className="error-message">{errorMessage}</p>
             </div>
             <div className="action-buttons">
-              <button type="submit" className="save-info-button">Save Information</button>
-              <button type="button" className="back-view-button" onClick={() => setEditMode(false)}>Return to View Mode</button>
+              <button type="submit" className="save-info-button">
+                Save Information
+              </button>
+              <button
+                type="button"
+                className="back-view-button"
+                onClick={() => setEditMode(false)}
+              >
+                Return to View Mode
+              </button>
             </div>
           </form>
         </div>

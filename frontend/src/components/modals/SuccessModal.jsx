@@ -1,5 +1,4 @@
-import '../../styles/components/modals/SuccessModal.css';
-
+import "../../styles/components/modals/SuccessModal.css";
 
 const SuccessModal = ({ message, onClose }) => {
   return (
@@ -7,7 +6,9 @@ const SuccessModal = ({ message, onClose }) => {
       <div className="success-modal">
         <h2>Success</h2>
         <p>{message}</p>
-        <button onClick={onClose} className="modal-close-btn">Close</button>
+        <button onClick={onClose} className="modal-close-btn">
+          Close
+        </button>
       </div>
     </div>
   );

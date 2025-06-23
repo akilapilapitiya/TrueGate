@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,10 +9,10 @@ import {
   ArcElement,
   Title,
   Tooltip,
-  Legend
-} from 'chart.js';
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import '../styles/pages/Dashboard.css';
+  Legend,
+} from "chart.js";
+import { Line, Bar, Pie } from "react-chartjs-2";
+import "../styles/pages/Dashboard.css";
 
 // Register chart components
 ChartJS.register(
@@ -30,13 +30,13 @@ ChartJS.register(
 const Dashboard = () => {
   // Sample data for line chart (API latency)
   const lineData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
       {
-        label: 'API Latency (ms)',
+        label: "API Latency (ms)",
         data: [120, 110, 105, 115, 100, 90],
         fill: false,
-        borderColor: '#3f51b5',
+        borderColor: "#3f51b5",
         tension: 0.3,
       },
     ],
@@ -44,24 +44,24 @@ const Dashboard = () => {
 
   // Sample data for bar chart (Request counts)
   const barData = {
-    labels: ['GET', 'POST', 'PUT', 'DELETE'],
+    labels: ["GET", "POST", "PUT", "DELETE"],
     datasets: [
       {
-        label: 'Requests',
+        label: "Requests",
         data: [5000, 3000, 1200, 700],
-        backgroundColor: ['#3f51b5', '#f50057', '#00bcd4', '#ff9800'],
+        backgroundColor: ["#3f51b5", "#f50057", "#00bcd4", "#ff9800"],
       },
     ],
   };
 
   // Sample data for pie chart (Error rate distribution)
   const pieData = {
-    labels: ['4xx Errors', '5xx Errors', 'Success'],
+    labels: ["4xx Errors", "5xx Errors", "Success"],
     datasets: [
       {
-        label: 'Error Rate',
+        label: "Error Rate",
         data: [15, 5, 80],
-        backgroundColor: ['#f44336', '#9c27b0', '#4caf50'],
+        backgroundColor: ["#f44336", "#9c27b0", "#4caf50"],
       },
     ],
   };
