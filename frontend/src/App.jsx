@@ -2,7 +2,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
+  RouterProvider,
 } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -21,13 +21,34 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="dashboard" element={<ProtectedRoute requireAdmin={true} ><Dashboard /></ProtectedRoute>} />
+      <Route
+        path="dashboard"
+        element={
+          <ProtectedRoute requireAdmin={true}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-      <Route path="manage" element={<ProtectedRoute requireAdmin={true} ><UserManage /></ProtectedRoute>} />
+      <Route
+        path="profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="manage"
+        element={
+          <ProtectedRoute requireAdmin={true}>
+            <UserManage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="resetpassword" element={<PasswordReset />} />
-      <Route path="error" element={<ErrorPage/>} />
+      <Route path="error" element={<ErrorPage />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )

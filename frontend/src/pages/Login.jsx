@@ -1,14 +1,14 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import '../styles/pages/Login.css';
-import { checkLogInValidateData } from '../utils/Validate';
-import { useRef, useState } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
+import "../styles/pages/Login.css";
+import { checkLogInValidateData } from "../utils/Validate";
+import { useRef, useState } from "react";
 
 // Firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/Firebase";
-import Loading from '../components/Loading'; // make sure you have this component!
-import { useDispatch } from 'react-redux';
-import { addUser } from '../utils/UserSlice'; // Redux action to add user data
+import Loading from "../components/Loading"; // make sure you have this component!
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/UserSlice"; // Redux action to add user data
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,11 +24,14 @@ const Login = () => {
 
   // Login Button Logic
   const handleLogInClick = async () => {
-    setErrorMessage(null);  // reset error
-    setLoading(true);       // show loading spinner
+    setErrorMessage(null); // reset error
+    setLoading(true); // show loading spinner
 
     // Validate Data
-    const message = checkLogInValidateData(email.current.value, password.current.value);
+    const message = checkLogInValidateData(
+      email.current.value,
+      password.current.value
+    );
     if (message) {
       setErrorMessage(message);
       setLoading(false);
@@ -37,13 +40,19 @@ const Login = () => {
 
     // Login Logic with Firebase
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
-      
-      // Update Redux 
-      dispatch(addUser({
-        uid: userCredential.user.uid,
-        email: userCredential.user.email
-      }));
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      );
+
+      // Update Redux
+      dispatch(
+        addUser({
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+        })
+      );
 
       setLoading(false);
       navigate("/profile"); // Redirect to profile after login
@@ -54,7 +63,7 @@ const Login = () => {
   };
 
   return (
-    <div className='login-container'>
+    <div className="login-container">
       {loading ? (
         <Loading />
       ) : (
@@ -66,16 +75,18 @@ const Login = () => {
             }}
           >
             <div className="email-input">
-              <input type="email" placeholder='Email address' ref={email} />
+              <input type="email" placeholder="Email address" ref={email} />
             </div>
             <div className="password-input">
-              <input type="password" placeholder='Password' ref={password} />
+              <input type="password" placeholder="Password" ref={password} />
             </div>
             <div className="error-message">
-              <p className='error-message'>{errorMessage}</p>
+              <p className="error-message">{errorMessage}</p>
             </div>
             <div className="process-options-container">
-              <button type="submit" className='log-in-button'>Log in</button>
+              <button type="submit" className="log-in-button">
+                Log in
+              </button>
               <NavLink to="/resetpassword">Forgotten password?</NavLink>
             </div>
             <hr />

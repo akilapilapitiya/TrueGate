@@ -12,7 +12,7 @@ const firebaseConfig = {
   projectId: "truegate-live",
   storageBucket: "truegate-live.firebasestorage.app",
   messagingSenderId: "784324817474",
-  appId: "1:784324817474:web:87c75cafaa5863dd3ff3db"
+  appId: "1:784324817474:web:87c75cafaa5863dd3ff3db",
 };
 
 // Initialize Firebase
