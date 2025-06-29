@@ -161,13 +161,12 @@ async function modifyUser(req, res) {
     // Debug: check if user exists before update
     const user = await findUserByEmail(email);
     console.log('[modifyUser] User lookup:', user);
-    const { firstName, lastName, birthDate, gender, role, contactNumber } = req.body;
+    const { firstName, lastName, birthDate, gender, contactNumber } = req.body;
     const updates = {};
     if (firstName) updates.firstName = firstName;
     if (lastName) updates.lastName = lastName;
     if (birthDate) updates.birthDate = birthDate;
     if (gender) updates.gender = gender;
-    if (role) updates.role = role;
     if (contactNumber) updates.contactNumber = contactNumber;
     const updated = await updateUser(email, updates);
     if (!updated) {
