@@ -5,7 +5,8 @@ const dbName = process.env.MONGODB_DB;
 const client = new MongoClient(uri); // removed useUnifiedTopology
 let db;
 
-console.log('MONGODB_URI:', process.env.MONGODB_URI);
+const sanitizedUri = uri ? uri.split('@')[1] || uri : 'undefined'; // Extract host part if credentials are present
+console.log('MONGODB_URI (sanitized):', sanitizedUri);
 console.log('MONGODB_DB:', process.env.MONGODB_DB);
 
 async function connectDb() {
