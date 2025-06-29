@@ -35,7 +35,7 @@ async function updateUser(email, updates) {
 // Get all users (excluding sensitive fields)
 async function getAllUsers() {
   const db = getDb();
-  return await db.collection('users').find({}, { projection: { hashedPassword: 0 } }).toArray();
+  return await db.collection('users').find({}, { projection: { hashedPassword: 0, verificationToken: 0, verificationTokenExpires: 0 } }).toArray();
 }
 
 // Change user password
