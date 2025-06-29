@@ -1,51 +1,16 @@
 
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const validator = require('validator');
-const { getDb } = require('../db');
-const { sendVerificationEmail } = require('../utils/mailer');
 const crypto = require('crypto');
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRY = '15m';
-
-// Helper: find user by email
-async function findUserByEmail(email) {
-  const db = getDb();
-  return await db.collection('users').findOne({ email });
-}
-
-// Helper: add user
-async function addUser(user) {
-  const db = getDb();
-  await db.collection('users').insertOne(user);
-}
-
-// Helper: update user by email
-async function updateUser(email, updates) {
-  const db = getDb();
-  const result = await db.collection('users').findOneAndUpdate(
-    { email },
-    { $set: updates },
-    { returnDocument: 'after' }
-  );
-  return result.value;
-}
-
-// Helper: get all users (excluding sensitive fields)
-async function getAllUsers() {
-  const db = getDb();
-  return await db.collection('users').find({}, { projection: { hashedPassword: 0 } }).toArray();
-}
-
-// Helper: change user password
-async function changeUserPassword(email, newHashedPassword) {
-  const db = getDb();
-  await db.collection('users').updateOne(
-    { email },
-    { $set: { hashedPassword: newHashedPassword } }
-  );
-}
+const { sendVerificationEmail } = require('../utils/mailer');
+const { signJwt, JWT_EXPIRY } = require('../utils/auth');
+const {
+  findUserByEmail,
+  addUser,
+  updateUser,
+  getAllUsers,
+  changeUserPassword
+} = require('../services/userService');
 
 // POST /register
 async function register(req, res) {
@@ -64,9 +29,7 @@ async function register(req, res) {
     return res.status(400).json({ error: 'User already exists' });
   }
   const hashedPassword = await bcrypt.hash(password, 12);
-  // Get registration IP
   const registrationIp = req.ip || req.connection.remoteAddress;
-  // Generate email verification token
   const verificationToken = crypto.randomBytes(32).toString('hex');
   const verificationTokenExpires = Date.now() + 1000 * 60 * 60 * 24; // 24 hours
   const newUser = {
@@ -81,7 +44,8 @@ async function register(req, res) {
     loginAttempts: 0,
     lastLogin: null,
     allowedIps: [registrationIp],
-    status: 'unverified',
+    verified: false,
+    locked: false,
     verificationToken,
     verificationTokenExpires
   };
@@ -91,8 +55,7 @@ async function register(req, res) {
   const verificationUrl = `${baseUrl}/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
   try {
     await sendVerificationEmail(email, verificationUrl);
-  } catch (e) {
-  }
+  } catch (e) {}
   return res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
 }
 
@@ -103,7 +66,7 @@ async function verifyEmail(req, res) {
     return res.status(400).json({ error: 'Invalid verification link' });
   }
   const user = await findUserByEmail(email);
-  if (!user || user.status === 'verified') {
+  if (!user || user.verified) {
     return res.status(400).json({ error: 'Invalid or already verified' });
   }
   if (
@@ -114,7 +77,7 @@ async function verifyEmail(req, res) {
     return res.status(400).json({ error: 'Verification link expired or invalid' });
   }
   await updateUser(email, {
-    status: 'verified',
+    verified: true,
     verificationToken: null,
     verificationTokenExpires: null
   });
@@ -126,19 +89,35 @@ async function verifyEmail(req, res) {
 // POST /login
 async function login(req, res) {
   const { email, password } = req.body;
+  const loginIp = req.ip || req.connection.remoteAddress;
   const user = await findUserByEmail(email);
   if (!user) {
+    console.warn(`[Login] Failed attempt: email not found`, { email, ip: loginIp });
     return res.status(400).json({ error: 'Invalid email or password' });
+  }
+  if (user.locked) {
+    console.warn(`[Login] Account locked`, { email, ip: loginIp });
+    return res.status(403).json({ error: 'Account is locked due to too many failed login attempts.' });
   }
   const validPassword = await bcrypt.compare(password, user.hashedPassword);
   if (!validPassword) {
-    await updateUser(email, { loginAttempts: (user.loginAttempts || 0) + 1 });
+    const attempts = (user.loginAttempts || 0) + 1;
+    let updates = { loginAttempts: attempts };
+    let locked = false;
+    if (attempts >= 5) {
+      updates.locked = true;
+      locked = true;
+    }
+    await updateUser(email, updates);
+    console.warn(`[Login] Failed attempt: wrong password`, { email, ip: loginIp, attempts, locked });
+    if (locked) {
+      return res.status(403).json({ error: 'Account is locked due to too many failed login attempts.' });
+    }
     return res.status(400).json({ error: 'Invalid email or password' });
   }
   // Save last login time
   const lastLogin = new Date().toISOString();
   // Add login IP to allowedIps if not present
-  const loginIp = req.ip || req.connection.remoteAddress;
   const allowedIps = user.allowedIps || [];
   if (!allowedIps.includes(loginIp)) allowedIps.push(loginIp);
   await updateUser(email, {
@@ -146,11 +125,12 @@ async function login(req, res) {
     lastLogin,
     allowedIps
   });
-  const token = jwt.sign(
-    { email: user.email, name: user.firstName + ' ' + user.lastName, role: user.role },
-    JWT_SECRET,
-    { expiresIn: JWT_EXPIRY }
-  );
+  console.log(`[Login] Success`, { email, ip: loginIp });
+  const token = signJwt({
+    email: user.email,
+    name: user.firstName + ' ' + user.lastName,
+    role: user.role
+  });
   res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
   return res.status(200).json({ message: 'Login successful', token });
 }
@@ -195,15 +175,17 @@ async function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'No token provided' });
-  jwt.verify(token, JWT_SECRET, async (err, payload) => {
-    if (err) return res.status(403).json({ error: 'Invalid token' });
+  try {
+    const payload = require('../utils/auth').verifyJwt(token);
     const user = await findUserByEmail(payload.email);
     if (!user) {
       return res.status(403).json({ error: 'Invalid session' });
     }
     req.user = payload;
     next();
-  });
+  } catch (err) {
+    return res.status(403).json({ error: 'Invalid token' });
+  }
 }
 
 // POST /resend-verification
@@ -215,7 +197,7 @@ async function resendVerification(req, res) {
       return res.status(200).json({ message: 'If your account exists and is unverified, a verification email will be sent.' });
     }
     const user = await findUserByEmail(email);
-    if (!user || user.status === 'verified') {
+    if (!user || user.verified) {
       return res.status(200).json({ message: 'If your account exists and is unverified, a verification email will be sent.' });
     }
     // Generate new token and expiry
@@ -227,8 +209,7 @@ async function resendVerification(req, res) {
     const verificationUrl = `${baseUrl}/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
     try {
       await sendVerificationEmail(email, verificationUrl);
-    } catch (e) {
-    }
+    } catch (e) {}
     return res.status(200).json({ message: 'If your account exists and is unverified, a verification email will be sent.' });
   } catch (err) {
     return res.status(500).json({ error: 'Internal server error' });
