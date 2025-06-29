@@ -15,12 +15,21 @@ async function addUser(user) {
 // Update user by email
 async function updateUser(email, updates) {
   const db = getDb();
+  // Use both options for compatibility, and log the result for debugging
   const result = await db.collection('users').findOneAndUpdate(
     { email },
     { $set: updates },
     { returnDocument: 'after' }
   );
-  return result.value;
+  let updatedUser = result.value;
+  if (!updatedUser) {
+    // Fallback for older MongoDB servers: fetch the user again
+    updatedUser = await db.collection('users').findOne({ email });
+  }
+  if (updatedUser && updatedUser.hasOwnProperty('hashedPassword')) {
+    delete updatedUser.hashedPassword;
+  }
+  return updatedUser || null;
 }
 
 // Get all users (excluding sensitive fields)

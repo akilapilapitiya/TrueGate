@@ -15,6 +15,6 @@ router.use(verifyToken);
 
 router.get('/users', getUsers);
 router.put('/users/:email', modifyUser);
-router.post('/users/:email/change-password', changePassword);
+router.post('/users/change-password', changePassword);
 
 module.exports = router;

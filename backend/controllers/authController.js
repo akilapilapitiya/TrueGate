@@ -137,30 +137,59 @@ async function login(req, res) {
 
 // GET /users
 async function getUsers(req, res) {
+  // Only allow authenticated admin users
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Insufficient permissions' });
+  }
   const users = await getAllUsers();
   return res.status(200).json(users);
 }
 
 // PUT /users/:email
 async function modifyUser(req, res) {
-  const { email } = req.params;
-  const { firstName, lastName, birthDate, gender, role, contactNumber } = req.body;
-  const updates = {};
-  if (firstName) updates.firstName = firstName;
-  if (lastName) updates.lastName = lastName;
-  if (birthDate) updates.birthDate = birthDate;
-  if (gender) updates.gender = gender;
-  if (role) updates.role = role;
-  if (contactNumber) updates.contactNumber = contactNumber;
-  const updated = await updateUser(email, updates);
-  if (!updated) return res.status(404).json({ error: 'User not found' });
-  return res.status(200).json({ message: 'User updated', user: updated });
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    const { email } = req.params;
+    if (req.user.email !== email) {
+      return res.status(403).json({ error: 'You can only modify your own details' });
+    }
+    // Debug: check if user exists before update
+    const user = await findUserByEmail(email);
+    console.log('[modifyUser] User lookup:', user);
+    const { firstName, lastName, birthDate, gender, role, contactNumber } = req.body;
+    const updates = {};
+    if (firstName) updates.firstName = firstName;
+    if (lastName) updates.lastName = lastName;
+    if (birthDate) updates.birthDate = birthDate;
+    if (gender) updates.gender = gender;
+    if (role) updates.role = role;
+    if (contactNumber) updates.contactNumber = contactNumber;
+    const updated = await updateUser(email, updates);
+    if (!updated) {
+      console.error(`[modifyUser] User not found or update failed`, { email, updates, userFound: !!user });
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.status(200).json({ message: 'User updated' });
+  } catch (err) {
+    console.error(`[modifyUser] Error updating user`, { error: err, body: req.body, params: req.params, user: req.user });
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 // POST /users/:email/change-password
 async function changePassword(req, res) {
-  const { email } = req.params;
+
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
   const { oldPassword, newPassword } = req.body;
+  const email = req.user.email;
+
   const user = await findUserByEmail(email);
   if (!user) return res.status(404).json({ error: 'User not found' });
   const valid = await bcrypt.compare(oldPassword, user.hashedPassword);
@@ -188,10 +217,12 @@ async function verifyToken(req, res, next) {
   }
 }
 
-// POST /resend-verification
-// Accepts { email } in body. Does not reveal if email exists. Rate limit this endpoint in production.
+// POST /resend-verification 
 async function resendVerification(req, res) {
-  const { email } = req.body;
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  const email = req.user.email;
   try {
     if (!email || !validator.isEmail(email)) {
       return res.status(200).json({ message: 'If your account exists and is unverified, a verification email will be sent.' });
