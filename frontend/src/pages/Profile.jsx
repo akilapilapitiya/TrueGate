@@ -9,6 +9,22 @@ import { addUser } from "../utils/UserSlice";
 import DeleteConfirmModal from "../components/modals/DeleteConfirmModal";
 import { deleteUser } from "firebase/auth";
 import SuccessModal from "../components/modals/SuccessModal";
+import { colorPallete } from "../ColorTheme";
+import FaceIcon from "@mui/icons-material/Face";
+import Face3Icon from "@mui/icons-material/Face3";
+
+// MUI
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  Divider,
+} from "@mui/material";
 
 const Profile = () => {
   const store = useSelector((state) => state.user);
@@ -25,14 +41,12 @@ const Profile = () => {
     contact: "",
   });
 
-  // Redirect to login if no user
   useEffect(() => {
     if (!store) {
       const timeout = setTimeout(() => {
         navigate("/login");
-      }, 1500); // 1.5 seconds
-
-      return () => clearTimeout(timeout); // cleanup
+      }, 1500);
+      return () => clearTimeout(timeout);
     } else {
       setFormData({
         firstName: store.firstName || "",
@@ -42,13 +56,7 @@ const Profile = () => {
     }
   }, [store, navigate]);
 
-  if (!store) {
-    return (
-      <div className="profile-container">
-        <Loading />
-      </div>
-    );
-  }
+  if (!store) return <Loading />;
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -67,10 +75,9 @@ const Profile = () => {
       const userDocRef = doc(db, "users", store.uid);
       await updateDoc(userDocRef, { firstName, surName, contact });
 
-      //Manually update Redux store
       dispatch(
         addUser({
-          ...store, // preserve existing data
+          ...store,
           firstName,
           surName,
           contact,
@@ -91,8 +98,8 @@ const Profile = () => {
 
     deleteUser(user)
       .then(() => {
-        dispatch(addUser(null)); // Clear Redux store
-        setShowSuccessModal(true); // Show success modal
+        dispatch(addUser(null));
+        setShowSuccessModal(true);
       })
       .catch((error) => {
         setErrorMessage("Failed to delete user: " + error.message);
@@ -100,111 +107,407 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
-      {editMode ? (
-        <div className="profile-changer-container">
-          <form onSubmit={handleSaveChanges}>
-            {/* form inputs as before */}
-            <div className="first-name-box">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="surname-name-box">
-              <label htmlFor="surName">Surname</label>
-              <input
-                type="text"
-                id="surName"
-                value={formData.surName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="contact-box">
-              <label htmlFor="contact">Contact Number</label>
-              <input
-                type="text"
-                id="contact"
-                value={formData.contact}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="error-message">
-              <p className="error-message">{errorMessage}</p>
-            </div>
-            <div className="action-buttons">
-              <button type="submit" className="save-info-button">
-                Save Information
-              </button>
-              <button
-                type="button"
-                className="back-view-button"
-                onClick={() => setEditMode(false)}
-              >
-                Return to View Mode
-              </button>
-            </div>
-          </form>
-        </div>
-      ) : (
-        <div className="profile-display-container">
-          <h1>Welcome back {store.firstName}</h1>
-          <p>Let's get you through your profile</p>
-          <div className="profile-details">
-            <p>
-              <strong>First Name:</strong> {store.firstName}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {store.surName}
-            </p>
-            <p>
-              <strong>Email:</strong> {store.email}
-            </p>
-            <p>
-              <strong>Contact:</strong> {store.contact}
-            </p>
-          </div>
-          <div className="action-buttons">
-            <button
-              className="change-info-button"
-              onClick={() => setEditMode(true)}
-            >
-              Change Personal Info
-            </button>
-            <button
-              className="change-password-button"
-              onClick={() => navigate("/resetpassword")}
-            >
-              Change Password
-            </button>
-            <button
-              className="delete-account-button"
-              onClick={() => setShowDeleteModal(true)}
-            >
-              Delete Account
-            </button>
-          </div>
-        </div>
-      )}
-      {showDeleteModal && (
-        <DeleteConfirmModal
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleProfileDelete}
-        />
-      )}
-      {showSuccessModal && (
-        <SuccessModal
-          message="Your account has been deleted successfully!"
-          onClose={() => {
-            setShowSuccessModal(false);
-            navigate("/login"); // optional navigation after close
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        background: colorPallete.pageBackgroundColorProfile,
+        minHeight: "100vh",
+        margin: "-8px",
+        padding: "8px",
+      }}
+    >
+      <Container
+        maxWidth="sm"
+        sx={{ mt: 6, display: "flex", flexDirection: "column" }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            backgroundColor: colorPallete.containerBackgroundColorProfile,
+            maxWidth: "600px",
           }}
-        />
-      )}
-    </div>
+        >
+          {editMode ? (
+            <>
+              <Typography variant="h4" gutterBottom sx={{color: colorPallete.profilePageNormalText, textAlign: "center", fontWeight: "bold"}}>
+                EDIT PROFILE
+              </Typography>
+                <Divider sx={{ mb: 3 , borderColor:colorPallete.loginPageNormalText}} />
+
+              <Box
+                component="form"
+                onSubmit={handleSaveChanges}
+                sx={{ mt: 2 }}
+                noValidate
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="First Name"
+                      id="firstName"
+                      fullWidth
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white", 
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset", 
+                    WebkitTextFillColor: "white", 
+                    transition: "background 5000s ease-in-out 0s"} 
+                }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Surname"
+                      id="surName"
+                      fullWidth
+                      value={formData.surName}
+                      onChange={handleInputChange}
+                      sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white", 
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset", 
+                    WebkitTextFillColor: "white", 
+                    transition: "background 5000s ease-in-out 0s"} 
+                }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Contact Number"
+                      id="contact"
+                      fullWidth
+                      value={formData.contact}
+                      onChange={handleInputChange}
+                      sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white", 
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset", 
+                    WebkitTextFillColor: "white", 
+                    transition: "background 5000s ease-in-out 0s"} 
+                }}
+                    />
+                  </Grid>
+                </Grid>
+
+                {errorMessage && (
+                  <Typography color="error" sx={{ mt: 2 }}>
+                    {errorMessage}
+                  </Typography>
+                )}
+
+                <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
+                  <Button type="submit" variant="contained"
+                  sx={{
+                                      background: colorPallete.registerButtonColor,
+                                      color: colorPallete.registerButtonAccentColor,
+                                      borderColor: colorPallete.registerButtonAccentColor,
+                                      "&:hover": {
+                                        background: colorPallete.registerButtonHoverColor,
+                                        color: colorPallete.registerButtonHoverAccentColor,
+                                        borderColor: colorPallete.registerButtonHoverAccentColor,
+                                      },
+                                    }}>
+                    Save Information
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    onClick={() => setEditMode(false)}
+                    sx={{
+                                        background: colorPallete.loginButtonColor,
+                                        color: colorPallete.loginButtonAccentColor,
+                                        borderColor: colorPallete.loginButtonAccentColor,
+                                        "&:hover": {
+                                          background: colorPallete.loginButtonHoverColor,
+                                          color: colorPallete.loginButtonHoverAccentColor,
+                                          borderColor: colorPallete.loginButtonHoverAccentColor,
+                                        },
+                                      }}
+                  >
+                    Return to View Mode
+                  </Button>
+                </Stack>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box
+                sx={{
+                  background: "darkblue",
+                  height: "15vh",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: colorPallete.profilePageNormalText,
+                    fontWeight: "bold",
+                  }}
+                >
+                  truegate.live
+                </Typography>
+              </Box>
+              <Container sx={{ display: "flex", flexDirection: "row" }}>
+                {store.gender === "male" ? (
+                  <FaceIcon
+                    sx={{
+                      fontSize: "17vh",
+                      color: colorPallete.profilePageNormalText,
+                    }}
+                  />
+                ) : (
+                  <Face3Icon
+                    sx={{
+                      fontSize: "17vh",
+                      color: colorPallete.profilePageNormalText,
+                    }}
+                  />
+                )}
+                <Container
+                  sx={{
+                    pt: 2,
+                    pl: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {store.firstName + " " + store.surName}
+                  </Typography>
+
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      mb: 3,
+                      color: colorPallete.profilePageNormalText,
+                      background: colorPallete.profileModeIconColor,
+                      width: "fit-content",
+                      pl: 1,
+                      pr: 1,
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {store.mode === "admin" ? "Administrator" : "User"}
+                  </Typography>
+                </Container>
+              </Container>
+              <Grid container spacing={5} sx={{ mt: 2 }}>
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    <strong>Email:</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    <i>{store.email}</i>
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    <strong>Contact:</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    {store.contact}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    <strong>Enrolled On:</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    20-10-2020
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    <strong>Last Login:</strong>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: colorPallete.profilePageNormalText }}
+                  >
+                    21-6-2025
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  mt: 4,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => setEditMode(true)}
+                  sx={{
+                    width: "10vw",
+                    background: colorPallete.updateButtonColor,
+                    color: colorPallete.updateButtonAccentColor,
+                    borderColor: colorPallete.updateButtonAccentColor,
+                    "&:hover": {
+                      background: colorPallete.updateButtonHoverColor,
+                      color: colorPallete.updateButtonHoverAccentColor,
+                      borderColor: colorPallete.updateButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Update Info
+                </Button>
+                <Button
+                  sx={{
+                    width: "10vw",
+                    background: colorPallete.changePasswordButtonColor,
+                    color: colorPallete.changePasswordButtonAccentColor,
+                    borderColor: colorPallete.changePasswordButtonAccentColor,
+                    "&:hover": {
+                      background: colorPallete.changePasswordButtonHoverColor,
+                      color: colorPallete.changePasswordButtonHoverAccentColor,
+                      borderColor:
+                        colorPallete.changePasswordButtonHoverAccentColor,
+                    },
+                  }}
+                  onClick={() => navigate("/resetpassword")}
+                >
+                  Change Password
+                </Button>
+                <Button
+                  sx={{ width: "10vw" }}
+                  variant="contained"
+                  color="error"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  Delete Account
+                </Button>
+              </Stack>
+            </>
+          )}
+        </Paper>
+
+        {showDeleteModal && (
+          <DeleteConfirmModal
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleProfileDelete}
+          />
+        )}
+
+        {showSuccessModal && (
+          <SuccessModal
+            message="Your account has been deleted successfully!"
+            onClose={() => {
+              setShowSuccessModal(false);
+              navigate("/login");
+            }}
+          />
+        )}
+      </Container>
+    </Box>
   );
 };
 
