@@ -1,14 +1,23 @@
 import Navbar from "../components/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import AuthListener from "../utils/AuthListener";
+import { CssBaseline } from "@mui/material";
 
 const RootLayout = () => {
+  const location = useLocation();
+
   return (
     <div>
+      <CssBaseline />
       <AuthListener /> {/* Handles login/logout sync */}
-      <div className="navbar">
-        <Navbar />
-      </div>
+      {location.pathname !== "/login" &&
+        location.pathname !== "/register" &&
+        location.pathname !== "/" &&
+        location.pathname !== "/error" && (
+          <div className="navbar">
+            <Navbar />
+          </div>
+        )}
       <div className="main-body">
         <Outlet />
       </div>
