@@ -1,32 +1,44 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkLogInValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
+import { colorPallete } from "../ColorTheme";
 
 // Firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/Firebase";
-import Loading from "../components/Loading"; // make sure you have this component!
+import Loading from "../components/Loading";
 import { useDispatch } from "react-redux";
-import { addUser } from "../utils/UserSlice"; // Redux action to add user data
+import { addUser } from "../utils/UserSlice";
+
+// MUI
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Stack,
+  Divider,
+  Link,
+  Paper,
+} from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // State messages
   const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false); // loading state for login process
+  const [loading, setLoading] = useState(false);
 
-  // Hook References for inputs
   const email = useRef(null);
   const password = useRef(null);
 
-  // Login Button Logic
   const handleLogInClick = async () => {
-    setErrorMessage(null); // reset error
-    setLoading(true); // show loading spinner
+    setErrorMessage(null);
+    setLoading(true);
 
-    // Validate Data
     const message = checkLogInValidateData(
       email.current.value,
       password.current.value
@@ -34,10 +46,9 @@ const Login = () => {
     if (message) {
       setErrorMessage(message);
       setLoading(false);
-      return; // stop here if validation fails
+      return;
     }
 
-    // Login Logic with Firebase
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -45,7 +56,6 @@ const Login = () => {
         password.current.value
       );
 
-      // Update Redux
       dispatch(
         addUser({
           uid: userCredential.user.uid,
@@ -54,54 +64,207 @@ const Login = () => {
       );
 
       setLoading(false);
-      navigate("/profile"); // Redirect to profile after login
+      navigate("/landing");
     } catch (error) {
-      setErrorMessage(error.code + " - " + error.message);
+      setErrorMessage(`${error.code} - ${error.message}`);
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="login-form">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogInClick();
+    <Box
+      sx={{
+        background: colorPallete.pageBackgroundColorLogin,
+        minHeight: "100vh",
+        margin: "-8px",
+        padding: "8px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Container maxWidth="sm">
+        {loading ? (
+          <Loading />
+        ) : (
+          <Paper
+            elevation={3}
+            sx={{
+              p: 4,
+              mt: 6,
+              backgroundColor: colorPallete.containerBackgroundColorLogin,
             }}
           >
-            <div className="email-input">
-              <input type="email" placeholder="Email address" ref={email} />
-            </div>
-            <div className="password-input">
-              <input type="password" placeholder="Password" ref={password} />
-            </div>
-            <div className="error-message">
-              <p className="error-message">{errorMessage}</p>
-            </div>
-            <div className="process-options-container">
-              <button type="submit" className="log-in-button">
-                Log in
-              </button>
-              <NavLink to="/resetpassword">Forgotten password?</NavLink>
-            </div>
-            <hr />
-            <div className="process-divert-options-container">
-              <button
-                type="button"
-                onClick={() => navigate("/register")}
-                className="create-new-account-button"
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{ textAlign: "center", fontWeight: "bold", color: "white" }}
+            >
+              WELCOME BACK !
+            </Typography>
+            <Divider
+              sx={{ mb: 3, borderColor: colorPallete.loginPageNormalText }}
+            />
+
+            <Box
+              component="form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleLogInClick();
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                }}
+                inputRef={email}
+                label="Email Address"
+                type="email"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              />
+              <TextField
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                }}
+                inputRef={password}
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
+
+              {errorMessage && (
+                <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
+                  {errorMessage}
+                </Typography>
+              )}
+
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ mt: 2 }}
               >
-                Create new account
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </div>
+                <Button
+                  endIcon={<LoginIcon />}
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: colorPallete.registerButtonColor,
+                    color: colorPallete.registerButtonAccentColor,
+                    borderColor: colorPallete.registerButtonAccentColor,
+                    "&:hover": {
+                      background: colorPallete.registerButtonHoverColor,
+                      color: colorPallete.registerButtonHoverAccentColor,
+                      borderColor: colorPallete.registerButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Log in
+                </Button>
+                <Link
+                  component={NavLink}
+                  to="/resetpassword"
+                  weigh="hover"
+                  sx={{
+                    color: colorPallete.linkColorForgotPassword,
+                    fontWeight: "bold",
+                    fontFamily: "Arial, sans-serif",
+                  }}
+                >
+                  Forgot password?
+                </Link>
+              </Stack>
+
+              <Divider sx={{ my: 3 }} />
+
+              <Box textAlign="center">
+                <Button
+                  endIcon={<AppRegistrationIcon />}
+                  type="button"
+                  onClick={() => navigate("/register")}
+                  variant="outlined"
+                  sx={{
+                    background: colorPallete.loginButtonColor,
+                    color: colorPallete.loginButtonAccentColor,
+                    borderColor: colorPallete.loginButtonAccentColor,
+                    "&:hover": {
+                      background: colorPallete.loginButtonHoverColor,
+                      color: colorPallete.loginButtonHoverAccentColor,
+                      borderColor: colorPallete.loginButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Create a new account
+                </Button>
+              </Box>
+            </Box>
+          </Paper>
+        )}
+      </Container>
+    </Box>
   );
 };
 
