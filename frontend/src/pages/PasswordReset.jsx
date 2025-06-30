@@ -17,6 +17,7 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
+import { fontSizes } from "../Responsive";
 
 const PasswordReset = () => {
   const store = useSelector((state) => state.user);
@@ -88,6 +89,7 @@ const PasswordReset = () => {
               color: colorPallete.passwordResetPageNormalText,
               fontWeight: "bold",
               textAlign: "center",
+              fontSize: fontSizes.mainHeading
             }}
           >
             PASSWORD RESET

@@ -21,6 +21,7 @@ import {
   Paper,
   Stack,
 } from "@mui/material";
+import { fontSizes } from "../Responsive";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
@@ -115,7 +116,7 @@ const UserManage = () => {
       <Container maxWidth="lg" sx={{ mt: 5 }}>
         {!editMode ? (
           <>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom sx = {{fontSize: fontSizes.mainHeading, fontWeight:'bold'}}>
               User Management
             </Typography>
             <Typography variant="subtitle1">Manage your users here.</Typography>

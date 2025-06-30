@@ -14,6 +14,7 @@ import AddCallIcon from "@mui/icons-material/AddCall";
 import { colorPallete } from "../ColorTheme";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { fontSizes } from "../Responsive";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ const Landing = () => {
                     variant="h6"
                     sx={{
                       fontWeight: "bold",
+                      fontSize: fontSizes.subHeading,
                       color: colorPallete.tileAccentColor,
                     }}
                   >
@@ -102,6 +104,7 @@ const Landing = () => {
                     sx={{
                       fontWeight: "bold",
                       color: colorPallete.tileAccentColor,
+                      fontSize: fontSizes.subHeading,
                     }}
                   >
                     User Management
@@ -134,7 +137,9 @@ const Landing = () => {
               <PersonIcon sx={{ fontSize: "20vh", alignContent: "center" }} />
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold", color: colorPallete.tileAccentColor }}
+                sx={{ fontWeight: "bold",
+                   color: colorPallete.tileAccentColor,
+                  fontSize: fontSizes.subHeading }}
               >
                 Profile Editor
               </Typography>
@@ -163,7 +168,9 @@ const Landing = () => {
               <AddCallIcon sx={{ fontSize: "20vh", alignContent: "center" }} />
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold", color: colorPallete.tileAccentColor }}
+                sx={{ fontWeight: "bold",
+                   color: colorPallete.tileAccentColor,
+                  fontSize: fontSizes.subHeading }}
               >
                 Tech Support
               </Typography>

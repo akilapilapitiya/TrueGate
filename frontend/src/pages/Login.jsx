@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import { fontSizes } from "../Responsive";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -98,7 +99,7 @@ const Login = () => {
             <Typography
               variant="h4"
               gutterBottom
-              sx={{ textAlign: "center", fontWeight: "bold", color: "white" }}
+              sx={{ textAlign: "center", fontWeight: "bold", color: "white" , fontSize: fontSizes.mainHeading }}
             >
               WELCOME BACK !
             </Typography>

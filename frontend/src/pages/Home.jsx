@@ -18,6 +18,7 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import { NavLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import LoginIcon from '@mui/icons-material/Login';
+import { fontSizes } from "../Responsive";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               Manage Users with Ease
             </Typography>
@@ -181,7 +182,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               Fast API Integration
             </Typography>
@@ -232,7 +233,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               High Security Standards
             </Typography>
@@ -267,7 +268,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold" , fontSize: fontSizes.subHeading }}
             >
               24/7 Support
             </Typography>

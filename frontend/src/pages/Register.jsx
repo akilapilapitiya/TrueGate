@@ -22,6 +22,7 @@ import {
   Paper,
 } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { fontSizes } from "../Responsive";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -126,7 +127,7 @@ const Register = () => {
           <Typography
             variant="h4"
             gutterBottom
-            sx={{ textAlign: "center", fontWeight: "bold", color:colorPallete.registerPageNormalText}}
+            sx={{ textAlign: "center", fontWeight: "bold", color:colorPallete.registerPageNormalText, fontSize: fontSizes.mainHeading}}
           >
             CREATE A NEW ACCOUNT
           </Typography>
