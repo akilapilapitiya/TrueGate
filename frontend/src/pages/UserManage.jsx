@@ -106,7 +106,7 @@ const UserManage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: colorPallete.pageBackgroundColorUserManage,
+        background: colorPallete.pageBackgroundColorUserManage,
         minHeight: "100vh",
         margin: "-8px",
         padding: "8px",
@@ -115,10 +115,10 @@ const UserManage = () => {
       <Container maxWidth="lg" sx={{ mt: 5 }}>
         {!editMode ? (
           <>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom
+            sx={{ color: colorPallete.tableTextColor, fontWeight: "bold", textAlign:'center' }}>
               User Management
             </Typography>
-            <Typography variant="subtitle1">Manage your users here.</Typography>
 
             <Stack direction="row" spacing={2} mt={3} mb={3}>
               <TextField
@@ -127,23 +127,66 @@ const UserManage = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 fullWidth
+                sx={{
+                  background: colorPallete.tableBackgroundColor,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                }}
               />
-              <Button variant="contained" onClick={handleUserSearch}>
+              <Button variant="contained" 
+              onClick={handleUserSearch}
+              sx={{
+                                  background: colorPallete.registerButtonColor,
+                                  color: colorPallete.registerButtonAccentColor,
+                                  borderColor: colorPallete.registerButtonAccentColor,
+                                  "&:hover": {
+                                    background: colorPallete.registerButtonHoverColor,
+                                    color: colorPallete.registerButtonHoverAccentColor,
+                                    borderColor: colorPallete.registerButtonHoverAccentColor,
+                                  },
+                                }}>
                 Search
               </Button>
             </Stack>
 
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{backgroundColor: colorPallete.tableBackgroundColor}}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <TableCell>First Name</TableCell>
-                    <TableCell>Surname</TableCell>
-                    <TableCell>Email Address</TableCell>
-                    <TableCell>Account Created</TableCell>
-                    <TableCell>Last Login</TableCell>
-                    <TableCell>Role</TableCell>
-                    <TableCell>Actions</TableCell>
+                  <TableRow >
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>First Name</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Surname</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Email Address</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Account Created</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Last Login</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Role</TableCell>
+                    <TableCell sx={{ color: colorPallete.tableTextColor }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -154,12 +197,12 @@ const UserManage = () => {
                   ) : (
                     filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell>{user.firstName}</TableCell>
-                        <TableCell>{user.surName}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>12-10-2024</TableCell>
-                        <TableCell>22-06-2025</TableCell>
-                        <TableCell>{user.mode || "client"}</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>{user.firstName}</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>{user.surName}</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>{user.email}</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>12-10-2024</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>22-06-2025</TableCell>
+                        <TableCell sx={{ color: colorPallete.tableTextColor }}>{user.mode || "client"}</TableCell>
                         <TableCell>
                           <Stack direction="row" spacing={1}>
                             <Button

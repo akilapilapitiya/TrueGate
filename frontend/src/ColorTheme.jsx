@@ -18,7 +18,9 @@ const colorPallete = {
   pageBackgroundColorPasswordReset: `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
       linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
-  pageBackgroundColorUserManage: "rgb(255, 0, 0)",
+  pageBackgroundColorUserManage: `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
+      radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
+      linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
   pageBackgroundColorDashboard: "rgb(0, 255, 255)",
   pageBackgroundColorHome: `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
@@ -86,6 +88,10 @@ const colorPallete = {
 
   //LOGIN PAGE
   loginPageNormalText: "rgb(255, 255, 255)",
+
+  // USER MANAGE PAGE
+  tableBackgroundColor: "rgba(0, 0, 0, 0.7)",
+    tableTextColor: "rgb(255, 255, 255)",
 
   //NAVBAR
   navbarProfileNameButton: "rgb(8, 8, 20)",
