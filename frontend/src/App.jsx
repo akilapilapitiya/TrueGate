@@ -16,6 +16,7 @@ import NotFound from "./components/NotFound";
 import PasswordReset from "./pages/PasswordReset";
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Landing from "./pages/Landing";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,14 @@ const router = createBrowserRouter(
       />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route
+        path="landing"
+        element={
+          <ProtectedRoute>
+            <Landing />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="profile"
         element={
