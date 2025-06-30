@@ -3,6 +3,24 @@ import { auth, db } from "../utils/Firebase";
 import { collection, getDocs } from "firebase/firestore";
 import SuccessModal from "../components/modals/SuccessModal";
 import { deleteUser } from "firebase/auth";
+import { colorPallete } from "../ColorTheme";
+
+// MUI
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Stack,
+} from "@mui/material";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
@@ -18,7 +36,6 @@ const UserManage = () => {
   });
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Fetch users from Firestore
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -28,22 +45,19 @@ const UserManage = () => {
           ...doc.data(),
         }));
         setUsers(usersArray);
-        setFilteredUsers(usersArray); // Set initially
+        setFilteredUsers(usersArray);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
-
     fetchUsers();
   }, []);
 
-  // Input change handler
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  // Edit button click
   const handleEditClick = (userDoc) => {
     setSelectedUserId(userDoc.id);
     setFormData({
@@ -54,24 +68,15 @@ const UserManage = () => {
     setEditMode(true);
   };
 
-  // Delete logic (Auth only, Firestore is commented)
   const handleDeleteProfile = (userId) => {
     const user = auth.currentUser;
     if (!user) {
       setErrorMessage("No authenticated user found.");
       return;
     }
-
     deleteUser(user)
       .then(() => {
-        // Commented out Firestore deletion
-        /*
-        const userDocRef = doc(db, 'users', userId);
-        await deleteDoc(userDocRef);
-        */
-        console.log(
-          `User deleted from Firebase Auth (not Firestore): ${user.uid}`
-        );
+        console.log(`User deleted from Firebase Auth: ${user.uid}`);
         setShowSuccessModal(true);
       })
       .catch((error) => {
@@ -79,28 +84,13 @@ const UserManage = () => {
       });
   };
 
-  // Save form data (Firestore update commented out)
-  const handleSaveChanges = async (e) => {
+  const handleSaveChanges = (e) => {
     e.preventDefault();
-    /*
-    try {
-      const userDocRef = doc(db, 'users', selectedUserId);
-      await updateDoc(userDocRef, {
-        firstName: formData.firstName,
-        surName: formData.surName,
-        contact: formData.contact
-      });
-    } catch (error) {
-      setErrorMessage("Failed to update user: " + error.message);
-      return;
-    }
-    */
     console.log(`User updated (in memory): ${selectedUserId}`, formData);
     setEditMode(false);
     setErrorMessage(null);
   };
 
-  // Search function
   const handleUserSearch = () => {
     const term = searchTerm.toLowerCase();
     const results = users.filter(
@@ -114,122 +104,141 @@ const UserManage = () => {
   };
 
   return (
-    <div className="user-manage-container">
-      {!editMode ? (
-        <div className="display-users">
-          <div className="header">
-            <h1>User Management</h1>
-            <p>Manage your users here.</p>
-          </div>
+    <Box
+      sx={{
+        backgroundColor: colorPallete.pageBackgroundColorUserManage,
+        minHeight: "100vh",
+        margin: "-8px",
+        padding: "8px",
+      }}
+    >
+      <Container maxWidth="lg" sx={{ mt: 5 }}>
+        {!editMode ? (
+          <>
+            <Typography variant="h4" gutterBottom>
+              User Management
+            </Typography>
+            <Typography variant="subtitle1">Manage your users here.</Typography>
 
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="Search users..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+            <Stack direction="row" spacing={2} mt={3} mb={3}>
+              <TextField
+                label="Search users..."
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                fullWidth
+              />
+              <Button variant="contained" onClick={handleUserSearch}>
+                Search
+              </Button>
+            </Stack>
+
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Surname</TableCell>
+                    <TableCell>Email Address</TableCell>
+                    <TableCell>Account Created</TableCell>
+                    <TableCell>Last Login</TableCell>
+                    <TableCell>Role</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredUsers.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7}>No users found.</TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredUsers.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell>{user.firstName}</TableCell>
+                        <TableCell>{user.surName}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>12-10-2024</TableCell>
+                        <TableCell>22-06-2025</TableCell>
+                        <TableCell>{user.mode || "client"}</TableCell>
+                        <TableCell>
+                          <Stack direction="row" spacing={1}>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              onClick={() => handleEditClick(user)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              color="error"
+                              onClick={() => handleDeleteProfile(user.id)}
+                            >
+                              Delete
+                            </Button>
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        ) : (
+          <Box component="form" onSubmit={handleSaveChanges} sx={{ mt: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Edit User
+            </Typography>
+            <TextField
+              fullWidth
+              label="First Name"
+              id="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              sx={{ mb: 2 }}
             />
-            <button onClick={handleUserSearch}>Search</button>
-          </div>
+            <TextField
+              fullWidth
+              label="Surname"
+              id="surName"
+              value={formData.surName}
+              onChange={handleInputChange}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Contact Number"
+              id="contact"
+              value={formData.contact}
+              onChange={handleInputChange}
+              sx={{ mb: 2 }}
+            />
+            {errorMessage && (
+              <Typography color="error" sx={{ mb: 2 }}>
+                {errorMessage}
+              </Typography>
+            )}
+            <Stack direction="row" spacing={2}>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
+              <Button variant="outlined" onClick={() => setEditMode(false)}>
+                Cancel
+              </Button>
+            </Stack>
+          </Box>
+        )}
 
-          <div className="view-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>First Name</th>
-                  <th>Surname</th>
-                  <th>Email Address</th>
-                  <th>Account Created</th>
-                  <th>Last Login</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.length === 0 ? (
-                  <tr>
-                    <td colSpan="7">No users found.</td>
-                  </tr>
-                ) : (
-                  filteredUsers.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.firstName}</td>
-                      <td>{user.surName}</td>
-                      <td>{user.email}</td>
-                      <td>12-10-2024</td>
-                      <td>22-06-2025</td>
-                      <td>{user.mode || "client"}</td>
-                      <td>
-                        <button onClick={() => handleEditClick(user)}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDeleteProfile(user.id)}>
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ) : (
-        <div className="profile-changer-container">
-          <form onSubmit={handleSaveChanges}>
-            <div className="first-name-box">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="surname-name-box">
-              <label htmlFor="surName">Surname</label>
-              <input
-                type="text"
-                id="surName"
-                value={formData.surName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="contact-box">
-              <label htmlFor="contact">Contact Number</label>
-              <input
-                type="text"
-                id="contact"
-                value={formData.contact}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="error-message">
-              <p className="error-message">{errorMessage}</p>
-            </div>
-            <div className="action-buttons">
-              <button type="submit" className="save-info-button">
-                Save Information
-              </button>
-              <button
-                type="button"
-                className="back-view-button"
-                onClick={() => setEditMode(false)}
-              >
-                Return to View Mode
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {showSuccessModal && (
-        <SuccessModal
-          message="The account has been deleted successfully!"
-          onClose={() => setShowSuccessModal(false)}
-        />
-      )}
-    </div>
+        {showSuccessModal && (
+          <SuccessModal
+            message="The account has been deleted successfully!"
+            onClose={() => setShowSuccessModal(false)}
+          />
+        )}
+      </Container>
+    </Box>
   );
 };
 
