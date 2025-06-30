@@ -1,5 +1,4 @@
 import { use, useRef, useState } from "react";
-import "../styles/pages/PasswordReset.css";
 import { useSelector } from "react-redux";
 import { newPasswordValidateData } from "../utils/Validate";
 import { updatePassword } from "firebase/auth";

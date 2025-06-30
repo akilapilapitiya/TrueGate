@@ -1,5 +1,4 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import "../styles/components/Navbar.css";
 import namedLogo from "../assets/logo-name.png";
 import { auth } from "../utils/Firebase";
 import { signOut } from "firebase/auth";

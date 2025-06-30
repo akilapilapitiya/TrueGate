@@ -1,5 +1,3 @@
-import "../../styles/components/modals/DeleteConfirmModal.css";
-
 const DeleteConfirmModal = ({ onClose, onConfirm }) => {
   return (
     <div className="modal-overlay">

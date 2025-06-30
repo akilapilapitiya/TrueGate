@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "../styles/pages/Profile.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { profileUpdateValidateData } from "../utils/Validate";
