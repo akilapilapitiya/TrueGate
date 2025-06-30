@@ -1,5 +1,4 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import "../styles/pages/Login.css";
 import { checkLogInValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
 

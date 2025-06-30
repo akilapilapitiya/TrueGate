@@ -1,4 +1,3 @@
-import "../../styles/components/modals/FailModal.css";
 const SuccessModal = ({ message, onClose }) => {
   return (
     <div className="modal-overlay">

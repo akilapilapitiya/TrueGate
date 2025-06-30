@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "../utils/Firebase";
 import { collection, getDocs } from "firebase/firestore";
-import "../styles/pages/UserManage.css";
 import SuccessModal from "../components/modals/SuccessModal";
 import { deleteUser } from "firebase/auth";
 
