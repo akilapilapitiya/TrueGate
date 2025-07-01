@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { buttonSizes, fontSizes } from "../Responsive";
+import { anchorLinkSizes, buttonSizes, fontSizes } from "../Responsive";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -241,6 +241,10 @@ const Login = () => {
                     color: colorPallete.linkColorForgotPassword,
                     fontWeight: "bold",
                     fontFamily: "Arial, sans-serif",
+                    fontSize: anchorLinkSizes.footerLink.fontSize,
+                    lineHeight: anchorLinkSizes.footerLink.lineHeight,
+                    textDecoration: anchorLinkSizes.footerLink.textDecoration,
+                    display: anchorLinkSizes.footerLink.display,
                   }}
                 >
                   Forgot password?

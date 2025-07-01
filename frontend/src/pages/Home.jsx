@@ -18,7 +18,7 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import { NavLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import LoginIcon from "@mui/icons-material/Login";
-import { fontSizes, buttonSizes } from "../Responsive";
+import { fontSizes, buttonSizes, anchorLinkSizes } from "../Responsive";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -346,7 +346,10 @@ const Home = () => {
             sx={{
               color: "#ffff",
               fontFamily: "Arial, sans-serif",
-              fontSize: fontSizes.sentence,
+              fontSize: anchorLinkSizes.footerLink.fontSize,
+              lineHeight: anchorLinkSizes.footerLink.lineHeight,
+              textDecoration: anchorLinkSizes.footerLink.textDecoration,
+              display: anchorLinkSizes.footerLink.display,
             }}
           >
             Login
@@ -359,7 +362,10 @@ const Home = () => {
             sx={{
               color: "#ffff",
               fontFamily: "Arial, sans-serif",
-              fontSize: fontSizes.sentence,
+              fontSize: anchorLinkSizes.footerLink.fontSize,
+              lineHeight: anchorLinkSizes.footerLink.lineHeight,
+              textDecoration: anchorLinkSizes.footerLink.textDecoration,
+              display: anchorLinkSizes.footerLink.display,
             }}
           >
             Register

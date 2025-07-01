@@ -23,3 +23,21 @@ export const buttonSizes = {
     minWidth: { xs: "40px", sm: "48px", md: "56px" },
   },
 };
+
+  //Links
+  export const anchorLinkSizes = {
+  navLink: {
+    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+    padding: { xs: "4px 8px", sm: "6px 12px", md: "8px 16px" },
+    lineHeight: { xs: "1.4", sm: "1.5", md: "1.6" },
+    textDecoration: "none",
+    display: "inline-block",
+  },
+  footerLink: {
+    fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
+    lineHeight: { xs: "1.3", sm: "1.4", md: "1.5" },
+    textDecoration: "none",
+    display: "inline-block",
+  },
+};
+
