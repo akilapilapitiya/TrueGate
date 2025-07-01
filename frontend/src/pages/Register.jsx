@@ -22,7 +22,7 @@ import {
   Paper,
 } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { buttonSizes, fontSizes } from "../Responsive";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -141,8 +141,8 @@ const Register = () => {
           />
 
           <Box component="form" noValidate onSubmit={(e) => e.preventDefault()}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid container spacing={2} sx={{display: "flex", alignItems: 'center'}}>
+              <Grid item xs={12} >
                 <TextField
                   inputRef={firstName}
                   label="First Name"
@@ -177,6 +177,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -215,6 +218,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -255,6 +261,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -296,6 +305,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -335,6 +347,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -374,6 +389,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>
@@ -414,6 +432,9 @@ const Register = () => {
                       WebkitTextFillColor: "white",
                       transition: "background 5000s ease-in-out 0s",
                     },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
                   }}
                 />
               </Grid>

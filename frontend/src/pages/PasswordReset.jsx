@@ -17,7 +17,7 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
-import { buttonSizes, fontSizes } from "../Responsive";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const PasswordReset = () => {
   const store = useSelector((state) => state.user);
@@ -141,6 +141,9 @@ const PasswordReset = () => {
                     WebkitTextFillColor: "white",
                     transition: "background 5000s ease-in-out 0s",
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               {!store && (
@@ -174,6 +177,9 @@ const PasswordReset = () => {
                       color: "white",
                       opacity: 1,
                     },
+                    fontSize: textBoxSizes.medium.fontSize,
+                    width: textBoxSizes.medium.width,
+                    minHeight: textBoxSizes.medium.minHeight,
                   }}
                 />
               )}
@@ -239,6 +245,9 @@ const PasswordReset = () => {
                     color: "white",
                     opacity: 1,
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               <TextField
@@ -272,6 +281,9 @@ const PasswordReset = () => {
                     color: "white",
                     opacity: 1,
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               <Button

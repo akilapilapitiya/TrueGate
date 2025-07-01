@@ -24,7 +24,12 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { anchorLinkSizes, buttonSizes, fontSizes } from "../Responsive";
+import {
+  anchorLinkSizes,
+  buttonSizes,
+  fontSizes,
+  textBoxSizes,
+} from "../Responsive";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -152,6 +157,9 @@ const Login = () => {
                     WebkitTextFillColor: "white",
                     transition: "background 5000s ease-in-out 0s",
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
                 inputRef={email}
                 label="Email Address"
@@ -191,6 +199,9 @@ const Login = () => {
                     WebkitTextFillColor: "white",
                     transition: "background 5000s ease-in-out 0s",
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
                 inputRef={password}
                 label="Password"

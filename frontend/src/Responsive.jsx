@@ -24,8 +24,8 @@ export const buttonSizes = {
   },
 };
 
-  //Links
-  export const anchorLinkSizes = {
+//Links
+export const anchorLinkSizes = {
   navLink: {
     fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
     padding: { xs: "4px 8px", sm: "6px 12px", md: "8px 16px" },
@@ -41,3 +41,21 @@ export const buttonSizes = {
   },
 };
 
+// Text Box Sizes
+export const textBoxSizes = {
+  short: {
+    fontSize: { xs: "0.85rem", sm: "1rem", md: "1.1rem" },
+    width: "100%",
+    minHeight: { xs: "34px", sm: "38px", md: "42px" },
+  },
+  medium: {
+    fontSize: { xs: "0.9rem", sm: "1.05rem", md: "1.15rem" },
+    width: "100%",
+    minHeight: { xs: "36px", sm: "40px", md: "44px" },
+  },
+  long: {
+    fontSize: { xs: "0.85rem", sm: "1rem", md: "1.1rem" },
+    width: "100%",
+    minHeight: { xs: "36px", sm: "40px", md: "44px" },
+  },
+};

@@ -25,7 +25,7 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
-import { buttonSizes, fontSizes } from "../Responsive";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const Profile = () => {
   const store = useSelector((state) => state.user);
@@ -193,6 +193,9 @@ const Profile = () => {
                           WebkitTextFillColor: "white",
                           transition: "background 5000s ease-in-out 0s",
                         },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
                       }}
                     />
                   </Grid>
@@ -233,6 +236,9 @@ const Profile = () => {
                           WebkitTextFillColor: "white",
                           transition: "background 5000s ease-in-out 0s",
                         },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
                       }}
                     />
                   </Grid>
@@ -273,6 +279,9 @@ const Profile = () => {
                           WebkitTextFillColor: "white",
                           transition: "background 5000s ease-in-out 0s",
                         },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
                       }}
                     />
                   </Grid>
