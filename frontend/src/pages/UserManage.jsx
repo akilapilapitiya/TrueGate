@@ -21,7 +21,7 @@ import {
   Paper,
   Stack,
 } from "@mui/material";
-import { fontSizes } from "../Responsive";
+import { buttonSizes, fontSizes } from "../Responsive";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
@@ -116,7 +116,11 @@ const UserManage = () => {
       <Container maxWidth="lg" sx={{ mt: 5 }}>
         {!editMode ? (
           <>
-            <Typography variant="h4" gutterBottom sx = {{fontSize: fontSizes.mainHeading, fontWeight:'bold'}}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{ fontSize: fontSizes.mainHeading, fontWeight: "bold" }}
+            >
               User Management
             </Typography>
             <Typography variant="subtitle1">Manage your users here.</Typography>
@@ -129,7 +133,15 @@ const UserManage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 fullWidth
               />
-              <Button variant="contained" onClick={handleUserSearch}>
+              <Button
+                variant="contained"
+                onClick={handleUserSearch}
+                sx={{
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                }}
+              >
                 Search
               </Button>
             </Stack>
@@ -165,6 +177,11 @@ const UserManage = () => {
                           <Stack direction="row" spacing={1}>
                             <Button
                               size="small"
+                              sx={{
+                                minWidth: buttonSizes.iconButton.minWidth,
+                                fontSize: buttonSizes.iconButton.fontSize,
+                                padding: buttonSizes.iconButton.padding,
+                              }}
                               variant="outlined"
                               onClick={() => handleEditClick(user)}
                             >

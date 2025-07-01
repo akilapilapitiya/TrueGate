@@ -16,6 +16,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { colorPallete } from "../ColorTheme";
+import { buttonSizes } from "../Responsive";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -37,9 +38,11 @@ const Navbar = () => {
       position="static"
       color="default"
       elevation={1}
-      sx={{ background: colorPallete.navbarBackgroundColor, height: "12vh",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.5)"
-       }}
+      sx={{
+        background: colorPallete.navbarBackgroundColor,
+        height: "12vh",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.5)",
+      }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {user ? (
@@ -60,14 +63,19 @@ const Navbar = () => {
                   startIcon={<BarChartIcon />}
                   to="/dashboard"
                   variant="outlined"
-                  sx={{background:colorPallete.navbarLinkButton, color:colorPallete.navbarLinkButtonAccent, borderColor:colorPallete.navbarLinkButtonAccent, 
-                  "&:hover": {
+                  sx={{
+                    background: colorPallete.navbarLinkButton,
+                    color: colorPallete.navbarLinkButtonAccent,
+                    borderColor: colorPallete.navbarLinkButtonAccent,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
                       background: colorPallete.navbarLinkButtonAccent,
                       color: colorPallete.navbarLinkButton,
                       borderColor: colorPallete.navbarLinkButton,
-                    }
-                }}
-
+                    },
+                  }}
                 >
                   API Dashboard
                 </Button>
@@ -76,13 +84,19 @@ const Navbar = () => {
                   component={NavLink}
                   to="/manage"
                   variant="outlined"
-                  sx={{background:colorPallete.navbarLinkButton, color:colorPallete.navbarLinkButtonAccent, borderColor:colorPallete.navbarLinkButtonAccent, 
-                  "&:hover": {
+                  sx={{
+                    background: colorPallete.navbarLinkButton,
+                    color: colorPallete.navbarLinkButtonAccent,
+                    borderColor: colorPallete.navbarLinkButtonAccent,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
                       background: colorPallete.navbarLinkButtonAccent,
                       color: colorPallete.navbarLinkButton,
                       borderColor: colorPallete.navbarLinkButton,
-                    }
-                }}
+                    },
+                  }}
                 >
                   Manage Users
                 </Button>
@@ -92,13 +106,19 @@ const Navbar = () => {
             <Stack direction="row" spacing={2} alignItems="center">
               {location.pathname !== "/profile" && (
                 <Button
-                sx={{background:colorPallete.navbarProfileNameButton, color:colorPallete.navbarProfileNameButtonAccent, borderColor:colorPallete.navbarProfileNameButtonAccent, 
-                  "&:hover": {
+                  sx={{
+                    background: colorPallete.navbarProfileNameButton,
+                    color: colorPallete.navbarProfileNameButtonAccent,
+                    borderColor: colorPallete.navbarProfileNameButtonAccent,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
                       background: colorPallete.navbarProfileNameButtonAccent,
                       color: colorPallete.navbarProfileNameButton,
                       borderColor: colorPallete.navbarProfileNameButton,
-                    }
-                }}
+                    },
+                  }}
                   onClick={() => navigate("/profile")}
                   variant="outlined"
                 >
@@ -110,55 +130,68 @@ const Navbar = () => {
                 onClick={handleSignOut}
                 variant="contained"
                 color="error"
+                sx={{
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                }}
               >
                 Logout
               </Button>
             </Stack>
           </>
         ) : (
-          <><Box
-                component="img"
-                src={namedLogo}
-                alt="logo"
-                sx={{ height: 40 }}
-              />
-          <Stack direction="row" spacing={2}>
-            {location.pathname !== "/register" && (
-              <Button
-                onClick={() => navigate("/register")}
-                variant="contained"
-                sx={{
+          <>
+            <Box
+              component="img"
+              src={namedLogo}
+              alt="logo"
+              sx={{ height: 40 }}
+            />
+            <Stack direction="row" spacing={2}>
+              {location.pathname !== "/register" && (
+                <Button
+                  onClick={() => navigate("/register")}
+                  variant="contained"
+                  sx={{
                     background: colorPallete.loginButtonColor,
                     color: colorPallete.loginButtonAccentColor,
                     borderColor: colorPallete.loginButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.loginButtonHoverColor,
                       color: colorPallete.loginButtonHoverAccentColor,
                       borderColor: colorPallete.loginButtonHoverAccentColor,
-                    }}}
-              >
-                Get Started
-              </Button>
-            )}
-            {location.pathname !== "/login" && (
-              <Button
-                onClick={() => navigate("/login")}
-                variant="outlined"
-                sx={{
-                                    background: colorPallete.registerButtonColor,
-                                    color: colorPallete.registerButtonAccentColor,
-                                    borderColor: colorPallete.registerButtonAccentColor,
-                                    "&:hover": {
-                                      background: colorPallete.registerButtonHoverColor,
-                                      color: colorPallete.registerButtonHoverAccentColor,
-                                      borderColor: colorPallete.registerButtonHoverAccentColor,
-                                    },
-                                  }}
-              >
-                Login
-              </Button>
-            )}
-          </Stack>
+                    },
+                  }}
+                >
+                  Get Started
+                </Button>
+              )}
+              {location.pathname !== "/login" && (
+                <Button
+                  onClick={() => navigate("/login")}
+                  variant="outlined"
+                  sx={{
+                    background: colorPallete.registerButtonColor,
+                    color: colorPallete.registerButtonAccentColor,
+                    borderColor: colorPallete.registerButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
+                      background: colorPallete.registerButtonHoverColor,
+                      color: colorPallete.registerButtonHoverAccentColor,
+                      borderColor: colorPallete.registerButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Login
+                </Button>
+              )}
+            </Stack>
           </>
         )}
       </Toolbar>

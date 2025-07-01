@@ -25,7 +25,7 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
-import { fontSizes } from "../Responsive";
+import { buttonSizes, fontSizes } from "../Responsive";
 
 const Profile = () => {
   const store = useSelector((state) => state.user);
@@ -292,6 +292,9 @@ const Profile = () => {
                       background: colorPallete.registerButtonColor,
                       color: colorPallete.registerButtonAccentColor,
                       borderColor: colorPallete.registerButtonAccentColor,
+                      minWidth: buttonSizes.subButton.minWidth,
+                      fontSize: buttonSizes.subButton.fontSize,
+                      padding: buttonSizes.subButton.padding,
                       "&:hover": {
                         background: colorPallete.registerButtonHoverColor,
                         color: colorPallete.registerButtonHoverAccentColor,
@@ -310,6 +313,9 @@ const Profile = () => {
                       background: colorPallete.loginButtonColor,
                       color: colorPallete.loginButtonAccentColor,
                       borderColor: colorPallete.loginButtonAccentColor,
+                      minWidth: buttonSizes.subButton.minWidth,
+                      fontSize: buttonSizes.subButton.fontSize,
+                      padding: buttonSizes.subButton.padding,
                       "&:hover": {
                         background: colorPallete.loginButtonHoverColor,
                         color: colorPallete.loginButtonHoverAccentColor,
@@ -497,6 +503,9 @@ const Profile = () => {
                     background: colorPallete.updateButtonColor,
                     color: colorPallete.updateButtonAccentColor,
                     borderColor: colorPallete.updateButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.updateButtonHoverColor,
                       color: colorPallete.updateButtonHoverAccentColor,
@@ -512,6 +521,9 @@ const Profile = () => {
                     background: colorPallete.changePasswordButtonColor,
                     color: colorPallete.changePasswordButtonAccentColor,
                     borderColor: colorPallete.changePasswordButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.changePasswordButtonHoverColor,
                       color: colorPallete.changePasswordButtonHoverAccentColor,
@@ -524,7 +536,12 @@ const Profile = () => {
                   Change Password
                 </Button>
                 <Button
-                  sx={{ width: "10vw" }}
+                  sx={{
+                    width: "10vw",
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                  }}
                   variant="contained"
                   color="error"
                   onClick={() => setShowDeleteModal(true)}

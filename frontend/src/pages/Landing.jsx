@@ -137,9 +137,11 @@ const Landing = () => {
               <PersonIcon sx={{ fontSize: "20vh", alignContent: "center" }} />
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold",
-                   color: colorPallete.tileAccentColor,
-                  fontSize: fontSizes.subHeading }}
+                sx={{
+                  fontWeight: "bold",
+                  color: colorPallete.tileAccentColor,
+                  fontSize: fontSizes.subHeading,
+                }}
               >
                 Profile Editor
               </Typography>
@@ -168,9 +170,11 @@ const Landing = () => {
               <AddCallIcon sx={{ fontSize: "20vh", alignContent: "center" }} />
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold",
-                   color: colorPallete.tileAccentColor,
-                  fontSize: fontSizes.subHeading }}
+                sx={{
+                  fontWeight: "bold",
+                  color: colorPallete.tileAccentColor,
+                  fontSize: fontSizes.subHeading,
+                }}
               >
                 Tech Support
               </Typography>
