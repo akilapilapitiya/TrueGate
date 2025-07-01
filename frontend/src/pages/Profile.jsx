@@ -25,6 +25,7 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const Profile = () => {
   const store = useSelector((state) => state.user);
@@ -132,10 +133,21 @@ const Profile = () => {
         >
           {editMode ? (
             <>
-              <Typography variant="h4" gutterBottom sx={{color: colorPallete.profilePageNormalText, textAlign: "center", fontWeight: "bold"}}>
+              <Typography
+                variant="h4"
+                gutterBottom
+                sx={{
+                  color: colorPallete.profilePageNormalText,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: fontSizes.mainHeading,
+                }}
+              >
                 EDIT PROFILE
               </Typography>
-                <Divider sx={{ mb: 3 , borderColor:colorPallete.loginPageNormalText}} />
+              <Divider
+                sx={{ mb: 3, borderColor: colorPallete.loginPageNormalText }}
+              />
 
               <Box
                 component="form"
@@ -152,35 +164,39 @@ const Profile = () => {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white", 
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "white",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "white",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                          },
+                        },
+                        "& .MuiInputBase-input": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "white",
+                        },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: "white",
+                          opacity: 1,
+                        },
+                        "& input:-webkit-autofill": {
+                          boxShadow: "0 0 0 1000px #121212 inset",
+                          WebkitTextFillColor: "white",
+                          transition: "background 5000s ease-in-out 0s",
+                        },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -191,35 +207,39 @@ const Profile = () => {
                       value={formData.surName}
                       onChange={handleInputChange}
                       sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white", 
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "white",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "white",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                          },
+                        },
+                        "& .MuiInputBase-input": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "white",
+                        },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: "white",
+                          opacity: 1,
+                        },
+                        "& input:-webkit-autofill": {
+                          boxShadow: "0 0 0 1000px #121212 inset",
+                          WebkitTextFillColor: "white",
+                          transition: "background 5000s ease-in-out 0s",
+                        },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -230,35 +250,39 @@ const Profile = () => {
                       value={formData.contact}
                       onChange={handleInputChange}
                       sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white", 
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "white",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "white",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                          },
+                        },
+                        "& .MuiInputBase-input": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "white",
+                        },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: "white",
+                          opacity: 1,
+                        },
+                        "& input:-webkit-autofill": {
+                          boxShadow: "0 0 0 1000px #121212 inset",
+                          WebkitTextFillColor: "white",
+                          transition: "background 5000s ease-in-out 0s",
+                        },
+                        fontSize: textBoxSizes.short.fontSize,
+                        width: textBoxSizes.short.width,
+                        minHeight: textBoxSizes.short.minHeight,
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -270,17 +294,24 @@ const Profile = () => {
                 )}
 
                 <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
-                  <Button type="submit" variant="contained"
-                  sx={{
-                                      background: colorPallete.registerButtonColor,
-                                      color: colorPallete.registerButtonAccentColor,
-                                      borderColor: colorPallete.registerButtonAccentColor,
-                                      "&:hover": {
-                                        background: colorPallete.registerButtonHoverColor,
-                                        color: colorPallete.registerButtonHoverAccentColor,
-                                        borderColor: colorPallete.registerButtonHoverAccentColor,
-                                      },
-                                    }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      background: colorPallete.registerButtonColor,
+                      color: colorPallete.registerButtonAccentColor,
+                      borderColor: colorPallete.registerButtonAccentColor,
+                      minWidth: buttonSizes.subButton.minWidth,
+                      fontSize: buttonSizes.subButton.fontSize,
+                      padding: buttonSizes.subButton.padding,
+                      "&:hover": {
+                        background: colorPallete.registerButtonHoverColor,
+                        color: colorPallete.registerButtonHoverAccentColor,
+                        borderColor:
+                          colorPallete.registerButtonHoverAccentColor,
+                      },
+                    }}
+                  >
                     Save Information
                   </Button>
                   <Button
@@ -288,15 +319,18 @@ const Profile = () => {
                     variant="outlined"
                     onClick={() => setEditMode(false)}
                     sx={{
-                                        background: colorPallete.loginButtonColor,
-                                        color: colorPallete.loginButtonAccentColor,
-                                        borderColor: colorPallete.loginButtonAccentColor,
-                                        "&:hover": {
-                                          background: colorPallete.loginButtonHoverColor,
-                                          color: colorPallete.loginButtonHoverAccentColor,
-                                          borderColor: colorPallete.loginButtonHoverAccentColor,
-                                        },
-                                      }}
+                      background: colorPallete.loginButtonColor,
+                      color: colorPallete.loginButtonAccentColor,
+                      borderColor: colorPallete.loginButtonAccentColor,
+                      minWidth: buttonSizes.subButton.minWidth,
+                      fontSize: buttonSizes.subButton.fontSize,
+                      padding: buttonSizes.subButton.padding,
+                      "&:hover": {
+                        background: colorPallete.loginButtonHoverColor,
+                        color: colorPallete.loginButtonHoverAccentColor,
+                        borderColor: colorPallete.loginButtonHoverAccentColor,
+                      },
+                    }}
                   >
                     Return to View Mode
                   </Button>
@@ -321,6 +355,7 @@ const Profile = () => {
                   sx={{
                     color: colorPallete.profilePageNormalText,
                     fontWeight: "bold",
+                    fontSize: fontSizes.mainHeading,
                   }}
                 >
                   truegate.live
@@ -355,6 +390,7 @@ const Profile = () => {
                     sx={{
                       color: colorPallete.profilePageNormalText,
                       fontWeight: "bold",
+                      fontSize: fontSizes.mainHeading,
                     }}
                   >
                     {store.firstName + " " + store.surName}
@@ -371,6 +407,7 @@ const Profile = () => {
                       pr: 1,
                       borderRadius: "20px",
                       fontWeight: "bold",
+                      fontSize: fontSizes.subHeading,
                     }}
                   >
                     {store.mode === "admin" ? "Administrator" : "User"}
@@ -380,13 +417,19 @@ const Profile = () => {
               <Grid container spacing={5} sx={{ mt: 2 }}>
                 <Grid item xs={12} sm={6}>
                   <Typography
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.subHeading,
+                    }}
                   >
                     <strong>Email:</strong>
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.sentence,
+                    }}
                   >
                     <i>{store.email}</i>
                   </Typography>
@@ -394,13 +437,19 @@ const Profile = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.subHeading,
+                    }}
                   >
                     <strong>Contact:</strong>
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.sentence,
+                    }}
                   >
                     {store.contact}
                   </Typography>
@@ -408,13 +457,19 @@ const Profile = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.subHeading,
+                    }}
                   >
                     <strong>Enrolled On:</strong>
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.sentence,
+                    }}
                   >
                     20-10-2020
                   </Typography>
@@ -422,13 +477,19 @@ const Profile = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Typography
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.subHeading,
+                    }}
                   >
                     <strong>Last Login:</strong>
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ color: colorPallete.profilePageNormalText }}
+                    sx={{
+                      color: colorPallete.profilePageNormalText,
+                      fontSize: fontSizes.sentence,
+                    }}
                   >
                     21-6-2025
                   </Typography>
@@ -451,6 +512,9 @@ const Profile = () => {
                     background: colorPallete.updateButtonColor,
                     color: colorPallete.updateButtonAccentColor,
                     borderColor: colorPallete.updateButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.updateButtonHoverColor,
                       color: colorPallete.updateButtonHoverAccentColor,
@@ -466,6 +530,9 @@ const Profile = () => {
                     background: colorPallete.changePasswordButtonColor,
                     color: colorPallete.changePasswordButtonAccentColor,
                     borderColor: colorPallete.changePasswordButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.changePasswordButtonHoverColor,
                       color: colorPallete.changePasswordButtonHoverAccentColor,
@@ -478,7 +545,12 @@ const Profile = () => {
                   Change Password
                 </Button>
                 <Button
-                  sx={{ width: "10vw" }}
+                  sx={{
+                    width: "10vw",
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                  }}
                   variant="contained"
                   color="error"
                   onClick={() => setShowDeleteModal(true)}

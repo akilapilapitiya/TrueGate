@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { checkLogInValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
 import { colorPallete } from "../ColorTheme";
-import CustomButton from "../components/CustomButton";
 
 // Firebase
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -25,41 +24,12 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-
-const neonTextFieldStyle = {
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "8px",
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    "& fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.4)",
-      boxShadow: "0 0 0px transparent",
-      transition: "all 0.3s ease",
-    },
-    "&:hover fieldset": {
-      borderColor: "#ff007f",
-      boxShadow: "0 0 5px 1px rgba(255, 0, 127, 0.5)",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#00ccff",
-      boxShadow: "0 0 8px 2px rgba(0, 204, 255, 0.8)",
-    },
-  },
-  "& .MuiInputBase-input": {
-    color: "white",
-  },
-  "& .MuiInputLabel-root": {
-    color: "rgba(255, 255, 255, 0.8)",
-  },
-  "& .MuiInputLabel-root.Mui-focused": {
-    color: "#00ccff",
-  },
-  "& input:-webkit-autofill": {
-    boxShadow: "0 0 0 1000px #121212 inset",
-    WebkitTextFillColor: "white",
-    transition: "background-color 5000s ease-in-out 0s",
-  },
-};
-
+import {
+  anchorLinkSizes,
+  buttonSizes,
+  fontSizes,
+  textBoxSizes,
+} from "../Responsive";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -134,11 +104,18 @@ const Login = () => {
             <Typography
               variant="h4"
               gutterBottom
-              sx={{ textAlign: "center", fontWeight: "bold", color: "white" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "white",
+                fontSize: fontSizes.mainHeading,
+              }}
             >
               WELCOME BACK !
             </Typography>
-          <Divider sx={{ mb: 3 , borderColor:colorPallete.loginPageNormalText}} />
+            <Divider
+              sx={{ mb: 3, borderColor: colorPallete.loginPageNormalText }}
+            />
 
             <Box
               component="form"
@@ -150,25 +127,89 @@ const Login = () => {
               autoComplete="off"
             >
               <TextField
-  sx={neonTextFieldStyle}
-  inputRef={email}
-  label="Email Address"
-  type="email"
-  fullWidth
-  variant="outlined"
-  margin="normal"
-/>
-              
-
-<TextField
-  sx={neonTextFieldStyle}
-  inputRef={password}
-  label="Password"
-  type="password"
-  fullWidth
-  margin="normal"
-  variant="outlined"
-/>
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
+                }}
+                inputRef={email}
+                label="Email Address"
+                type="email"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              />
+              <TextField
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "white",
+                    opacity: 1,
+                  },
+                  "& input:-webkit-autofill": {
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
+                }}
+                inputRef={password}
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+              />
 
               {errorMessage && (
                 <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
@@ -182,14 +223,27 @@ const Login = () => {
                 alignItems="center"
                 sx={{ mt: 2 }}
               >
-                <CustomButton
-  icon={<LoginIcon />}
-  type="submit"
-  variant="primary"
->
-  Log in
-</CustomButton>
-
+                <Button
+                  endIcon={<LoginIcon />}
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: colorPallete.registerButtonColor,
+                    color: colorPallete.registerButtonAccentColor,
+                    borderColor: colorPallete.registerButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
+                      background: colorPallete.registerButtonHoverColor,
+                      color: colorPallete.registerButtonHoverAccentColor,
+                      borderColor: colorPallete.registerButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Log in
+                </Button>
                 <Link
                   component={NavLink}
                   to="/resetpassword"
@@ -198,6 +252,10 @@ const Login = () => {
                     color: colorPallete.linkColorForgotPassword,
                     fontWeight: "bold",
                     fontFamily: "Arial, sans-serif",
+                    fontSize: anchorLinkSizes.footerLink.fontSize,
+                    lineHeight: anchorLinkSizes.footerLink.lineHeight,
+                    textDecoration: anchorLinkSizes.footerLink.textDecoration,
+                    display: anchorLinkSizes.footerLink.display,
                   }}
                 >
                   Forgot password?
@@ -207,15 +265,27 @@ const Login = () => {
               <Divider sx={{ my: 3 }} />
 
               <Box textAlign="center">
-              <CustomButton
-  icon={<AppRegistrationIcon />}
-  type="button"
-  variant="outline"
-  onClick={() => navigate("/register")}
->
-  Create a new account
-</CustomButton>
-
+                <Button
+                  endIcon={<AppRegistrationIcon />}
+                  type="button"
+                  onClick={() => navigate("/register")}
+                  variant="outlined"
+                  sx={{
+                    background: colorPallete.loginButtonColor,
+                    color: colorPallete.loginButtonAccentColor,
+                    borderColor: colorPallete.loginButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+                    "&:hover": {
+                      background: colorPallete.loginButtonHoverColor,
+                      color: colorPallete.loginButtonHoverAccentColor,
+                      borderColor: colorPallete.loginButtonHoverAccentColor,
+                    },
+                  }}
+                >
+                  Create a new account
+                </Button>
               </Box>
             </Box>
           </Paper>

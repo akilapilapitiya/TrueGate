@@ -3,6 +3,7 @@ import { Container, Typography, Button, Box } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useNavigate } from "react-router-dom";
 import { colorPallete } from "../ColorTheme";
+import { buttonSizes, fontSizes } from "../Responsive";
 
 const ErrorPage = () => {
   const navigate = useNavigate();
@@ -30,10 +31,20 @@ const ErrorPage = () => {
         }}
       >
         <ErrorOutlineIcon color="error" sx={{ fontSize: 80, mb: 2 }} />
-        <Typography variant="h3" gutterBottom>
+        <Typography
+          variant="h3"
+          gutterBottom
+          sx={{
+            fontSize: fontSizes.subHeading,
+          }}
+        >
           Oops! Something went wrong.
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ mb: 4, fontSize: fontSizes.sentence }}
+        >
           The page you are looking for does not exist or an unexpected error has
           occurred.
         </Typography>
@@ -43,6 +54,11 @@ const ErrorPage = () => {
             color="primary"
             onClick={() => navigate("/")}
             size="large"
+            sx={{
+              minWidth: buttonSizes.subButton.minWidth,
+              fontSize: buttonSizes.subButton.fontSize,
+              padding: buttonSizes.subButton.padding,
+            }}
           >
             Go Back Home
           </Button>

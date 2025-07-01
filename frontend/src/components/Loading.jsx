@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, CircularProgress, Typography, keyframes } from "@mui/material";
 import { colorPallete } from "../ColorTheme";
+import { fontSizes } from "../Responsive";
 
 // Define keyframe animation for bouncing dots
 const bounce = keyframes`
@@ -48,6 +49,7 @@ const Loading = () => {
           sx={{
             color: "#ffffff",
             marginRight: "8px",
+            fontSize: fontSizes.subHeading,
           }}
         >
           Loading

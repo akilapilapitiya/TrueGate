@@ -1,10 +1,14 @@
-
 import { NavLink, useNavigate } from "react-router-dom";
+import { checkSignUpValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../utils/Firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { colorPallete } from "../ColorTheme";
+
 import {
   Box,
+  Button,
   Container,
   Divider,
   FormControl,
@@ -13,15 +17,12 @@ import {
   Grid,
   Radio,
   RadioGroup,
+  TextField,
   Typography,
   Paper,
 } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { auth, db } from "../utils/Firebase";
-import { checkSignUpValidateData } from "../utils/Validate";
-import { colorPallete } from "../ColorTheme";
-import CustomTextField from "../components/CustomTextField";
-import CustomButton from "../components/CustomButton";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -130,33 +131,346 @@ const Register = () => {
               textAlign: "center",
               fontWeight: "bold",
               color: colorPallete.registerPageNormalText,
+              fontSize: fontSizes.mainHeading,
             }}
           >
             CREATE A NEW ACCOUNT
           </Typography>
-          <Divider sx={{ mb: 3, borderColor: colorPallete.registerPageNormalText }} />
+          <Divider
+            sx={{ mb: 3, borderColor: colorPallete.registerPageNormalText }}
+          />
 
           <Box component="form" noValidate onSubmit={(e) => e.preventDefault()}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}><CustomTextField inputRef={firstName} label="First Name" fullWidth /></Grid>
-              <Grid item xs={12}><CustomTextField inputRef={surName} label="Surname" fullWidth /></Grid>
-              <Grid item xs={12}><CustomTextField inputRef={email} label="Email Address" type="email" fullWidth /></Grid>
-              <Grid item xs={12}><CustomTextField inputRef={dob} label="Date of Birth" type="date" InputLabelProps={{ shrink: true }} fullWidth /></Grid>
-              <Grid item xs={6}><CustomTextField inputRef={password} label="Password" type="password" fullWidth /></Grid>
-              <Grid item xs={6}><CustomTextField inputRef={rePassword} label="Re-enter Password" type="password" fullWidth /></Grid>
-              <Grid item xs={12}><CustomTextField inputRef={contact} label="Contact Number" type="tel" fullWidth /></Grid>
+            <Grid container spacing={2} sx={{display: "flex", alignItems: 'center'}}>
+              <Grid item xs={12} >
+                <TextField
+                  inputRef={firstName}
+                  label="First Name"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  inputRef={surName}
+                  label="Surname"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
 
-              <Grid item xs={12} sx={{ color: "#fff" }}>
+              <Grid item xs={12}>
+                <TextField
+                  inputRef={email}
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  inputRef={dob}
+                  label="Date of Birth"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  inputRef={password}
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  inputRef={rePassword}
+                  label="Re-enter Password"
+                  type="password"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  inputRef={contact}
+                  label="Contact Number"
+                  type="tel"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "white",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} sx={{ color: "#ffff" }}>
                 <FormControl fullWidth>
-                  <FormLabel sx={{ color: "#fff" }}>Gender</FormLabel>
+                  <FormLabel sx={{ color: "#ffff" }}>Gender</FormLabel>
                   <RadioGroup row>
                     <FormControlLabel
-                      control={<Radio inputRef={genderMale} defaultChecked sx={{ color: "#fff", '&.Mui-checked': { color: colorPallete.selectorActiveColor } }} />}
+                      control={
+                        <Radio
+                          inputRef={genderMale}
+                          defaultChecked
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="male"
                       label="Male"
                     />
                     <FormControlLabel
-                      control={<Radio inputRef={genderFemale} sx={{ color: "#fff", '&.Mui-checked': { color: colorPallete.selectorActiveColor } }} />}
+                      control={
+                        <Radio
+                          inputRef={genderFemale}
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="female"
                       label="Female"
                     />
@@ -164,17 +478,38 @@ const Register = () => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sx={{ color: "#fff" }}>
+              <Grid item xs={12} sx={{ color: "#ffff" }}>
                 <FormControl fullWidth>
-                  <FormLabel sx={{ color: "#fff" }}>User Mode</FormLabel>
+                  <FormLabel sx={{ color: "#ffff" }}>User Mode</FormLabel>
                   <RadioGroup row>
                     <FormControlLabel
-                      control={<Radio inputRef={modeAdmin} sx={{ color: "#fff", '&.Mui-checked': { color: colorPallete.selectorActiveColor } }} />}
+                      control={
+                        <Radio
+                          inputRef={modeAdmin}
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="admin"
                       label="Administrator"
                     />
                     <FormControlLabel
-                      control={<Radio inputRef={modeClient} defaultChecked sx={{ color: "#fff", '&.Mui-checked': { color: colorPallete.selectorActiveColor } }} />}
+                      control={
+                        <Radio
+                          inputRef={modeClient}
+                          defaultChecked
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="client"
                       label="Client"
                     />
@@ -189,14 +524,63 @@ const Register = () => {
               </Typography>
             )}
 
-            <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}>
-              <CustomButton icon={<PersonAddIcon />} variant="primary" onClick={handleSignUpClick}>
+            <Box
+              sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}
+            >
+              <Button
+                startIcon={<PersonAddIcon />}
+                onClick={handleSignUpClick}
+                variant="contained"
+                sx={{
+                  backgroundColor: colorPallete.buttonBackgroundColorLogin,
+                  color: colorPallete.buttonTextColorLogin,
+                  borderColor: colorPallete.buttonBorderColorLogin,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                  "&:hover": {
+                    backgroundColor:
+                      colorPallete.buttonHoverBackgroundColorLogin,
+                    color: colorPallete.buttonHoverTextColorLogin,
+                    borderColor: colorPallete.buttonHoverBorderColorLogin,
+                  },
+                  "&:active": {
+                    backgroundColor:
+                      colorPallete.buttonActiveBackgroundColorLogin,
+                    color: colorPallete.buttonActiveTextColorLogin,
+                    borderColor: colorPallete.buttonActiveBorderColorLogin,
+                  },
+                }}
+              >
                 Sign Up
-              </CustomButton>
-
-              <CustomButton component={NavLink} to="/login" variant="outline">
+              </Button>
+              <Button
+                component={NavLink}
+                to="/login"
+                variant="text"
+                sx={{
+                  backgroundColor: colorPallete.buttonBackgroundColorRegister,
+                  color: colorPallete.buttonTextColorRegister,
+                  borderColor: colorPallete.buttonBorderColorRegister,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                  "&:hover": {
+                    backgroundColor:
+                      colorPallete.buttonHoverBackgroundColorRegister,
+                    color: colorPallete.buttonHoverTextColorRegister,
+                    borderColor: colorPallete.buttonHoverBorderColorRegister,
+                  },
+                  "&:active": {
+                    backgroundColor:
+                      colorPallete.buttonActiveBackgroundColorRegister,
+                    color: colorPallete.buttonActiveTextColorRegister,
+                    borderColor: colorPallete.buttonActiveBorderColorRegister,
+                  },
+                }}
+              >
                 Already have an account?
-              </CustomButton>
+              </Button>
             </Box>
           </Box>
         </Paper>

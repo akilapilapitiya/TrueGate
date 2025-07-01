@@ -17,7 +17,8 @@ import SecurityIcon from "@mui/icons-material/Security";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import { NavLink } from "react-router-dom";
 import Link from "@mui/material/Link";
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login";
+import { fontSizes, buttonSizes, anchorLinkSizes } from "../Responsive";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -56,7 +57,11 @@ const Home = () => {
             variant="h5"
             color="text.secondary"
             gutterBottom
-            sx={{ color: "#ffff" }}
+            sx={{
+              color: "#ffff",
+              fontSize: fontSizes.subHeading,
+              fontWeight: "bold",
+            }}
           >
             Manage your account, explore features, and get started easily.
           </Typography>
@@ -64,7 +69,7 @@ const Home = () => {
             variant="body1"
             color="text.secondary"
             gutterBottom
-            sx={{ color: "#ffff" }}
+            sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
           >
             {" "}
             TrueGate is your gateway to a secure and user-friendly experience.
@@ -82,17 +87,20 @@ const Home = () => {
                 background: colorPallete.registerButtonColor,
                 color: colorPallete.registerButtonAccentColor,
                 borderColor: colorPallete.registerButtonAccentColor,
+                minWidth: buttonSizes.mainButton.minWidth,
+                fontSize: buttonSizes.mainButton.fontSize,
+                padding: buttonSizes.mainButton.padding,
                 "&:hover": {
-                      background:colorPallete.registerButtonHoverColor,
-                      color: colorPallete.registerButtonHoverAccentColor,
-                      borderColor: colorPallete.registerButtonHoverAccentColor,
-                    },
+                  background: colorPallete.registerButtonHoverColor,
+                  color: colorPallete.registerButtonHoverAccentColor,
+                  borderColor: colorPallete.registerButtonHoverAccentColor,
+                },
               }}
             >
               Register
             </Button>
             <Button
-            endIcon={<LoginIcon />}
+              endIcon={<LoginIcon />}
               variant="outlined"
               onClick={() => navigate("/login")}
               size="large"
@@ -100,11 +108,14 @@ const Home = () => {
                 background: colorPallete.loginButtonColor,
                 color: colorPallete.loginButtonAccentColor,
                 borderColor: colorPallete.loginButtonAccentColor,
+                minWidth: buttonSizes.mainButton.minWidth,
+                fontSize: buttonSizes.mainButton.fontSize,
+                padding: buttonSizes.mainButton.padding,
                 "&:hover": {
-                      background:colorPallete.loginButtonHoverColor,
-                      color: colorPallete.loginButtonHoverAccentColor,
-                      borderColor: colorPallete.loginButtonHoverAccentColor,
-                    },
+                  background: colorPallete.loginButtonHoverColor,
+                  color: colorPallete.loginButtonHoverAccentColor,
+                  borderColor: colorPallete.loginButtonHoverAccentColor,
+                },
               }}
             >
               Sign In
@@ -146,11 +157,11 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               Manage Users with Ease
             </Typography>
-            <Typography>
+            <Typography sx={{ color: "#ffff", fontSize: fontSizes.sentence }}>
               TrueGate provides a user-friendly interface for managing your
               account and accessing features seamlessly.
             </Typography>
@@ -181,7 +192,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               Fast API Integration
             </Typography>
@@ -189,7 +200,7 @@ const Home = () => {
               variant="body1"
               color="text.secondary"
               gutterBottom
-              sx={{ color: "#ffff" }}
+              sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
             >
               {" "}
               TrueGate is built with a focus on performance ensuring that your
@@ -232,11 +243,11 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               High Security Standards
             </Typography>
-            <Typography>
+            <Typography sx={{ color: "#ffff", fontSize: fontSizes.sentence }}>
               Ensure your data is safe with TrueGate's robust security measures.
               We prioritize your privacy and security at every step.
             </Typography>
@@ -267,7 +278,7 @@ const Home = () => {
               variant="h5"
               component="h2"
               gutterBottom
-              sx={{ weight: "bold" }}
+              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
             >
               24/7 Support
             </Typography>
@@ -275,7 +286,7 @@ const Home = () => {
               variant="body1"
               color="#ffff"
               gutterBottom
-              sx={{ color: "#ffff" }}
+              sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
             >
               {" "}
               Our team is here to assist you around the clock. Whether you have
@@ -296,12 +307,12 @@ const Home = () => {
           paddingRight: "10%",
         }}
       >
-          <Box
-            component="img"
-            src={namedLogo}
-            alt="logo"
-            sx={{ height: "100%" }}
-          />
+        <Box
+          component="img"
+          src={namedLogo}
+          alt="logo"
+          sx={{ height: "100%" }}
+        />
         <Typography
           variant="body1"
           color="black"
@@ -312,6 +323,7 @@ const Home = () => {
             fontFamily: "Arial, sans-serif",
             alignSelf: "center",
             textAlign: "center",
+            fontSize: fontSizes.sentence,
           }}
         >
           Developed and Designed by TrueGate Team <br />
@@ -323,6 +335,7 @@ const Home = () => {
             color: "#ffff",
             fontFamily: "Arial, sans-serif",
             fontWeight: "bold",
+            fontSize: fontSizes.sentence,
           }}
         >
           QUICK LINKS <br />
@@ -333,6 +346,10 @@ const Home = () => {
             sx={{
               color: "#ffff",
               fontFamily: "Arial, sans-serif",
+              fontSize: anchorLinkSizes.footerLink.fontSize,
+              lineHeight: anchorLinkSizes.footerLink.lineHeight,
+              textDecoration: anchorLinkSizes.footerLink.textDecoration,
+              display: anchorLinkSizes.footerLink.display,
             }}
           >
             Login
@@ -345,6 +362,10 @@ const Home = () => {
             sx={{
               color: "#ffff",
               fontFamily: "Arial, sans-serif",
+              fontSize: anchorLinkSizes.footerLink.fontSize,
+              lineHeight: anchorLinkSizes.footerLink.lineHeight,
+              textDecoration: anchorLinkSizes.footerLink.textDecoration,
+              display: anchorLinkSizes.footerLink.display,
             }}
           >
             Register
