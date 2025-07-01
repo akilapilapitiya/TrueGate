@@ -6,18 +6,19 @@ const colorPallete = {
   pageBackgroundColorLogin:
     `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
-      linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
+      linear-gradient(135deg, #0f0c29, #302b63,rgb(137, 14, 76), #000000)`,
   pageBackgroundColorRegister:
     `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
-      linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
+      linear-gradient(135deg, #0f0c29, #302b63, rgb(137, 14, 76), #000000)`,
   pageBackgroundColorLanding:
     `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
-      linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
+      linear-gradient(135deg, #0f0c29, #302b63, rgb(137, 14, 76), #000000)`,
   pageBackgroundColorProfile: 
     `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
       radial-gradient(circle at 80% 70%, rgba(0, 204, 255, 0.15), transparent 30%),
+
       linear-gradient(135deg, #0f0c29, #302b63, #ff007f, #000000)`,
   pageBackgroundColorPasswordReset: 
     `radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.2), transparent 25%),
@@ -130,4 +131,54 @@ const colorPallete = {
 
 };
 
-export { colorPallete };
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: colorPallete.buttonBackgroundColorLogin,     // main pink
+      contrastText: colorPallete.buttonTextColorLogin,   // white text
+    },
+    secondary: {
+      main: "#302b63",               
+      contrastText: "#ffffff",
+    },
+    background: {
+      default: "#0f0c29",            
+      paper: colorPallete.containerBackgroundColorLogin, 
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "#cccccc",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          fontWeight: "bold",
+          textTransform: "none",
+        },
+        containedPrimary: {
+          backgroundColor: colorPallete.buttonBackgroundColorLogin,
+          color: colorPallete.buttonTextColorLogin,
+          '&:hover': {
+            backgroundColor: colorPallete.buttonHoverBackgroundColorLogin,
+            color: colorPallete.buttonHoverTextColorLogin,
+            border: `1px solid ${colorPallete.buttonHoverBorderColorLogin}`,
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colorPallete.containerBackgroundColorLogin,
+          borderRadius: 6,
+        },
+      },
+    },
+  },
+});
+
+export {theme, colorPallete };

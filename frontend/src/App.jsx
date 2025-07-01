@@ -5,6 +5,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import { ThemeProvider, CssBaseline } from "@mui/material"; 
+import { theme } from "./ColorTheme"; 
+
 import Home from "./pages/Home";
 import RootLayout from "./layout/RootLayout";
 import Dashboard from "./pages/Dashboard";
@@ -17,6 +20,7 @@ import PasswordReset from "./pages/PasswordReset";
 import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Landing from "./pages/Landing";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,9 +66,14 @@ const router = createBrowserRouter(
     </Route>
   )
 );
-
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 }
+
 
 export default App;
