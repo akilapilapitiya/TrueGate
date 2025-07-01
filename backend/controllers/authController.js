@@ -160,7 +160,19 @@ async function login(req, res) {
     role: user.role
   });
   res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
-  return res.status(200).json({ message: 'Login successful', token });
+
+  const userInfo = {
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    birthDate: user.birthDate,
+    gender: user.gender,
+    role: user.role,
+    contactNumber: user.contactNumber,
+    lastLogin: lastLogin,
+    verified: user.verified
+  };
+  return res.status(200).json({ message: 'Login successful', token, user: userInfo });
 }
 
 // GET /users
