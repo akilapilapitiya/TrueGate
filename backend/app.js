@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
-const csrf = require('csurf');
+const { doubleCsrf } = require('csrf-csrf');
 
 const { connectDb } = require('./db');
 
@@ -26,13 +26,23 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CSRF protection (for cookie-based auth)
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
+// CSRF protection (Double Submit Cookie Pattern)
+const {
+  doubleCsrfProtection,
+  generateCsrfToken,
+  invalidCsrfTokenError
+} = doubleCsrf({
+  getSecret: (req) => process.env.CSRF_SECRET,
+  getSessionIdentifier: (req) => req.ip || 'anon',
+  cookieName: 'csrf-token',
+  getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'] || req.body._csrf || req.query._csrf
+});
+app.use(doubleCsrfProtection);
 
 // Expose CSRF token for frontend
 app.get('/api/csrf-token', (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
+  const csrfToken = generateCsrfToken(req, res);
+  res.json({ csrfToken });
 });
 
 const authRoutes = require('./routes/auth');
@@ -51,7 +61,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err.code === 'EBADCSRFTOKEN') {
+  if (err.code === 'EBADCSRFTOKEN' || err.code === 'EBADCSRF' || err === invalidCsrfTokenError) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
   next(err);

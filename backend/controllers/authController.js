@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const crypto = require('crypto');
+const { body, validationResult, sanitizeBody } = require('express-validator');
 const { sendVerificationEmail } = require('../utils/mailer');
 const { signJwt, JWT_EXPIRY } = require('../utils/auth');
 const {
@@ -14,17 +15,29 @@ const {
 
 // POST /register
 async function register(req, res) {
+  // Sanitize and validate input
+  await Promise.all([
+    body('email').isEmail().normalizeEmail().run(req),
+    body('password').isStrongPassword().trim().escape().run(req),
+    body('firstName').trim().escape().notEmpty().run(req),
+    body('lastName').trim().escape().notEmpty().run(req),
+    body('birthDate').trim().escape().notEmpty().run(req),
+    body('gender').trim().escape().notEmpty().run(req),
+    body('contactNumber').trim().escape().notEmpty().run(req),
+    body('role').optional().trim().escape().run(req)
+  ]);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      details: errors.array().map(e => ({
+        field: e.param,
+        message: e.msg,
+        value: e.value
+      }))
+    });
+  }
   const { email, password, firstName, lastName, birthDate, gender, role, contactNumber } = req.body;
-  // Input validation
-  if (!validator.isEmail(email)) {
-    return res.status(400).json({ error: 'Invalid email' });
-  }
-  if (!validator.isStrongPassword(password)) {
-    return res.status(400).json({ error: 'Weak password' });
-  }
-  if (!firstName || !lastName || !birthDate || !gender || !contactNumber) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
   if (await findUserByEmail(email)) {
     return res.status(400).json({ error: 'User already exists' });
   }
@@ -88,6 +101,21 @@ async function verifyEmail(req, res) {
 
 // POST /login
 async function login(req, res) {
+  await Promise.all([
+    body('email').isEmail().normalizeEmail().run(req),
+    body('password').isString().trim().escape().notEmpty().run(req)
+  ]);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      details: errors.array().map(e => ({
+        field: e.param,
+        message: e.msg,
+        value: e.value
+      }))
+    });
+  }
   const { email, password } = req.body;
   const loginIp = req.ip || req.connection.remoteAddress;
   const user = await findUserByEmail(email);
@@ -132,7 +160,19 @@ async function login(req, res) {
     role: user.role
   });
   res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
-  return res.status(200).json({ message: 'Login successful', token });
+
+  const userInfo = {
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    birthDate: user.birthDate,
+    gender: user.gender,
+    role: user.role,
+    contactNumber: user.contactNumber,
+    lastLogin: lastLogin,
+    verified: user.verified
+  };
+  return res.status(200).json({ message: 'Login successful', token, user: userInfo });
 }
 
 // GET /users
@@ -157,6 +197,25 @@ async function modifyUser(req, res) {
     const { email } = req.params;
     if (req.user.email !== email) {
       return res.status(403).json({ error: 'You can only modify your own details' });
+    }
+    // Sanitize and validate input
+    await Promise.all([
+      body('firstName').optional().trim().escape().run(req),
+      body('lastName').optional().trim().escape().run(req),
+      body('birthDate').optional().trim().escape().run(req),
+      body('gender').optional().trim().escape().run(req),
+      body('contactNumber').optional().trim().escape().run(req)
+    ]);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        error: 'Invalid input',
+        details: errors.array().map(e => ({
+          field: e.param,
+          message: e.msg,
+          value: e.value
+        }))
+      });
     }
     // Debug: check if user exists before update
     const user = await findUserByEmail(email);
@@ -185,6 +244,21 @@ async function changePassword(req, res) {
 
   if (!req.user) {
     return res.status(401).json({ error: 'Authentication required' });
+  }
+  await Promise.all([
+    body('oldPassword').isString().trim().escape().notEmpty().run(req),
+    body('newPassword').isStrongPassword().trim().escape().run(req)
+  ]);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      details: errors.array().map(e => ({
+        field: e.param,
+        message: e.msg,
+        value: e.value
+      }))
+    });
   }
   const { oldPassword, newPassword } = req.body;
   const email = req.user.email;
@@ -223,6 +297,18 @@ async function resendVerification(req, res) {
   }
   const email = req.user.email;
   try {
+    await body('email').optional().isEmail().normalizeEmail().run(req);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(200).json({
+        message: 'If your account exists and is unverified, a verification email will be sent.',
+        details: errors.array().map(e => ({
+          field: e.param,
+          message: e.msg,
+          value: e.value
+        }))
+      });
+    }
     if (!email || !validator.isEmail(email)) {
       return res.status(200).json({ message: 'If your account exists and is unverified, a verification email will be sent.' });
     }
