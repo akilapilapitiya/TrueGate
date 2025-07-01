@@ -23,7 +23,7 @@ const SuccessModal = ({ message, onClose }) => {
           fontSize: "2rem",
         }}
       >
-        CHANAGE DONE{" "}
+        CHANGE DONE{" "}
         <DoneIcon
           sx={{
             color: colorPallete.successPageNormalText,
