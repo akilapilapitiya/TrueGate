@@ -10,21 +10,26 @@ import Devices from "./pages/Devices"
 import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
 import Users from "./pages/Users"
+import { ProtectedRoute } from "./utils/ProtectedRoute"
 
 const App = () => {
   const user = true;
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<RootLayout/>}>
-        <Route index element={<Home/>}/>
-        <Route path='dashboard' element={<Dashboard/>}/>
+        {/*Public Routes*/}
+        <Route index element={<Home/>}/>      
         <Route path='login' element={<Login/>}/>
         <Route path='register' element={<Register/>}/>
+        <Route path='password-reset' element={<PasswordReset/>}/>
+        {/*Protected Routes*/ }
+        <Route element={<ProtectedRoute />}>
         <Route path='profile' element={<Profile/>}/>
         <Route path='community' element={<Community/>}/>
-        <Route path='password-reset' element={<PasswordReset/>}/>
+        <Route path='dashboard' element={<Dashboard/>}/>
         <Route path='devices' element={<Devices/>}/>
-        <Route path='users' element={<Users/>}/>
+        <Route path='users' element={<Users/>}/></Route>
+        {/*Error 404 Route*/}
         <Route path='*' element={<NotFound/ >}/>
       </Route>
       
