@@ -11,120 +11,198 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import namedLogo from "../assets/logo-name.png"; 
+import React, { useRef } from "react";
+import namedLogo from "../assets/logo-name.png";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  // Declare refs here
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const emailRef = useRef();
+  const contactRef = useRef();
+  const dobRef = useRef();
+  const genderRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
   const navigate = useNavigate();
 
+  const RegisterLogic = () => {
+    // To get Gender selected value:
+    const selectedGenderInput = genderRef.current.querySelector(
+      'input[type="radio"]:checked'
+    );
+    const genderValue = selectedGenderInput ? selectedGenderInput.value : null;
+
+    console.log(
+      firstNameRef.current.value,
+      lastNameRef.current.value,
+      emailRef.current.value,
+      contactRef.current.value,
+      dobRef.current.value,
+      genderValue,
+      passwordRef.current.value,
+      confirmPasswordRef.current.value
+    );
+    // registration logic
+  };
+
   return (
     <Box
-  sx={{
-    width: "100vw",
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgb(131, 31, 31)",
-    padding: 0,
-    margin: 0,
-    overflowX: "hidden",
-  }}
->
-  <Box sx={{ width: "90%", maxWidth: "1200px" }}>
-    <Grid container sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}>
-      {/* Left Side - Registration Form */}
-      <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
-        <img
-          src={namedLogo}
-          alt="Logo"
-          style={{ width: "auto", height: "40px", marginBottom: "20px" }}
-        />
-
-        <Typography variant="h5" gutterBottom>
-          Register
-        </Typography>
-        <Typography variant="body2" gutterBottom>
-          Create your account below
-        </Typography>
-
-        <Grid container spacing={2}>
-          {/* First Name & Last Name */}
-          <Grid item xs={6}>
-            <TextField label="First Name" variant="outlined" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField label="Last Name" variant="outlined" fullWidth />
-          </Grid>
-
-          {/* Email */}
-          <Grid item xs={12}>
-            <TextField label="Email" type="email" variant="outlined" fullWidth />
-          </Grid>
-
-          {/* Contact Number & DOB */}
-          <Grid item xs={6}>
-            <TextField label="Contact Number" type="tel" variant="outlined" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Date of Birth"
-              type="date"
-              variant="outlined"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
+      sx={{
+        width: "100vw",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgb(131, 31, 31)",
+        padding: 0,
+        margin: 0,
+        overflowX: "hidden",
+      }}
+    >
+      <Box sx={{ width: "90%", maxWidth: "1200px" }}>
+        <Grid
+          container
+          sx={{
+            boxShadow: 3,
+            borderRadius: 2,
+            overflow: "hidden",
+          }}
+        >
+          {/* Left Side - Registration Form */}
+          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
+            <img
+              src={namedLogo}
+              alt="Logo"
+              style={{ width: "auto", height: "40px", marginBottom: "20px" }}
             />
-          </Grid>
 
-          {/* Gender */}
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <FormLabel id="gender-label">Gender</FormLabel>
-              <RadioGroup row aria-labelledby="gender-label" name="gender">
-                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                <FormControlLabel value="male" control={<Radio />} label="Male" />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-
-          {/* Passwords */}
-          <Grid item xs={6}>
-            <TextField label="Password" type="password" variant="outlined" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField label="Confirm Password" type="password" variant="outlined" fullWidth />
-          </Grid>
-
-          {/* Submit */}
-          <Grid item xs={12}>
-            <Button variant="contained" fullWidth>
+            <Typography variant="h5" gutterBottom>
               Register
-            </Button>
-            <NavLink to="/login">Already have an account?</NavLink>
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              Create your account below
+            </Typography>
+
+            <Grid container spacing={2}>
+              {/* First Name & Last Name */}
+              <Grid item xs={6}>
+                <TextField
+                  label="First Name"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={firstNameRef}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Last Name"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={lastNameRef}
+                />
+              </Grid>
+
+              {/* Email */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  type="email"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={emailRef}
+                />
+              </Grid>
+
+              {/* Contact Number & DOB */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Contact Number"
+                  type="tel"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={contactRef}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Date of Birth"
+                  type="date"
+                  variant="outlined"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  inputRef={dobRef}
+                />
+              </Grid>
+
+              {/* Gender */}
+              <Grid item xs={12}>
+                <FormControl fullWidth ref={genderRef}>
+                  <FormLabel id="gender-label">Gender</FormLabel>
+                  <RadioGroup row aria-labelledby="gender-label" name="gender">
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+
+              {/* Passwords */}
+              <Grid item xs={6}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={passwordRef}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  inputRef={confirmPasswordRef}
+                />
+              </Grid>
+
+              {/* Submit */}
+              <Grid item xs={12}>
+                <Button variant="contained" fullWidth onClick={RegisterLogic}>
+                  Register
+                </Button>
+                <NavLink to="/login">Already have an account?</NavLink>
+              </Grid>
+            </Grid>
           </Grid>
+
+          {/* Right Side - Image Panel */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              backgroundImage: `url(${namedLogo})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundColor: "#fff",
+              display: { xs: "none", md: "block" },
+            }}
+          />
         </Grid>
-      </Grid>
-
-      {/* Right Side - Image Panel */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          backgroundImage: `url(${namedLogo})`,
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundColor: "#fff",
-          display: { xs: "none", md: "block" },
-        }}
-      />
-    </Grid>
-  </Box>
-</Box>
-
+      </Box>
+    </Box>
   );
 };
 

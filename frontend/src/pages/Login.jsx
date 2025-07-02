@@ -40,7 +40,10 @@ const Login = () => {
       }}
     >
       <Container maxWidth="md">
-        <Grid container sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}>
+        <Grid
+          container
+          sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}
+        >
           {/* Left side: Login Form */}
           <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
             <img
@@ -48,8 +51,12 @@ const Login = () => {
               alt="Named logo"
               style={{ width: "auto", height: "40px", marginBottom: "20px" }}
             />
-            <Typography variant="h5" gutterBottom>Welcome Back</Typography>
-            <Typography variant="body1" gutterBottom>Please sign in to continue</Typography>
+            <Typography variant="h5" gutterBottom>
+              Welcome Back
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Please sign in to continue
+            </Typography>
 
             <TextField
               label="Email"
@@ -72,7 +79,14 @@ const Login = () => {
               <FormControlLabel control={<Checkbox />} label="Remember me" />
             </FormGroup>
 
-            <NavLink to="/password-reset" style={{ fontSize: "14px", marginBottom: "16px", display: "inline-block" }}>
+            <NavLink
+              to="/password-reset"
+              style={{
+                fontSize: "14px",
+                marginBottom: "16px",
+                display: "inline-block",
+              }}
+            >
               Forgot Password?
             </NavLink>
 
@@ -85,7 +99,13 @@ const Login = () => {
             >
               Sign In
             </Button>
-            <NavLink onClick={() => {navigate('/register')}}>Dont Have an Account?</NavLink>
+            <NavLink
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Dont Have an Account?
+            </NavLink>
           </Grid>
 
           {/* Right side: Image or visual */}
