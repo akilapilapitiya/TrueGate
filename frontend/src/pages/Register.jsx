@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import namedLogo from "../assets/logo-name.png"; // Same image as used in Login
+import namedLogo from "../assets/logo-name.png"; 
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Register = () => {

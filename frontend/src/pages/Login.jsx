@@ -16,9 +16,13 @@ import namedLogo from "../assets/logo-name.png";
 const Login = () => {
   const navigate = useNavigate();
 
+  // User Refs for Input Fields
+  const email = React.useRef();
+  const password = React.useRef();
+
   const signInLogic = () => {
-    console.log("Button Set");
-    navigate("/dashboard");
+    console.log(email.current.value, password.current.value);
+    // navigate("/dashboard");
   };
 
   return (
@@ -53,6 +57,7 @@ const Login = () => {
               variant="outlined"
               fullWidth
               margin="normal"
+              inputRef={email}
             />
             <TextField
               label="Password"
@@ -60,6 +65,7 @@ const Login = () => {
               variant="outlined"
               fullWidth
               margin="normal"
+              inputRef={password}
             />
 
             <FormGroup>
