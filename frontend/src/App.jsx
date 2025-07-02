@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
+import About from "./pages/About";
 
 const App = () => {
   const [user, setUser] = useState(true); // Testing
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="password-reset" element={<PasswordReset />} />
+        <Route path="about" element={<About />} />
 
         {/* Protected Routes - all logged-in users */}
         <Route element={<ProtectedRoute user={user} />}>
