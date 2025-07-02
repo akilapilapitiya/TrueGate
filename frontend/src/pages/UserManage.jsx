@@ -21,6 +21,7 @@ import {
   Paper,
   Stack,
 } from "@mui/material";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
@@ -115,7 +116,11 @@ const UserManage = () => {
       <Container maxWidth="lg" sx={{ mt: 5 }}>
         {!editMode ? (
           <>
-            <Typography variant="h4" gutterBottom>
+            <Typography
+              variant="h4"
+              gutterBottom
+              sx={{ fontSize: fontSizes.mainHeading, fontWeight: "bold" }}
+            >
               User Management
             </Typography>
             <Typography variant="subtitle1">Manage your users here.</Typography>
@@ -127,8 +132,21 @@ const UserManage = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 fullWidth
+                sx={{
+                  fontSize: textBoxSizes.long.fontSize,
+                  width: textBoxSizes.long.width,
+                  minHeight: textBoxSizes.long.minHeight,
+                }}
               />
-              <Button variant="contained" onClick={handleUserSearch}>
+              <Button
+                variant="contained"
+                onClick={handleUserSearch}
+                sx={{
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                }}
+              >
                 Search
               </Button>
             </Stack>
@@ -164,6 +182,11 @@ const UserManage = () => {
                           <Stack direction="row" spacing={1}>
                             <Button
                               size="small"
+                              sx={{
+                                minWidth: buttonSizes.iconButton.minWidth,
+                                fontSize: buttonSizes.iconButton.fontSize,
+                                padding: buttonSizes.iconButton.padding,
+                              }}
                               variant="outlined"
                               onClick={() => handleEditClick(user)}
                             >
@@ -188,7 +211,12 @@ const UserManage = () => {
           </>
         ) : (
           <Box component="form" onSubmit={handleSaveChanges} sx={{ mt: 4 }}>
-            <Typography variant="h5" gutterBottom>
+            <Typography 
+            variant="h5" 
+            gutterBottom
+            sx={{
+              fontSize: fontSizes.mainHeading,
+            }}>
               Edit User
             </Typography>
             <TextField
@@ -197,7 +225,11 @@ const UserManage = () => {
               id="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2 ,
+                fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
+              }}
             />
             <TextField
               fullWidth
@@ -205,7 +237,11 @@ const UserManage = () => {
               id="surName"
               value={formData.surName}
               onChange={handleInputChange}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2 ,
+                fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
+              }}
             />
             <TextField
               fullWidth
@@ -213,7 +249,11 @@ const UserManage = () => {
               id="contact"
               value={formData.contact}
               onChange={handleInputChange}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2 ,
+                fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
+              }}
             />
             {errorMessage && (
               <Typography color="error" sx={{ mb: 2 }}>
@@ -221,10 +261,24 @@ const UserManage = () => {
               </Typography>
             )}
             <Stack direction="row" spacing={2}>
-              <Button type="submit" variant="contained">
+              <Button 
+              type="submit" 
+              variant="contained"
+              sx={{
+                minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+              }}>
                 Save
               </Button>
-              <Button variant="outlined" onClick={() => setEditMode(false)}>
+              <Button 
+              variant="outlined" 
+              onClick={() => setEditMode(false)}
+              sx={{
+                minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
+              }}>
                 Cancel
               </Button>
             </Stack>

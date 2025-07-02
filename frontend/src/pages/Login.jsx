@@ -24,6 +24,12 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import {
+  anchorLinkSizes,
+  buttonSizes,
+  fontSizes,
+  textBoxSizes,
+} from "../Responsive";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -98,11 +104,18 @@ const Login = () => {
             <Typography
               variant="h4"
               gutterBottom
-              sx={{ textAlign: "center", fontWeight: "bold", color: "white" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "white",
+                fontSize: fontSizes.mainHeading,
+              }}
             >
               WELCOME BACK !
             </Typography>
-          <Divider sx={{ mb: 3 , borderColor:colorPallete.loginPageNormalText}} />
+            <Divider
+              sx={{ mb: 3, borderColor: colorPallete.loginPageNormalText }}
+            />
 
             <Box
               component="form"
@@ -127,7 +140,7 @@ const Login = () => {
                     },
                   },
                   "& .MuiInputBase-input": {
-                    color: "white", 
+                    color: "white",
                   },
                   "& .MuiInputLabel-root": {
                     color: "white",
@@ -140,9 +153,13 @@ const Login = () => {
                     opacity: 1,
                   },
                   "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
                 inputRef={email}
                 label="Email Address"
@@ -178,9 +195,13 @@ const Login = () => {
                     opacity: 1,
                   },
                   "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
+                    boxShadow: "0 0 0 1000px #121212 inset",
+                    WebkitTextFillColor: "white",
+                    transition: "background 5000s ease-in-out 0s",
+                  },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
                 inputRef={password}
                 label="Password"
@@ -211,6 +232,9 @@ const Login = () => {
                     background: colorPallete.registerButtonColor,
                     color: colorPallete.registerButtonAccentColor,
                     borderColor: colorPallete.registerButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.registerButtonHoverColor,
                       color: colorPallete.registerButtonHoverAccentColor,
@@ -228,6 +252,10 @@ const Login = () => {
                     color: colorPallete.linkColorForgotPassword,
                     fontWeight: "bold",
                     fontFamily: "Arial, sans-serif",
+                    fontSize: anchorLinkSizes.footerLink.fontSize,
+                    lineHeight: anchorLinkSizes.footerLink.lineHeight,
+                    textDecoration: anchorLinkSizes.footerLink.textDecoration,
+                    display: anchorLinkSizes.footerLink.display,
                   }}
                 >
                   Forgot password?
@@ -246,6 +274,9 @@ const Login = () => {
                     background: colorPallete.loginButtonColor,
                     color: colorPallete.loginButtonAccentColor,
                     borderColor: colorPallete.loginButtonAccentColor,
+                    minWidth: buttonSizes.subButton.minWidth,
+                    fontSize: buttonSizes.subButton.fontSize,
+                    padding: buttonSizes.subButton.padding,
                     "&:hover": {
                       background: colorPallete.loginButtonHoverColor,
                       color: colorPallete.loginButtonHoverAccentColor,

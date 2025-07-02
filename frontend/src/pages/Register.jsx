@@ -22,6 +22,7 @@ import {
   Paper,
 } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -126,49 +127,60 @@ const Register = () => {
           <Typography
             variant="h4"
             gutterBottom
-            sx={{ textAlign: "center", fontWeight: "bold", color:colorPallete.registerPageNormalText}}
+            sx={{
+              textAlign: "center",
+              fontWeight: "bold",
+              color: colorPallete.registerPageNormalText,
+              fontSize: fontSizes.mainHeading,
+            }}
           >
             CREATE A NEW ACCOUNT
           </Typography>
-          <Divider sx={{ mb: 3 , borderColor:colorPallete.registerPageNormalText}} />
+          <Divider
+            sx={{ mb: 3, borderColor: colorPallete.registerPageNormalText }}
+          />
 
           <Box component="form" noValidate onSubmit={(e) => e.preventDefault()}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid container spacing={2} sx={{display: "flex", alignItems: 'center'}}>
+              <Grid item xs={12} >
                 <TextField
                   inputRef={firstName}
                   label="First Name"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -177,35 +189,39 @@ const Register = () => {
                   label="Surname"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
 
@@ -216,35 +232,39 @@ const Register = () => {
                   type="email"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
 
@@ -256,35 +276,39 @@ const Register = () => {
                   fullWidth
                   InputLabelProps={{ shrink: true }}
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -294,35 +318,39 @@ const Register = () => {
                   type="password"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -332,35 +360,39 @@ const Register = () => {
                   type="password"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
 
@@ -371,53 +403,74 @@ const Register = () => {
                   type="tel"
                   fullWidth
                   sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "white",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "white",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "white",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputBase-input": {
+                      color: "white",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
+                    "& .MuiInputLabel-root": {
+                      color: "white",
                     },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset", 
-                    WebkitTextFillColor: "white", 
-                    transition: "background 5000s ease-in-out 0s"} 
-                }}
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "white",
+                      opacity: 1,
+                    },
+                    "& input:-webkit-autofill": {
+                      boxShadow: "0 0 0 1000px #121212 inset",
+                      WebkitTextFillColor: "white",
+                      transition: "background 5000s ease-in-out 0s",
+                    },
+                    fontSize: textBoxSizes.short.fontSize,
+                    width: textBoxSizes.short.width,
+                    minHeight: textBoxSizes.short.minHeight,
+                  }}
                 />
               </Grid>
 
-              <Grid item xs={12} sx={{color:"#ffff"}}>
-                <FormControl fullWidth >
-                  <FormLabel sx={{color:"#ffff"}}>Gender</FormLabel>
+              <Grid item xs={12} sx={{ color: "#ffff" }}>
+                <FormControl fullWidth>
+                  <FormLabel sx={{ color: "#ffff" }}>Gender</FormLabel>
                   <RadioGroup row>
                     <FormControlLabel
-                      control={<Radio inputRef={genderMale} defaultChecked sx={{color:"#ffff", '&.Mui-checked': {
-            color: colorPallete.selectorActiveColor,
-          }}}/>}
+                      control={
+                        <Radio
+                          inputRef={genderMale}
+                          defaultChecked
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="male"
                       label="Male"
                     />
                     <FormControlLabel
-                      control={<Radio inputRef={genderFemale} sx={{color:"#ffff", '&.Mui-checked': {
-            color: colorPallete.selectorActiveColor, 
-          }}}/>}
+                      control={
+                        <Radio
+                          inputRef={genderFemale}
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="female"
                       label="Female"
                     />
@@ -425,21 +478,38 @@ const Register = () => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sx={{color:"#ffff"}}>
+              <Grid item xs={12} sx={{ color: "#ffff" }}>
                 <FormControl fullWidth>
-                  <FormLabel sx={{color:"#ffff"}}>User Mode</FormLabel>
-                  <RadioGroup row >
+                  <FormLabel sx={{ color: "#ffff" }}>User Mode</FormLabel>
+                  <RadioGroup row>
                     <FormControlLabel
-                      control={<Radio inputRef={modeAdmin} sx={{color:"#ffff", '&.Mui-checked': {
-            color: colorPallete.selectorActiveColor, 
-          }}}/>}
+                      control={
+                        <Radio
+                          inputRef={modeAdmin}
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="admin"
                       label="Administrator"
                     />
                     <FormControlLabel
-                      control={<Radio inputRef={modeClient} defaultChecked sx={{color:"#ffff", '&.Mui-checked': {
-            color: colorPallete.selectorActiveColor, 
-          }}}/>}
+                      control={
+                        <Radio
+                          inputRef={modeClient}
+                          defaultChecked
+                          sx={{
+                            color: "#ffff",
+                            "&.Mui-checked": {
+                              color: colorPallete.selectorActiveColor,
+                            },
+                          }}
+                        />
+                      }
                       value="client"
                       label="Client"
                     />
@@ -465,6 +535,9 @@ const Register = () => {
                   backgroundColor: colorPallete.buttonBackgroundColorLogin,
                   color: colorPallete.buttonTextColorLogin,
                   borderColor: colorPallete.buttonBorderColorLogin,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
                   "&:hover": {
                     backgroundColor:
                       colorPallete.buttonHoverBackgroundColorLogin,
@@ -489,6 +562,9 @@ const Register = () => {
                   backgroundColor: colorPallete.buttonBackgroundColorRegister,
                   color: colorPallete.buttonTextColorRegister,
                   borderColor: colorPallete.buttonBorderColorRegister,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
                   "&:hover": {
                     backgroundColor:
                       colorPallete.buttonHoverBackgroundColorRegister,

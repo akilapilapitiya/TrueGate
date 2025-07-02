@@ -17,6 +17,7 @@ import {
   Paper,
   Divider,
 } from "@mui/material";
+import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
 
 const PasswordReset = () => {
   const store = useSelector((state) => state.user);
@@ -57,7 +58,9 @@ const PasswordReset = () => {
       })
       .catch((error) => {
         if (error.code === "auth/requires-recent-login") {
-          setErrorMessage("You need to re-login before changing your password.");
+          setErrorMessage(
+            "You need to re-login before changing your password."
+          );
         } else {
           setErrorMessage("Failed to update password: " + error.message);
         }
@@ -88,13 +91,17 @@ const PasswordReset = () => {
               color: colorPallete.passwordResetPageNormalText,
               fontWeight: "bold",
               textAlign: "center",
+              fontSize: fontSizes.mainHeading,
             }}
           >
             PASSWORD RESET
           </Typography>
 
           <Divider
-            sx={{ mb: 3, borderColor: colorPallete.passwordResetPageNormalText }}
+            sx={{
+              mb: 3,
+              borderColor: colorPallete.passwordResetPageNormalText,
+            }}
           />
 
           {!changeEligible && (
@@ -134,6 +141,9 @@ const PasswordReset = () => {
                     WebkitTextFillColor: "white",
                     transition: "background 5000s ease-in-out 0s",
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               {!store && (
@@ -167,6 +177,9 @@ const PasswordReset = () => {
                       color: "white",
                       opacity: 1,
                     },
+                    fontSize: textBoxSizes.medium.fontSize,
+                    width: textBoxSizes.medium.width,
+                    minHeight: textBoxSizes.medium.minHeight,
                   }}
                 />
               )}
@@ -178,6 +191,9 @@ const PasswordReset = () => {
                   background: colorPallete.registerButtonColor,
                   color: colorPallete.registerButtonAccentColor,
                   borderColor: colorPallete.registerButtonAccentColor,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
                   "&:hover": {
                     background: colorPallete.registerButtonHoverColor,
                     color: colorPallete.registerButtonHoverAccentColor,
@@ -193,7 +209,11 @@ const PasswordReset = () => {
 
           {changeEligible && (
             <Box sx={{ mt: 4 }}>
-              <Typography sx={{color:colorPallete.passwordResetPageNormalText}}>Please enter your new password</Typography>
+              <Typography
+                sx={{ color: colorPallete.passwordResetPageNormalText }}
+              >
+                Please enter your new password
+              </Typography>
               <TextField
                 label="New Password"
                 type="password"
@@ -225,6 +245,9 @@ const PasswordReset = () => {
                     color: "white",
                     opacity: 1,
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               <TextField
@@ -258,6 +281,9 @@ const PasswordReset = () => {
                     color: "white",
                     opacity: 1,
                   },
+                  fontSize: textBoxSizes.medium.fontSize,
+                  width: textBoxSizes.medium.width,
+                  minHeight: textBoxSizes.medium.minHeight,
                 }}
               />
               <Button
@@ -265,16 +291,19 @@ const PasswordReset = () => {
                 color="primary"
                 fullWidth
                 sx={{
-                    mt: 4,
-                    background: colorPallete.registerButtonColor,
-                    color: colorPallete.registerButtonAccentColor,
-                    borderColor: colorPallete.registerButtonAccentColor,
-                    "&:hover": {
-                      background: colorPallete.registerButtonHoverColor,
-                      color: colorPallete.registerButtonHoverAccentColor,
-                      borderColor: colorPallete.registerButtonHoverAccentColor,
-                    },
-                  }}
+                  mt: 4,
+                  background: colorPallete.registerButtonColor,
+                  color: colorPallete.registerButtonAccentColor,
+                  borderColor: colorPallete.registerButtonAccentColor,
+                  minWidth: buttonSizes.subButton.minWidth,
+                  fontSize: buttonSizes.subButton.fontSize,
+                  padding: buttonSizes.subButton.padding,
+                  "&:hover": {
+                    background: colorPallete.registerButtonHoverColor,
+                    color: colorPallete.registerButtonHoverAccentColor,
+                    borderColor: colorPallete.registerButtonHoverAccentColor,
+                  },
+                }}
                 onClick={handleUpdatePassword}
               >
                 Reset Password
