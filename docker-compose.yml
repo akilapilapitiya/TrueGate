@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: truegate-frontend
+    ports:
+      - "3000:80"  # frontend exposed at http://localhost:3000
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: truegate-backend
+    ports:
+      - "5000:5000"  # backend exposed at http://localhost:5000
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    restart: unless-stopped
+
+

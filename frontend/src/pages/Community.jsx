@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const PasswordReset = () => {
+const Community = () => {
   return (
     <div>
         <NavLink to="/login">Login</NavLink><br />
@@ -18,4 +18,4 @@ const PasswordReset = () => {
   )
 }
 
-export default PasswordReset
+export default Community

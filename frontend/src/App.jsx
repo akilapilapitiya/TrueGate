@@ -1,79 +1,58 @@
+import React, { useState } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
-
-import { ThemeProvider, CssBaseline } from "@mui/material"; 
-import { theme } from "./ColorTheme"; 
-
-import Home from "./pages/Home";
 import RootLayout from "./layout/RootLayout";
-import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import UserManage from "./pages/UserManage";
-import NotFound from "./components/NotFound";
+import Community from "./pages/Community";
 import PasswordReset from "./pages/PasswordReset";
-import ErrorPage from "./pages/ErrorPage";
-import ProtectedRoute from "./utils/ProtectedRoute";
-import Landing from "./pages/Landing";
+import Devices from "./pages/Devices";
+import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
+import Users from "./pages/Users";
+import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
+import About from "./pages/About";
 
+const App = () => {
+  const [user, setUser] = useState(true); // Testing
+  const [admin, setAdmin] = useState(true); // Testing
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route index element={<Home />} />
-      <Route
-        path="dashboard"
-        element={
-          <ProtectedRoute requireAdmin={true}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route
-        path="landing"
-        element={
-          <ProtectedRoute>
-            <Landing />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="manage"
-        element={
-          <ProtectedRoute requireAdmin={true}>
-            <UserManage />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="resetpassword" element={<PasswordReset />} />
-      <Route path="error" element={<ErrorPage />} />
-      <Route path="*" element={<NotFound />} />
-    </Route>
-  )
-);
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        {/* Public Routes */}
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="password-reset" element={<PasswordReset />} />
+        <Route path="about" element={<About />} />
+
+        {/* Protected Routes - all logged-in users */}
+        <Route element={<ProtectedRoute user={user} />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="community" element={<Community />} />
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+
+        {/* Admin Routes - only admin users */}
+        <Route element={<AdminRoute user={user} admin={admin} />}>
+          <Route path="devices" element={<Devices />} />
+          <Route path="users" element={<Users />} />
+        </Route>
+
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    )
   );
-}
 
+  return <RouterProvider router={router} />;
+};
 
 export default App;
