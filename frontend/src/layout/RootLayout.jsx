@@ -15,7 +15,7 @@ const RootLayout = () => {
             <Navbar />
           </div>
         )}
-      <div className="main-container" style={{ marginTop: "10%" }}>
+      <div className="main-container">
         <Outlet />
       </div>
     </div>

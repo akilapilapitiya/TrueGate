@@ -2,78 +2,100 @@ import {
   Box,
   Button,
   Checkbox,
+  Container,
   FormControlLabel,
   FormGroup,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import namedLogo from "../assets/logo-name.png";
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { CheckBox } from "@mui/icons-material";
+import { NavLink, useNavigate } from "react-router-dom";
+import namedLogo from "../assets/logo-name.png";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const signInLogic = () => {
+    console.log("Button Set");
+    navigate("/dashboard");
+  };
+
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        width: "100vw",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "rgb(131, 31, 31)",
+        padding: 0,
+        margin: 0,
+        overflowX: "hidden",
       }}
     >
-      <Grid
-        container
-        spacing={2}
-        sx={{ width: "100%", margin: "0 10%", background: "red" }}
-      >
-        <Grid
-          size={6}
-          sx={{ background: "rgb(192, 171, 171)", height: "100%" }}
-        >
-          {/* Logo  */}
-          <img
-            src={namedLogo}
-            alt="Named logo"
-            style={{ width: "auto", height: "5vh", padding: "20px" }}
-          />
+      <Container maxWidth="md">
+        <Grid container sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}>
+          {/* Left side: Login Form */}
+          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
+            <img
+              src={namedLogo}
+              alt="Named logo"
+              style={{ width: "auto", height: "40px", marginBottom: "20px" }}
+            />
+            <Typography variant="h5" gutterBottom>Welcome Back</Typography>
+            <Typography variant="body1" gutterBottom>Please sign in to continue</Typography>
 
-          <Typography>Welcome Back</Typography>
-          <Typography>Please enter your details</Typography>
-
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <TextField
-              id="outlined-basic"
-              type="text"
               label="Email"
+              type="email"
               variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
             />
 
-            <TextField
-              id="outlined-basic"
-              type="password"
-              label="Password"
-              variant="outlined"
-            />
-          </Box>
-          <Box>
             <FormGroup>
               <FormControlLabel control={<Checkbox />} label="Remember me" />
             </FormGroup>
-            <Box>
-              <Typography variant="body1" color="initial">
-                Forgot password ?
-              </Typography>
-            </Box>
-          </Box>
-          <Button>Sign in</Button>
-          <Typography>Register Now</Typography>
-        </Grid>
 
-        <Grid size={6}>Hello there</Grid>
-      </Grid>
+            <NavLink to="/password-reset" style={{ fontSize: "14px", marginBottom: "16px", display: "inline-block" }}>
+              Forgot Password?
+            </NavLink>
+
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={signInLogic}
+              sx={{ mt: 2 }}
+            >
+              Sign In
+            </Button>
+            <NavLink onClick={() => {navigate('/register')}}>Dont Have an Account?</NavLink>
+          </Grid>
+
+          {/* Right side: Image or visual */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              backgroundImage: `url('https://via.placeholder.com/600x800')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: { xs: "none", md: "block" },
+            }}
+          />
+        </Grid>
+      </Container>
     </Box>
   );
 };
