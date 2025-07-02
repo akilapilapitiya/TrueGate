@@ -1,43 +1,56 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
-import RootLayout from "./layout/RootLayout"
-import Home from "./pages/Home"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
-import Profile from "./pages/Profile"
-import Community from "./pages/Community"
-import PasswordReset from "./pages/PasswordReset"
-import Devices from "./pages/Devices"
-import Dashboard from "./pages/Dashboard"
-import NotFound from "./pages/NotFound"
-import Users from "./pages/Users"
-import { ProtectedRoute } from "./utils/ProtectedRoute"
+import React, { useState } from "react";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import RootLayout from "./layout/RootLayout";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import Community from "./pages/Community";
+import PasswordReset from "./pages/PasswordReset";
+import Devices from "./pages/Devices";
+import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
+import Users from "./pages/Users";
+import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 
 const App = () => {
-  const user = true;
+  const [user, setUser] = useState(true); // Testing
+  const [admin, setAdmin] = useState(true); // Testing
+
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<RootLayout/>}>
-        {/*Public Routes*/}
-        <Route index element={<Home/>}/>      
-        <Route path='login' element={<Login/>}/>
-        <Route path='register' element={<Register/>}/>
-        <Route path='password-reset' element={<PasswordReset/>}/>
-        {/*Protected Routes*/ }
-        <Route element={<ProtectedRoute />}>
-        <Route path='profile' element={<Profile/>}/>
-        <Route path='community' element={<Community/>}/>
-        <Route path='dashboard' element={<Dashboard/>}/>
-        <Route path='devices' element={<Devices/>}/>
-        <Route path='users' element={<Users/>}/></Route>
-        {/*Error 404 Route*/}
-        <Route path='*' element={<NotFound/ >}/>
-      </Route>
-      
-    )
-  )
-  return (
-    <RouterProvider router={router}/>
-  )
-}
+      <Route path="/" element={<RootLayout />}>
+        {/* Public Routes */}
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="password-reset" element={<PasswordReset />} />
 
-export default App
+        {/* Protected Routes - all logged-in users */}
+        <Route element={<ProtectedRoute user={user} />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="community" element={<Community />} />
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+
+        {/* Admin Routes - only admin users */}
+        <Route element={<AdminRoute user={user} admin={admin} />}>
+          <Route path="devices" element={<Devices />} />
+          <Route path="users" element={<Users />} />
+        </Route>
+
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    )
+  );
+
+  return <RouterProvider router={router} />;
+};
+
+export default App;
