@@ -13,6 +13,8 @@ import React, { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
 import { checkLogInValidateData } from "../utils/Validate";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/Firebase";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +37,24 @@ const Login = () => {
       setErrorMessage(message); //Update Error State
       return;
     }
-    // Login Logic
+    // Login Logic #FIREBASE
+    signInWithEmailAndPassword(
+      auth,
+      email.current.value,
+      password.current.value
+    )
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Success");
+        navigate('/dashboard');
+        
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorCode + errorMessage);
+      });
     // Store Update Logic
     // Rememeber Me Logic
   };
