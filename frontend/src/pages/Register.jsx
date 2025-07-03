@@ -16,7 +16,10 @@ import namedLogo from "../assets/logo-name.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
 import { auth } from "../utils/Firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/UserSlice";
+import { uid } from "chart.js/helpers";
 
 const Register = () => {
   // Declare refs here
@@ -31,6 +34,7 @@ const Register = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const RegisterLogic = () => {
     // To get Gender selected value:
@@ -38,19 +42,6 @@ const Register = () => {
       'input[type="radio"]:checked'
     );
     const genderValue = selectedGenderInput ? selectedGenderInput.value : null;
-
-    // Testing
-    console.log(
-      firstName.current.value,
-      lastName.current.value,
-      email.current.value,
-      contact.current.value,
-      dob.current.value,
-      genderValue,
-      password.current.value,
-      confirmPassword.current.value,
-      genderValue
-    );
 
     //Validation Logic
     const message = checkSignUpValidateData(
@@ -77,8 +68,26 @@ const Register = () => {
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
-        console.log("Success");
-        navigate("/dashboard");
+        updateProfile(user, {
+          displayName: firstName.current.value + " " + lastName.current.value,
+        })
+          .then(() => {
+            // Profile updated!
+            const {uid, email, displayName} = auth.currentUser;
+            dispatch(    
+              addUser({
+                uid: uid,
+                email: email,
+                displayName: displayName,
+              })
+            )
+            navigate("/dashboard");
+          })
+          .catch((error) => {
+            // An error occurred
+            setErrorMessage(error.code + error.message);  
+          });
+        
       })
       .catch((error) => {
         const errorCode = error.code;

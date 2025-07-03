@@ -23,14 +23,28 @@ import Person2Icon from "@mui/icons-material/Person2";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/Firebase";
+import { signOut } from "firebase/auth";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const [darkMode, setDarkMode] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+  };
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {})
+      .catch((error) => {
+        // An error happened.
+        navigate("/error-page");
+      });
   };
 
   return (
@@ -47,40 +61,44 @@ const Navbar = () => {
         }}
       >
         <Toolbar sx={{ width: "100vw" }}>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
-      px: 2, // optional padding
-    }}
-  >
-    {/* Left: Menu Button */}
-    <Box>
-      <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
-        <MenuIcon sx={{ color: "blue" }} />
-      </IconButton>
-    </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              px: 2,
+            }}
+          >
+            {/* Left: Menu Button */}
+            <Box>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={toggleDrawer(true)}
+              >
+                <MenuIcon sx={{ color: "blue" }} />
+              </IconButton>
+            </Box>
 
-    {/* Right: Controls */}
-    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      <Button onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-      </Button>
-      <Button>
-        <SettingsIcon />
-      </Button>
-      <Button>
-        <NotificationsIcon />
-      </Button>
-      <Button>
-        <Person2Icon />
-      </Button>
-    </Box>
-  </Box>
-</Toolbar>
-
+            {/* Right: Controls */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Button onClick={() => setDarkMode(!darkMode)}>
+                {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+              </Button>
+              <Button>
+                <SettingsIcon />
+              </Button>
+              <Button>
+                <NotificationsIcon />
+              </Button>
+              <Button>
+                <Person2Icon />
+              </Button>
+              <Button onClick={handleSignOut}>Sign Out</Button>
+            </Box>
+          </Box>
+        </Toolbar>
       </AppBar>
 
       {/* Drawer (Sidebar) */}
