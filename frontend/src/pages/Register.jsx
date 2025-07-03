@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Container,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -261,14 +260,13 @@ const Register = () => {
 
           {/* Right Side Image Panel */}
           <Grid
-            sx={{ xs: 12, md: 6 }}
-            // sx={{
-            //   backgroundImage: `url(${namedLogo})`,
-            //   backgroundSize: "contain",
-            //   backgroundRepeat: "no-repeat",
-            //   backgroundPosition: "center",
-            //   display: { xs: "none", md: "block" },
-            // }}
+            sx={{ xs: 12, md: 6, 
+              backgroundImage: `url(${namedLogo})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              display: { xs: "none", md: "block" },
+            }}
           />
         </Grid>
       </Box>
