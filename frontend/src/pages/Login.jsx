@@ -33,95 +33,107 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgb(131, 31, 31)",
-        padding: 0,
+        backgroundColor: "rgb(161, 178, 255)",
+        padding: 2,
         margin: 0,
         overflowX: "hidden",
       }}
     >
-      <Container maxWidth="md">
+      <Box sx={{ width: "100%", maxWidth: "800px" }}>
         <Grid
           container
           sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}
         >
           {/* Left side: Login Form */}
-          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
+          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 3 }}>
             <img
               src={namedLogo}
               alt="Named logo"
-              style={{ width: "auto", height: "40px", marginBottom: "20px" }}
+              style={{ width: "auto", height: "30px", marginBottom: "16px" }}
             />
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h6" gutterBottom>
               Welcome Back
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body2" gutterBottom sx={{ mb: 2 }}>
               Please sign in to continue
             </Typography>
 
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              inputRef={email}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              inputRef={password}
-            />
+            <Box sx={{ mt: 1 }}>
+              <TextField
+                label="Email"
+                type="email"
+                variant="outlined"
+                fullWidth
+                size="small"
+                sx={{ mb: 2 }}
+                inputRef={email}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                size="small"
+                sx={{ mb: 2 }}
+                inputRef={password}
+              />
 
-            <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="Remember me" />
-            </FormGroup>
+              <FormGroup sx={{ mb: 1 }}>
+                <FormControlLabel
+                  control={<Checkbox size="small" />}
+                  label="Remember me"
+                  sx={{
+                    "& .MuiFormControlLabel-label": { fontSize: "0.875rem" },
+                  }}
+                />
+              </FormGroup>
 
-            <NavLink
-              to="/password-reset"
-              style={{
-                fontSize: "14px",
-                marginBottom: "16px",
-                display: "inline-block",
-              }}
-            >
-              Forgot Password?
-            </NavLink>
+              <NavLink
+                to="/password-reset"
+                style={{
+                  fontSize: "14px",
+                  marginBottom: "16px",
+                  display: "inline-block",
+                }}
+              >
+                Forgot Password?
+              </NavLink>
 
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={signInLogic}
-              sx={{ mt: 2 }}
-            >
-              Sign In
-            </Button>
-            <NavLink
-              onClick={() => {
-                navigate("/register");
-              }}
-            >
-              Dont Have an Account?
-            </NavLink>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                size="small"
+                onClick={signInLogic}
+                sx={{ mb: 1 }}
+              >
+                Sign In
+              </Button>
+              <NavLink
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
+                Don't Have an Account?
+              </NavLink>
+            </Box>
           </Grid>
 
-          {/* Right side: Image or visual */}
+          {/* Right side Image Panel */}
           <Grid
             item
             xs={12}
             md={6}
-            sx={{
-              backgroundImage: `url('https://via.placeholder.com/600x800')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              display: { xs: "none", md: "block" },
-            }}
+            // sx={{
+            //   backgroundImage: `url(${namedLogo})`,
+            //   backgroundSize: "contain",
+            //   backgroundRepeat: "no-repeat",
+            //   backgroundPosition: "center",
+            //   display: { xs: "none", md: "block" },
+            // }}
           />
         </Grid>
-      </Container>
+      </Box>
     </Box>
   );
 };

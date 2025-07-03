@@ -56,13 +56,13 @@ const Register = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgb(131, 31, 31)",
-        padding: 0,
+        backgroundColor: "rgb(161, 178, 255)",
+        padding: 2,
         margin: 0,
         overflowX: "hidden",
       }}
     >
-      <Box sx={{ width: "90%", maxWidth: "1200px" }}>
+      <Box sx={{ width: "100%", maxWidth: "800px" }}>
         <Grid
           container
           sx={{
@@ -72,133 +72,153 @@ const Register = () => {
           }}
         >
           {/* Left Side - Registration Form */}
-          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 4 }}>
+          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 3 }}>
             <img
               src={namedLogo}
               alt="Logo"
-              style={{ width: "auto", height: "40px", marginBottom: "20px" }}
+              style={{ width: "auto", height: "30px", marginBottom: "16px" }}
             />
 
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h6" gutterBottom>
               Register
             </Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography variant="body2" gutterBottom sx={{ mb: 2 }}>
               Create your account below
             </Typography>
 
-            <Grid container spacing={2}>
+            <Box sx={{ mt: 1 }}>
               {/* First Name & Last Name */}
-              <Grid item xs={6}>
-                <TextField
-                  label="First Name"
-                  variant="outlined"
-                  fullWidth
-                  inputRef={firstNameRef}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Last Name"
-                  variant="outlined"
-                  fullWidth
-                  inputRef={lastNameRef}
-                />
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="First Name"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    inputRef={firstNameRef}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Last Name"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    inputRef={lastNameRef}
+                  />
+                </Grid>
               </Grid>
 
               {/* Email */}
-              <Grid item xs={12}>
+              <Box sx={{ mb: 2 }}>
                 <TextField
                   label="Email"
                   type="email"
                   variant="outlined"
                   fullWidth
+                  size="small"
                   inputRef={emailRef}
                 />
-              </Grid>
+              </Box>
 
               {/* Contact Number & DOB */}
-              <Grid item xs={6}>
-                <TextField
-                  label="Contact Number"
-                  type="tel"
-                  variant="outlined"
-                  fullWidth
-                  inputRef={contactRef}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Date of Birth"
-                  type="date"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  inputRef={dobRef}
-                />
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Contact Number"
+                    type="tel"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    inputRef={contactRef}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Date of Birth"
+                    type="date"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    inputRef={dobRef}
+                  />
+                </Grid>
               </Grid>
 
               {/* Gender */}
-              <Grid item xs={12}>
+              <Box sx={{ mb: 2 }}>
                 <FormControl fullWidth ref={genderRef}>
-                  <FormLabel id="gender-label">Gender</FormLabel>
+                  <FormLabel id="gender-label" sx={{ fontSize: "0.875rem" }}>
+                    Gender
+                  </FormLabel>
                   <RadioGroup row aria-labelledby="gender-label" name="gender">
                     <FormControlLabel
                       value="female"
-                      control={<Radio />}
+                      control={<Radio size="small" />}
                       label="Female"
                     />
                     <FormControlLabel
                       value="male"
-                      control={<Radio />}
+                      control={<Radio size="small" />}
                       label="Male"
                     />
                   </RadioGroup>
                 </FormControl>
-              </Grid>
+              </Box>
 
               {/* Passwords */}
-              <Grid item xs={6}>
-                <TextField
-                  label="Password"
-                  type="password"
-                  variant="outlined"
-                  fullWidth
-                  inputRef={passwordRef}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Confirm Password"
-                  type="password"
-                  variant="outlined"
-                  fullWidth
-                  inputRef={confirmPasswordRef}
-                />
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    inputRef={passwordRef}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Confirm Password"
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    inputRef={confirmPasswordRef}
+                  />
+                </Grid>
               </Grid>
 
               {/* Submit */}
-              <Grid item xs={12}>
-                <Button variant="contained" fullWidth onClick={RegisterLogic}>
+              <Box>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="small"
+                  sx={{ mb: 1 }}
+                  onClick={RegisterLogic}
+                >
                   Register
                 </Button>
                 <NavLink to="/login">Already have an account?</NavLink>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </Grid>
 
-          {/* Right Side - Image Panel */}
+          {/* Right Side Image Panel */}
           <Grid
             item
             xs={12}
             md={6}
-            sx={{
-              backgroundImage: `url(${namedLogo})`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundColor: "#fff",
-              display: { xs: "none", md: "block" },
-            }}
+            // sx={{
+            //   backgroundImage: `url(${namedLogo})`,
+            //   backgroundSize: "contain",
+            //   backgroundRepeat: "no-repeat",
+            //   backgroundPosition: "center",
+            //   display: { xs: "none", md: "block" },
+            // }}
           />
         </Grid>
       </Box>
