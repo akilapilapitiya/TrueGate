@@ -24,7 +24,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../utils/Firebase";
 import { signOut } from "firebase/auth";
 
@@ -92,7 +92,7 @@ const Navbar = () => {
               <Button>
                 <NotificationsIcon />
               </Button>
-              <Button>
+              <Button onClick={() => navigate("/profile")}>
                 <Person2Icon />
               </Button>
               <Button onClick={handleSignOut}>Sign Out</Button>
@@ -123,23 +123,29 @@ const Navbar = () => {
 
           <List>
             <Container>
-              <ListItem button onClick={() => console.log("Dashboard Clicked")}>
-                <DashboardIcon sx={{ mr: 1 }} />
-                <Typography variant="body1" color="initial">
-                  DASHBOARD
-                </Typography>
+              <ListItem>
+                <NavLink to={"/dashboard"} onClick={() => setOpen(false)}>
+                  <DashboardIcon sx={{ mr: 1 }} />
+                  <Typography variant="body1" color="initial">
+                    DASHBOARD
+                  </Typography>
+                </NavLink>
               </ListItem>
-              <ListItem button onClick={() => console.log("Users Clicked")}>
-                <PeopleIcon sx={{ mr: 1 }} />
-                <Typography variant="body1" color="initial">
-                  USER MANAGEMENT
-                </Typography>
+              <ListItem button>
+                <NavLink to={"/users"} onClick={() => setOpen(false)}>
+                  <PeopleIcon sx={{ mr: 1 }} />
+                  <Typography variant="body1" color="initial">
+                    USER MANAGEMENT
+                  </Typography>
+                </NavLink>
               </ListItem>
-              <ListItem button onClick={() => console.log("Devices Clicked")}>
-                <DevicesIcon sx={{ mr: 1 }} />
-                <Typography variant="body1" color="initial">
-                  DEVICE MANAGEMENT
-                </Typography>
+              <ListItem>
+                <NavLink to={"/devices"} onClick={() => setOpen(false)}>
+                  <DevicesIcon sx={{ mr: 1 }} />
+                  <Typography variant="body1" color="initial">
+                    DEVICE MANAGEMENT
+                  </Typography>
+                </NavLink>
               </ListItem>
             </Container>
 
@@ -147,16 +153,20 @@ const Navbar = () => {
 
             <Container>
               <ListItem button onClick={() => console.log("Forum Clicked")}>
-                <ForumIcon sx={{ mr: 1 }} />
-                <Typography variant="body1" color="initial">
-                  COMMUNITY FORUM
-                </Typography>
+                <NavLink to={"/community"} onClick={() => setOpen(false)}>
+                  <ForumIcon sx={{ mr: 1 }} />
+                  <Typography variant="body1" color="initial">
+                    COMMUNITY FORUM
+                  </Typography>
+                </NavLink>
               </ListItem>
               <ListItem button onClick={() => console.log("About Clicked")}>
-                <InfoIcon sx={{ mr: 1 }} />
-                <Typography variant="body1" color="initial">
-                  ABOUT US
-                </Typography>
+                <NavLink to={"/about"} onClick={() => setOpen(false)}>
+                  <InfoIcon sx={{ mr: 1 }} />
+                  <Typography variant="body1" color="initial">
+                    ABOUT US
+                  </Typography>
+                </NavLink>
               </ListItem>
             </Container>
           </List>

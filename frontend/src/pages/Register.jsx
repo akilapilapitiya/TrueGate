@@ -73,21 +73,20 @@ const Register = () => {
         })
           .then(() => {
             // Profile updated!
-            const {uid, email, displayName} = auth.currentUser;
-            dispatch(    
+            const { uid, email, displayName } = auth.currentUser;
+            dispatch(
               addUser({
                 uid: uid,
                 email: email,
                 displayName: displayName,
               })
-            )
+            );
             navigate("/dashboard");
           })
           .catch((error) => {
             // An error occurred
-            setErrorMessage(error.code + error.message);  
+            setErrorMessage(error.code + error.message);
           });
-        
       })
       .catch((error) => {
         const errorCode = error.code;

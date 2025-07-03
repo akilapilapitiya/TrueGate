@@ -44,15 +44,14 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate('/dashboard');
-        
+        navigate("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         setErrorMessage(errorCode + errorMessage);
       });
-      
+
     // Store Update Logic
     // #########################################################################
     // Rememeber Me Logic
