@@ -9,20 +9,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
+import { checkLogInValidateData } from "../utils/Validate";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [remeberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // User Refs for Input Fields
   const email = React.useRef();
   const password = React.useRef();
 
   const signInLogic = () => {
-    console.log(email.current.value, password.current.value);
-    // navigate("/dashboard");
+    console.log(email.current.value, password.current.value); //Testing
+
+    // Validation Logic
+    const message = checkLogInValidateData(
+      email.current.value,
+      password.current.value
+    );
+    if (message) {
+      setErrorMessage(message); //Update Error State
+      return;
+    }
+    // Login Logic
+    // Store Update Logic
+    // Rememeber Me Logic
   };
 
   return (
@@ -80,7 +95,13 @@ const Login = () => {
 
               <FormGroup sx={{ mb: 1 }}>
                 <FormControlLabel
-                  control={<Checkbox size="small" />}
+                  control={
+                    <Checkbox
+                      size="small"
+                      checked={remeberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                  }
                   label="Remember me"
                   sx={{
                     "& .MuiFormControlLabel-label": { fontSize: "0.875rem" },
@@ -98,6 +119,12 @@ const Login = () => {
               >
                 Forgot Password?
               </NavLink>
+
+              {errorMessage && (
+                <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
+                  {errorMessage}
+                </Typography>
+              )}
 
               <Button
                 variant="contained"
