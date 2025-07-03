@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
 import { checkLogInValidateData } from "../utils/Validate";
@@ -20,8 +20,8 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   // User Refs for Input Fields
-  const email = React.useRef();
-  const password = React.useRef();
+  const email = useRef();
+  const password = useRef();
 
   const signInLogic = () => {
     console.log(email.current.value, password.current.value); //Testing

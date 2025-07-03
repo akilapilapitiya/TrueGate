@@ -11,9 +11,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import namedLogo from "../assets/logo-name.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { checkSignUpValidateData } from "../utils/Validate";
 
 const Register = () => {
   // Declare refs here
@@ -26,7 +27,8 @@ const Register = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);
+
 
   const RegisterLogic = () => {
     // To get Gender selected value:
@@ -34,7 +36,9 @@ const Register = () => {
       'input[type="radio"]:checked'
     );
     const genderValue = selectedGenderInput ? selectedGenderInput.value : null;
+    
 
+    // Testing 
     console.log(
       firstNameRef.current.value,
       lastNameRef.current.value,
@@ -43,8 +47,26 @@ const Register = () => {
       dobRef.current.value,
       genderValue,
       passwordRef.current.value,
-      confirmPasswordRef.current.value
+      confirmPasswordRef.current.value,
+      genderValue
     );
+
+    //Validation Logic
+    const message = checkSignUpValidateData(
+      emailRef.current.value,
+      passwordRef.current.value,
+      confirmPasswordRef.current.value,
+      firstNameRef.current.value,
+      lastNameRef.current.value,
+      dobRef.current.value,
+      contactRef.current.value,
+      genderValue,
+    )
+    if (message) {
+      setErrorMessage(message);
+      return false
+    }
+
     // registration logic
   };
 
@@ -190,6 +212,11 @@ const Register = () => {
                   />
                 </Grid>
               </Grid>
+              {errorMessage && (
+                <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
+                  {errorMessage}
+                </Typography>
+              )}
 
               {/* Submit */}
               <Box>
