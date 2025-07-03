@@ -119,7 +119,7 @@ const Register = () => {
           }}
         >
           {/* Left Side - Registration Form */}
-          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 3 }}>
+          <Grid sx={{ backgroundColor: "white", p: 3, xs: "12", md: "6" }}>
             <img
               src={namedLogo}
               alt="Logo"
@@ -136,7 +136,7 @@ const Register = () => {
             <Box sx={{ mt: 1 }}>
               {/* First Name & Last Name */}
               <Grid container spacing={2} sx={{ mb: 2 }}>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="First Name"
                     variant="outlined"
@@ -145,7 +145,7 @@ const Register = () => {
                     inputRef={firstName}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="Last Name"
                     variant="outlined"
@@ -170,7 +170,7 @@ const Register = () => {
 
               {/* Contact Number & DOB */}
               <Grid container spacing={2} sx={{ mb: 2 }}>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="Contact Number"
                     type="tel"
@@ -180,7 +180,7 @@ const Register = () => {
                     inputRef={contact}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="Date of Birth"
                     type="date"
@@ -216,7 +216,7 @@ const Register = () => {
 
               {/* Passwords */}
               <Grid container spacing={2} sx={{ mb: 2 }}>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="Password"
                     type="password"
@@ -226,7 +226,7 @@ const Register = () => {
                     inputRef={password}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid sx={{ xs: 6 }}>
                   <TextField
                     label="Confirm Password"
                     type="password"
@@ -261,9 +261,7 @@ const Register = () => {
 
           {/* Right Side Image Panel */}
           <Grid
-            item
-            xs={12}
-            md={6}
+            sx={{ xs: 12, md: 6 }}
             // sx={{
             //   backgroundImage: `url(${namedLogo})`,
             //   backgroundSize: "contain",

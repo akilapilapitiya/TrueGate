@@ -77,7 +77,7 @@ const Login = () => {
           sx={{ boxShadow: 3, borderRadius: 2, overflow: "hidden" }}
         >
           {/* Left side: Login Form */}
-          <Grid item xs={12} md={6} sx={{ backgroundColor: "white", p: 3 }}>
+          <Grid sx={{ backgroundColor: "white", p: 3 , xs:'12', md:'6'}}>
             <img
               src={namedLogo}
               alt="Named logo"
@@ -165,9 +165,7 @@ const Login = () => {
 
           {/* Right side Image Panel */}
           <Grid
-            item
-            xs={12}
-            md={6}
+            sx={{ xs:'12', md:'6'}}
             // sx={{
             //   backgroundImage: `url(${namedLogo})`,
             //   backgroundSize: "contain",
