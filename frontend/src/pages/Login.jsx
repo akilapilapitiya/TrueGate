@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
 import { checkLogInValidateData } from "../utils/Validate";
@@ -26,8 +26,6 @@ const Login = () => {
   const password = useRef();
 
   const signInLogic = () => {
-    console.log(email.current.value, password.current.value); //Testing
-
     // Validation Logic
     const message = checkLogInValidateData(
       email.current.value,
@@ -37,7 +35,7 @@ const Login = () => {
       setErrorMessage(message); //Update Error State
       return;
     }
-    // Login Logic #FIREBASE
+    // Login Logic #FIREBASE #####################################################
     signInWithEmailAndPassword(
       auth,
       email.current.value,
@@ -46,7 +44,6 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("Success");
         navigate('/dashboard');
         
       })
@@ -55,7 +52,9 @@ const Login = () => {
         const errorMessage = error.message;
         setErrorMessage(errorCode + errorMessage);
       });
+      
     // Store Update Logic
+    // #########################################################################
     // Rememeber Me Logic
   };
 
