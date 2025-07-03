@@ -13,61 +13,78 @@ import {
 } from "@mui/material";
 import React, { useRef, useState } from "react";
 import namedLogo from "../assets/logo-name.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
+import { auth } from "../utils/Firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = () => {
   // Declare refs here
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const emailRef = useRef();
-  const contactRef = useRef();
-  const dobRef = useRef();
-  const genderRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
+  const firstName = useRef();
+  const lastName = useRef();
+  const email = useRef();
+  const contact = useRef();
+  const dob = useRef();
+  const gender = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
 
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const navigate = useNavigate();
 
   const RegisterLogic = () => {
     // To get Gender selected value:
-    const selectedGenderInput = genderRef.current.querySelector(
+    const selectedGenderInput = gender.current.querySelector(
       'input[type="radio"]:checked'
     );
     const genderValue = selectedGenderInput ? selectedGenderInput.value : null;
-    
 
-    // Testing 
+    // Testing
     console.log(
-      firstNameRef.current.value,
-      lastNameRef.current.value,
-      emailRef.current.value,
-      contactRef.current.value,
-      dobRef.current.value,
+      firstName.current.value,
+      lastName.current.value,
+      email.current.value,
+      contact.current.value,
+      dob.current.value,
       genderValue,
-      passwordRef.current.value,
-      confirmPasswordRef.current.value,
+      password.current.value,
+      confirmPassword.current.value,
       genderValue
     );
 
     //Validation Logic
     const message = checkSignUpValidateData(
-      emailRef.current.value,
-      passwordRef.current.value,
-      confirmPasswordRef.current.value,
-      firstNameRef.current.value,
-      lastNameRef.current.value,
-      dobRef.current.value,
-      contactRef.current.value,
-      genderValue,
-    )
+      email.current.value,
+      password.current.value,
+      confirmPassword.current.value,
+      firstName.current.value,
+      lastName.current.value,
+      dob.current.value,
+      contact.current.value,
+      genderValue
+    );
     if (message) {
       setErrorMessage(message);
-      return false
+      return false;
     }
 
-    // registration logic
+    // registration logic #FIREBASE
+    createUserWithEmailAndPassword(
+      auth,
+      email.current.value,
+      password.current.value
+    )
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log("Success");
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorCode + errorMessage);
+      });
   };
 
   return (
@@ -117,7 +134,7 @@ const Register = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
-                    inputRef={firstNameRef}
+                    inputRef={firstName}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -126,7 +143,7 @@ const Register = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
-                    inputRef={lastNameRef}
+                    inputRef={lastName}
                   />
                 </Grid>
               </Grid>
@@ -139,7 +156,7 @@ const Register = () => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  inputRef={emailRef}
+                  inputRef={email}
                 />
               </Box>
 
@@ -152,7 +169,7 @@ const Register = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
-                    inputRef={contactRef}
+                    inputRef={contact}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -163,14 +180,14 @@ const Register = () => {
                     fullWidth
                     size="small"
                     InputLabelProps={{ shrink: true }}
-                    inputRef={dobRef}
+                    inputRef={dob}
                   />
                 </Grid>
               </Grid>
 
               {/* Gender */}
               <Box sx={{ mb: 2 }}>
-                <FormControl fullWidth ref={genderRef}>
+                <FormControl fullWidth ref={gender}>
                   <FormLabel id="gender-label" sx={{ fontSize: "0.875rem" }}>
                     Gender
                   </FormLabel>
@@ -198,7 +215,7 @@ const Register = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
-                    inputRef={passwordRef}
+                    inputRef={password}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -208,7 +225,7 @@ const Register = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
-                    inputRef={confirmPasswordRef}
+                    inputRef={confirmPassword}
                   />
                 </Grid>
               </Grid>

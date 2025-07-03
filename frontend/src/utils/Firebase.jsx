@@ -7,12 +7,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC8LSqnY_f8i8f7WPB1mJ3EK52DCW5Ksqc",
-  authDomain: "truegate-live.firebaseapp.com",
-  projectId: "truegate-live",
-  storageBucket: "truegate-live.firebasestorage.app",
-  messagingSenderId: "784324817474",
-  appId: "1:784324817474:web:87c75cafaa5863dd3ff3db",
+  apiKey: "AIzaSyB10I1AR_mnj49hOzyCoaCiM-delQOMFfU",
+  authDomain: "truegatev2.firebaseapp.com",
+  projectId: "truegatev2",
+  storageBucket: "truegatev2.firebasestorage.app",
+  messagingSenderId: "1002302599033",
+  appId: "1:1002302599033:web:0077f70ea12e89d4e189a8",
 };
 
 // Initialize Firebase
