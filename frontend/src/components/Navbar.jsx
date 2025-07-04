@@ -111,13 +111,13 @@ const Navbar = () => {
         elevation={0}
         sx={{
           bgcolor: 'transparent',
-         // backdropFilter: 'blur(1px)',
+         //backdropFilter: 'blur(1px)',
           width: '100%',
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <IconButton edge="start" onClick={toggleDrawer(true)}>
-            <MenuIcon sx={{ color: '#3949AB' }} />
+            <MenuIcon sx={{ color: '#06aff1' }} />
           </IconButton>
 
           <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1 }}>
@@ -135,7 +135,7 @@ const Navbar = () => {
             <IconButton onClick={() => navigate('/profile')}>
               <Person2Icon />
             </IconButton>
-            <Button onClick={handleSignOut} sx={{ fontWeight: 600, textTransform: 'none', color: '#3949AB' }}>
+            <Button onClick={handleSignOut} sx={{ fontWeight: 600, textTransform: 'none', color: '#06aff1' }}>
               SIGN OUT
             </Button>
           </Box>
