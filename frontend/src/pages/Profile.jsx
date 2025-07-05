@@ -34,6 +34,7 @@ const Profile = () => {
   // ##################################################################
   const profileIcon = gender === "male" ? maleIcon : femaleIcon;
   const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [firstNameEdit, setFirstNameEdit] = useState(firstName);
@@ -66,6 +67,11 @@ const Profile = () => {
     //Otherwise update data
     setErrorMessage(null); // Clear any previous error messages
     setEditMode(false); // Close the modal
+  };
+
+  const deleteUser = () => {
+    //Delete Action
+    setDeleteMode(false); // Close the delete confirmation modal
   };
 
   return (
@@ -136,7 +142,14 @@ const Profile = () => {
                 >
                   Change Password
                 </Button>
-                <Button variant="contained">Delete Account</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setDeleteMode(true);
+                  }}
+                >
+                  Delete Account
+                </Button>
               </Container>
             </Paper>
           </Grid>
@@ -272,6 +285,57 @@ const Profile = () => {
                     Save
                   </Button>
                 </Box>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
+
+        {/*Delete Popup*/}
+        <Modal
+          open={deleteMode}
+          onClose={() => setDeleteMode(false)}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+              sx: {
+                backdropFilter: "blur(4px)",
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+              },
+            },
+          }}
+        >
+          <Fade in={deleteMode}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: { xs: "90%", sm: 400 },
+                bgcolor: "background.paper",
+                borderRadius: 2,
+                boxShadow: 24,
+                p: 4,
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Delete Account
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={3}>
+                Are you sure you want to delete your account? This action cannot
+                be undone.
+              </Typography>
+
+              <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+                <Button variant="outlined" onClick={() => setDeleteMode(false)}>
+                  Cancel
+                </Button>
+                <Button variant="contained" color="error" onClick={deleteUser}>
+                  Delete
+                </Button>
               </Box>
             </Box>
           </Fade>
