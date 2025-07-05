@@ -1,32 +1,29 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <NavLink to="/login">Login</NavLink>
-      <br />
-      <NavLink to="/register">Register</NavLink>
-      <br />
-      <NavLink to="/profile">Profile</NavLink>
-      <br />
-      <NavLink to="/community">Community</NavLink>
-      <br />
-      <NavLink to="/password-reset">Password Reset</NavLink>
-      <br />
-      <NavLink to="/devices">Devices</NavLink>
-      <br />
-      <NavLink to="/dashboard">Dashboard</NavLink>
-      <br />
-      <NavLink to="/users">Users</NavLink>
-      <br />
-      <NavLink to="/not-found">Not Found</NavLink>
-      <br />
-      <NavLink to="/">Home</NavLink>
-      <br />
-      <NavLink to="/about">About</NavLink>
-      <br />
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: "50px",
+      }}
+    >
+      <Typography variant="h4" sx={{ textAlign: "center" }}>
+        Home Page of TrueGate
+      </Typography>
+
+      <Button variant="contained" onClick={() => navigate("/login")}>
+        Login
+      </Button>
+      <Button variant="contained" onClick={() => navigate("/register")}>
+        Register
+      </Button>
+    </Box>
   );
 };
 

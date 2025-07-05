@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 import About from "./pages/About";
+import ErrorPage from "./pages/ErrorPage";
 
 const App = () => {
   const [user, setUser] = useState(true); // Testing
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="password-reset" element={<PasswordReset />} />
         <Route path="about" element={<About />} />
+        <Route path="error-page" element={<ErrorPage/>}/>
 
         {/* Protected Routes - all logged-in users */}
         <Route element={<ProtectedRoute user={user} />}>

@@ -19,8 +19,7 @@ export const checkSignUpValidateData = (
   surName,
   dob,
   contact,
-  gender,
-  mode
+  gender
 ) => {
   //Regex
   const isFirstNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(firstName);
@@ -39,6 +38,7 @@ export const checkSignUpValidateData = (
   if (!isEmailVaild) return "Email ID is not valid";
   if (!isDateValid) return "Date of Birth is not valid";
   if (!isContactValid) return "Contact number is not valid";
+  if (!gender) return "Select a gender";
   if (!isPasswordValid) return "Password is not valid";
   if (!isRePasswordValid) return "Re-entered password does not match";
   return null;
