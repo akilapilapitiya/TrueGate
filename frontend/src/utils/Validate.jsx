@@ -55,8 +55,8 @@ export const profileUpdateValidateData = (firstName, surName, contact) => {
   const isSurNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(cleanSurName);
   const isContactValid = /^\d{10}$/.test(cleanContact);
 
-  if (!isFirstNameValid) return "First name is not valid";
-  if (!isSurNameValid) return "Surname is not valid";
+  if (!isFirstNameValid) return "First Name is not valid";
+  if (!isSurNameValid) return "Last Name is not valid";
   if (!isContactValid) return "Contact number is not valid";
   return null;
 };

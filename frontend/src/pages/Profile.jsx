@@ -1,21 +1,26 @@
 import {
+  Backdrop,
   Box,
   Button,
   Container,
   Divider,
+  Fade,
   Grid,
+  Modal,
   Paper,
+  TextField,
   Typography,
 } from "@mui/material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { profileUpdateValidateData } from "../utils/Validate";
 
 const Profile = () => {
-
   const navigate = useNavigate();
 
-  //Temp Data
+  //Temp Data#########################################################
   const gender = "male";
   const firstName = "Mahinda";
   const lastName = "Wickramasinghe";
@@ -23,11 +28,45 @@ const Profile = () => {
   const tel = "0123456789";
 
   const usersArray = [
-    {id: "0001", name: "Namal", email: "namal@mail.com" },
-    {id: "0001", name: "Kamala", email: "kamal@gmail.com" },
+    { id: "0001", name: "Namal", email: "namal@mail.com" },
+    { id: "0001", name: "Kamala", email: "kamal@gmail.com" },
   ];
-
+  // ##################################################################
   const profileIcon = gender === "male" ? maleIcon : femaleIcon;
+  const [editMode, setEditMode] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const [firstNameEdit, setFirstNameEdit] = useState(firstName);
+  const [lastNameEdit, setLastNameEdit] = useState(lastName);
+  const [contactEdit, setContactEdit] = useState(tel);
+  // Reset Above variables at start
+  useEffect(() => {
+    if (editMode) {
+      setFirstNameEdit(firstName);
+      setLastNameEdit(lastName);
+      setContactEdit(tel);
+    }
+  }, [editMode]);
+
+  const updateUserInfo = () => {
+    // Trim convert the data
+    const first = firstNameEdit.trim() || "";
+    const last = lastNameEdit.trim() || "";
+    const phone = contactEdit.trim() || "";
+
+    //Validate info
+
+    const message = profileUpdateValidateData(first, last, phone);
+
+    if (message) {
+      setErrorMessage(message); // Update Error State
+      return;
+    }
+
+    //Otherwise update data
+    setErrorMessage(null); // Clear any previous error messages
+    setEditMode(false); // Close the modal
+  };
 
   return (
     <Box
@@ -81,12 +120,24 @@ const Profile = () => {
                 <Typography>Phone Number: {tel}</Typography>
               </Box>
               <Container sx={{ display: "flex", gap: 2, mt: 2 }}>
-                <Button variant="contained">Edit Profile</Button>
-                <Button variant="contained"
-                onClick={() => {navigate("/password-reset")}}
-                >Change Password</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setEditMode(true);
+                  }}
+                >
+                  Edit Profile
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    navigate("/password-reset");
+                  }}
+                >
+                  Change Password
+                </Button>
                 <Button variant="contained">Delete Account</Button>
-                </Container>
+              </Container>
             </Paper>
           </Grid>
 
@@ -120,19 +171,111 @@ const Profile = () => {
                   <Typography variant="body2" color="text.secondary">
                     Email: {user.email}
                   </Typography>
-                  {index < usersArray.length - 1 && (
-                    <Divider sx={{ mt: 2 }} />
-                  )}
+                  {index < usersArray.length - 1 && <Divider sx={{ mt: 2 }} />}
                 </Box>
               ))}
               <Container sx={{ display: "flex", gap: 2, mt: 2 }}>
-                <Button variant="contained">Add new Dependants</Button>
-              <Button variant="contained">Remove Dependants</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    navigate("/users");
+                  }}
+                >
+                  Manage Dependants
+                </Button>
               </Container>
-              
             </Paper>
           </Grid>
         </Grid>
+
+        {/*Popup for Profile Editing */}
+        <Modal
+          open={editMode}
+          onClose={() => setEditMode(false)}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+              sx: {
+                backdropFilter: "blur(4px)",
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+              },
+            },
+          }}
+        >
+          <Fade in={editMode}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: { xs: "90%", sm: 400 },
+                bgcolor: "background.paper",
+                borderRadius: 2,
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" mb={2}>
+                Edit Profile
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                autoComplete="off"
+                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              >
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  defaultValue={firstName}
+                  onChange={(e) => setFirstNameEdit(e.target.value)}
+                />
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  defaultValue={lastName}
+                  onChange={(e) => setLastNameEdit(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Phone Number"
+                  defaultValue={tel}
+                  onChange={(e) => setContactEdit(e.target.value)}
+                />
+
+                {errorMessage && (
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    sx={{ mt: 1, mb: 1 }}
+                  >
+                    {errorMessage}
+                  </Typography>
+                )}
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    mt: 2,
+                    gap: 1,
+                  }}
+                >
+                  <Button variant="outlined" onClick={() => setEditMode(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant="contained" onClick={updateUserInfo}>
+                    Save
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
       </Container>
     </Box>
   );
