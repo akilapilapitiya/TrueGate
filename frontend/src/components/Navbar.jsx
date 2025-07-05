@@ -36,7 +36,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const role = "client"; // e.g., "houseOwner", "tenant", "admin"
+  const role = "houseOwner"; // e.g., "houseOwner", "tenant", "admin"
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },

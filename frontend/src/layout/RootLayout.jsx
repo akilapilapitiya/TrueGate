@@ -12,7 +12,8 @@ const RootLayout = () => {
         location.pathname !== "/login" &&
         location.pathname !== "/register" &&
         location.pathname !== "/password-reset" &&
-        location.pathname !== "/about" && (
+        location.pathname !== "/about" &&
+        location.pathname !== "/dashboard" && (
           <div className="navbar-container">
             <Navbar />
           </div>

@@ -19,6 +19,8 @@ import Users from "./pages/Users";
 import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 import About from "./pages/About";
 import ErrorPage from "./pages/ErrorPage";
+import Footage from "./pages/Footage";
+import AccessHistory from "./pages/AccessHistory";
 
 const App = () => {
   const [user, setUser] = useState(true); // Testing
@@ -40,6 +42,9 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="community" element={<Community />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="footage" element={<Footage />} />
+          <Route path="history" element={<AccessHistory />} />
+
         </Route>
 
         {/* Admin Routes - only admin users */}
