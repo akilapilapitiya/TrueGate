@@ -28,21 +28,31 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useTheme } from "@mui/material/styles";
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/Firebase";
-import namedLogo from "../assets/logo-name.png";
-
-const navLinks = [
-  { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { label: "User Management", icon: <PeopleIcon />, path: "/users" },
-  { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
-  { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
-  { label: "About Us", icon: <InfoIcon />, path: "/about" },
-];
+import namedLogo from "../assets/logo-name-white.png";
 
 const Navbar = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+
+  const role = "client"; // e.g., "houseOwner", "tenant", "admin"
+
+  const navLinks = [
+    { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+    ...(role === "houseOwner"
+      ? [
+          { label: "User Management", icon: <PeopleIcon />, path: "/users" },
+          {
+            label: "Device Management",
+            icon: <DevicesIcon />,
+            path: "/devices",
+          },
+        ]
+      : []),
+    { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
+    { label: "About Us", icon: <InfoIcon />, path: "/about" },
+  ];
 
   const toggleDrawer = (state) => () => setOpen(state);
 
