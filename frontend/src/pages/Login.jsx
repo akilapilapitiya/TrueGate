@@ -109,7 +109,7 @@ const Login = () => {
         <Typography variant="h5" fontWeight="bold" gutterBottom>
           Welcome Back
         </Typography>
-        <Typography variant="body2" mb={2}>
+        <Typography variant="body2"  color="#167192" sx={{ mb: 2 }}>
           Please sign in to continue
         </Typography>
 
@@ -177,7 +177,7 @@ const Login = () => {
           <NavLink to="/register" style={{ color: "#1976d2" }}>
             Create Account
           </NavLink>
-        </Typography>
+        </Typography> 
       </Box>
     </Box>
   );
