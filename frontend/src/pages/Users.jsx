@@ -51,6 +51,9 @@ const Users = () => {
     email: "",
   });
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+
   const handleInputChange = (field, value) => {
     setNewCustomer((prev) => ({ ...prev, [field]: value }));
   };
@@ -69,7 +72,16 @@ const Users = () => {
   };
 
   const handleDeleteCustomer = (id) => {
-    setCustomers((prev) => prev.filter((c) => c.id !== id));
+    setSelectedCustomerId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteCustomer = () => {
+    setCustomers((prev) =>
+      prev.filter((customer) => customer.id !== selectedCustomerId)
+    );
+    setDeleteDialogOpen(false);
+    setSelectedCustomerId(null);
   };
 
   return (
@@ -190,7 +202,7 @@ const Users = () => {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <TextField
                 fullWidth
-                label="Dependant ID"
+                label="ID"
                 value={newCustomer.id}
                 onChange={(e) => handleInputChange("id", e.target.value)}
               />
@@ -222,6 +234,64 @@ const Users = () => {
                   Add
                 </Button>
               </Box>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+            sx: {
+              backdropFilter: "blur(4px)",
+              backgroundColor: "rgba(0, 0, 0, 0.2)",
+            },
+          },
+        }}
+      >
+        <Fade in={deleteDialogOpen}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: 400 },
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              boxShadow: 24,
+              p: 4,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Delete Dependant
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={3}>
+              Are you sure you want to delete this dependant? This action cannot
+              be undone.
+            </Typography>
+
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={() => setDeleteDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={confirmDeleteCustomer}
+              >
+                Delete
+              </Button>
             </Box>
           </Box>
         </Fade>
