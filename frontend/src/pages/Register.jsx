@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useRef, useState } from "react";
-import registerBg from "../assets/register-bg.png"; 
+import registerBg from "../assets/login-bg.png"; 
 import namedLogo from "../assets/logo-name.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
@@ -109,7 +109,7 @@ const Register = () => {
           maxWidth: "600px",
           borderRadius: 3,
           boxShadow: 5,
-          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          backgroundColor: "rgba(255, 255, 255, 0.91)",
           backdropFilter: "blur(12px)",
           padding: 4,
           display: "flex",
@@ -239,7 +239,7 @@ const Register = () => {
             variant="contained"
             fullWidth
             size="medium"
-            sx={{ mb: 2, textTransform: "none", fontWeight: "bold" }}
+            sx={{ mb: 2, textTransform: "none", fontWeight: "bold",backgroundColor: "#167192" }}
             onClick={RegisterLogic}
           >
             Register

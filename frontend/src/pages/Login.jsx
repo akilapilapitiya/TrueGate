@@ -93,7 +93,7 @@ const Login = () => {
           maxWidth: "400px",
           p: 4,
           borderRadius: 3,
-          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          backgroundColor: "rgba(255, 255, 255, 0.91)",
           boxShadow: 5,
           display: "flex",
           flexDirection: "column",
@@ -151,6 +151,7 @@ const Login = () => {
             fontSize: "14px",
             marginBottom: "16px",
             alignSelf: "flex-start",
+            color: "#167192",
           }}
         >
           Forgot Password?
@@ -167,7 +168,7 @@ const Login = () => {
           color="primary"
           fullWidth
           onClick={signInLogic}
-          sx={{ mb: 2, textTransform: "none", fontWeight: "bold" }}
+          sx={{ mb: 2, textTransform: "none", fontWeight: "bold",backgroundColor: "#167192" }}
         >
           Sign In
         </Button>
