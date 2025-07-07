@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 
-const features = [
+//mycomment
+const features = [ 
   {
     title: "Real-time CCTV Access",
     desc: "Monitor and review live or recorded surveillance footage anytime.",
