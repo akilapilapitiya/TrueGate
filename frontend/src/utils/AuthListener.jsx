@@ -13,7 +13,12 @@ const AuthListener = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName } = user;
-        dispatch(addUser({ uid, email, displayName }));
+        // Must be changed accordingly
+        const firstName = displayName ? displayName.split(" ")[0] : "User";
+        const lastName = displayName? displayName.split(" ").slice(1).join(" "): "User";
+        const gender = "male";
+        const role = "houseOwner";
+        dispatch(addUser({ uid, email, displayName, firstName, lastName, gender, role }));
       } else {
         dispatch(removeUser());
         if (

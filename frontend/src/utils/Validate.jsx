@@ -34,7 +34,7 @@ export const checkSignUpValidateData = (
   const isRePasswordValid = password == rePassword;
 
   if (!isFirstNameValid) return "First name is not valid";
-  if (!isSurNameValid) return "Surname is not valid";
+  if (!isSurNameValid) return "Last Name is not valid";
   if (!isEmailVaild) return "Email ID is not valid";
   if (!isDateValid) return "Date of Birth is not valid";
   if (!isContactValid) return "Contact number is not valid";
@@ -56,10 +56,17 @@ export const profileUpdateValidateData = (firstName, surName, contact) => {
   const isContactValid = /^\d{10}$/.test(cleanContact);
 
   if (!isFirstNameValid) return "First name is not valid";
-  if (!isSurNameValid) return "Surname is not valid";
+  if (!isSurNameValid) return "Last Name is not valid";
   if (!isContactValid) return "Contact number is not valid";
   return null;
 };
+
+export const emailValidation = (email) => {
+  const isEmailVaild = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(email);
+  if (!isEmailVaild) return "Email ID is not valid";
+  return null;
+
+} 
 
 export const newPasswordValidateData = (newPassword, reNewPassword) => {
   const isPasswordValid =
