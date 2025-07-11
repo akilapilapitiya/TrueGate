@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+// Layout and Pages
 import RootLayout from "./layout/RootLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,49 +18,58 @@ import Devices from "./pages/Devices";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
-import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 import About from "./pages/About";
 import ErrorPage from "./pages/ErrorPage";
 import Footage from "./pages/Footage";
 import AccessHistory from "./pages/AccessHistory";
 
+// Route Guards
+import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
+
+// 🔁 OPTIONAL: Use mock data temporarily
+// 🚫 REMOVE THESE LINES once you integrate your real auth system or Redux state
+import { useSelector } from "react-redux";
+// const [user, setUser] = useState(true); //MOCK USER — remove this
+// const [admin, setAdmin] = useState(true); //MOCK ADMIN — remove this
+
 const App = () => {
-  const [user, setUser] = useState(true); // Testing
-  const [admin, setAdmin] = useState(true); // Testing
+  // Use Redux state instead of mock values
+  const user = useSelector((state) => state.user); // Gets user from Redux store
+  const admin = user?.role === "admin"; // Sets admin based on user role
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        {/* Public Routes */}
+        {/*Public Routes */}
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="password-reset" element={<PasswordReset />} />
         <Route path="about" element={<About />} />
-        <Route path="error-page" element={<ErrorPage/>}/>
+        <Route path="error-page" element={<ErrorPage />} />
 
-        {/* Protected Routes - all logged-in users */}
+        {/*Protected Routes - only visible if logged in */}
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="profile" element={<Profile />} />
           <Route path="community" element={<Community />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="footage" element={<Footage />} />
           <Route path="history" element={<AccessHistory />} />
-
         </Route>
 
-        {/* Admin Routes - only admin users */}
+        {/*Admin-Only Routes */}
         <Route element={<AdminRoute user={user} admin={admin} />}>
           <Route path="devices" element={<Devices />} />
           <Route path="users" element={<Users />} />
         </Route>
 
-        {/* 404 Not Found */}
+        {/*Catch-all Route (404) */}
         <Route path="*" element={<NotFound />} />
       </Route>
     )
   );
 
+  // 🚀 Wrap App with RouterProvider
   return <RouterProvider router={router} />;
 };
 
