@@ -1,7 +1,7 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import SecurityShop from "./SecurityShop"; // Import the new component
+const SecurityShop = lazy(() => import("./SecurityShop"));
 
 const Dashboard = () => {
   const theme = useTheme();
