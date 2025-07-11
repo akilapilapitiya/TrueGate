@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { checkLogInValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const Login = () => {
   const theme = useTheme();
@@ -95,12 +96,16 @@ const Login = () => {
               backgroundColor: theme.palette.background.paper,
             }}
           >
-            <Typography variant="h4" fontWeight={700} mb={1}>
+            <Box sx={{ mb: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+              <Typography variant="h4" fontWeight={700} mb={1}>
               Sign In
             </Typography>
             <Typography variant="body1" color="text.secondary" mb={3}>
               Welcome back! Please enter your credentials.
             </Typography>
+            </Box>
+            
 
             <Box
               component="form"
@@ -128,15 +133,37 @@ const Login = () => {
                 variant="outlined"
                 required
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={isRememeberChecked}
-                    onChange={(e) => setIsRememeberChecked(e.target.checked)}
-                  />
-                }
-                label="Remember me"
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  mt: 1,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isRememeberChecked}
+                      onChange={(e) => setIsRememeberChecked(e.target.checked)}
+                    />
+                  }
+                  label="Remember me"
+                  sx={{ m: 0 }}
+                />
+
+                <Link
+                  component="button"
+                  onClick={() => navigate("/password-reset")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Forgot password?
+                </Link>
+              </Box>
+
               {errorMessage && (
                 <Typography
                   variant="body2"

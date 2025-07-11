@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const Register = () => {
   const theme = useTheme();
@@ -63,7 +64,6 @@ const Register = () => {
     }
     // Registration Logic
     navigate("/dashboard");
-    
   };
 
   return (
@@ -107,6 +107,10 @@ const Register = () => {
               overflowY: "auto",
             }}
           >
+            <Box sx={{ mb: 1, display: "flex", justifyContent: "center" }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+            </Box>
+
             <Typography variant="h4" fontWeight={700} mb={1} textAlign="center">
               Create Account
             </Typography>
