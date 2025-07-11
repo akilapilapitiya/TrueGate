@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { mockDevices } from "../data/dummyDevices";
 import {
   Box,
   Grid,
@@ -25,49 +26,6 @@ import {
   Power as PowerIcon,
 } from "@mui/icons-material";
 
-// ✅ Mock devices
-const mockDevices = [
-  {
-    id: "1",
-    name: "Living Room Light",
-    room: "Living Room",
-    type: "light",
-    status: "online",
-    state: true,
-  },
-  {
-    id: "2",
-    name: "Main Door Lock",
-    room: "Entrance",
-    type: "lock",
-    status: "offline",
-    state: false,
-  },
-  {
-    id: "3",
-    name: "Garage Camera",
-    room: "Garage",
-    type: "camera",
-    status: "online",
-    state: true,
-  },
-  {
-    id: "4",
-    name: "Thermo Sensor",
-    room: "Bedroom",
-    type: "sensor",
-    status: "online",
-    state: false,
-  },
-  {
-    id: "5",
-    name: "Wall Switch",
-    room: "Kitchen",
-    type: "switch",
-    status: "offline",
-    state: false,
-  },
-];
 
 const iconMap = {
   light: <LightbulbIcon />,
@@ -84,7 +42,7 @@ const Devices = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [roomFilter, setRoomFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [view, setView] = useState("grid");
+  const [view, setView] = useState("list");
 
   const rooms = Array.from(new Set(mockDevices.map((d) => d.room)));
   const types = Array.from(new Set(mockDevices.map((d) => d.type)));
@@ -110,7 +68,10 @@ const Devices = () => {
   }, [searchTerm, roomFilter, typeFilter, devices]);
 
   return (
-    <Box p={3} sx={{ backgroundColor: theme.palette.background.default }}>
+    <Box p={3} sx={{ backgroundColor: theme.palette.background.default,
+      pt:10,
+      minHeight: "100vh",
+     }}>
       {/* Header */}
       <Box mb={3}>
         <Typography variant="h4" fontWeight="bold" color="text.primary">
