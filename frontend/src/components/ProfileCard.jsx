@@ -61,7 +61,15 @@ const ProfileCard = ({ onClose }) => {
             onClose();
           }}
         >
-          <ListItemText primary="View Profile" />
+          <ListItemText primary="Settings" />
+        </ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate("/settings");
+            onClose();
+          }}
+        >
+          <ListItemText primary="Profile" />
         </ListItemButton>
       </List>
 

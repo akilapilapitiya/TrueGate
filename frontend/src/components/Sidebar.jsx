@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
+import namedLogoLight from "..//assets/logo-name-white.png";
 import { useAppTheme } from "../hooks/useAppTheme";
 
 const SideBar = ({ navLinks, onClose }) => {
-  const { theme } = useAppTheme();
+  const { theme, isDarkMode } = useAppTheme();
 
   return (
     <Box
@@ -28,8 +29,13 @@ const SideBar = ({ navLinks, onClose }) => {
       }}
     >
       <Box>
-        <Box sx={{ display: "flex", justifyContent: "left", mb: 2, px: 2 }}>
-          <img src={namedLogo} alt="TrueGate Logo" style={{ height: 25 }} />
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 2, px: 2 }}>
+          {isDarkMode ? (
+            <img src={namedLogoLight} alt="TrueGate Logo" style={{ height: 25 }} />
+          ):(
+            <img src={namedLogo} alt="TrueGate Logo" style={{ height: 25 }} />
+          )}
+          
         </Box>
         <Divider sx={{ borderColor: theme.palette.divider, mb: 1 }} />
         <List>

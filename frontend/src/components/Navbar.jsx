@@ -19,14 +19,14 @@ import {
   Forum as ForumIcon,
   Info as InfoIcon,
   Settings as SettingsIcon,
-  Person2 as Person2Icon,
   Notifications as NotificationsIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  YouTube as YouTubeIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Cloud as CloudIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../utils/Firebase";
 import { useAppTheme } from "../hooks/useAppTheme";
 import SideBar from "./SideBar";
 import ProfileCard from "./ProfileCard";
@@ -52,6 +52,10 @@ const Navbar = () => {
           },
         ]
       : []),
+    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+    { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
+    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
+    { label: "Setup Guides", icon: <YouTubeIcon />, path: "youtube" },
     { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
     { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];

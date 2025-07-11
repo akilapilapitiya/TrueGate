@@ -28,6 +28,7 @@ import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 // 🔁 OPTIONAL: Use mock data temporarily
 // 🚫 REMOVE THESE LINES once you integrate your real auth system or Redux state
 import { useSelector } from "react-redux";
+import Settings from "./pages/Settings";
 // const [user, setUser] = useState(true); //MOCK USER — remove this
 // const [admin, setAdmin] = useState(true); //MOCK ADMIN — remove this
 
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="footage" element={<Footage />} />
           <Route path="history" element={<AccessHistory />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         {/*Admin-Only Routes */}
