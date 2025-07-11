@@ -1,243 +1,299 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
-  Button,
-  Container,
-  Divider,
   Grid,
-  IconButton,
-  Modal,
+  Typography,
   Paper,
   TextField,
-  Typography,
-  Backdrop,
-  Fade,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
+  MenuItem,
+  IconButton,
+  Button,
+  Chip,
+  useTheme,
+  Divider,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
-import { useState } from "react";
-import { Add, Delete } from "@mui/icons-material";
+import {
+  Search as SearchIcon,
+  GridView as GridIcon,
+  ViewList as ListIcon,
+  Lightbulb as LightbulbIcon,
+  Lock as LockIcon,
+  CameraAlt as CameraIcon,
+  Sensors as SensorsIcon,
+  Power as PowerIcon,
+} from "@mui/icons-material";
+
+// ✅ Mock devices
+const mockDevices = [
+  {
+    id: "1",
+    name: "Living Room Light",
+    room: "Living Room",
+    type: "light",
+    status: "online",
+    state: true,
+  },
+  {
+    id: "2",
+    name: "Main Door Lock",
+    room: "Entrance",
+    type: "lock",
+    status: "offline",
+    state: false,
+  },
+  {
+    id: "3",
+    name: "Garage Camera",
+    room: "Garage",
+    type: "camera",
+    status: "online",
+    state: true,
+  },
+  {
+    id: "4",
+    name: "Thermo Sensor",
+    room: "Bedroom",
+    type: "sensor",
+    status: "online",
+    state: false,
+  },
+  {
+    id: "5",
+    name: "Wall Switch",
+    room: "Kitchen",
+    type: "switch",
+    status: "offline",
+    state: false,
+  },
+];
+
+const iconMap = {
+  light: <LightbulbIcon />,
+  lock: <LockIcon />,
+  camera: <CameraIcon />,
+  sensor: <SensorsIcon />,
+  switch: <PowerIcon />,
+};
 
 const Devices = () => {
-  const [devices, setDevices] = useState([
-    {
-      id: "D001",
-      name: "CCTV Front Gate",
-      type: "Camera",
-      location: "Entrance",
-      status: "Active",
-    },
-    {
-      id: "D002",
-      name: "Main Door Lock",
-      type: "Smart Lock",
-      location: "Main Door",
-      status: "Active",
-    },
-    {
-      id: "D003",
-      name: "Garage Motion Sensor",
-      type: "Sensor",
-      location: "Garage",
-      status: "Inactive",
-    },
-  ]);
+  const theme = useTheme();
+  const [devices, setDevices] = useState(mockDevices);
+  const [filteredDevices, setFilteredDevices] = useState(mockDevices);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roomFilter, setRoomFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [view, setView] = useState("grid");
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [newDevice, setNewDevice] = useState({
-    id: "",
-    name: "",
-    type: "",
-    location: "",
-    status: "",
-  });
+  const rooms = Array.from(new Set(mockDevices.map((d) => d.room)));
+  const types = Array.from(new Set(mockDevices.map((d) => d.type)));
 
-  const handleInputChange = (field, value) => {
-    setNewDevice((prev) => ({ ...prev, [field]: value }));
-  };
+  useEffect(() => {
+    let filtered = devices;
 
-  const handleAddDevice = () => {
-    if (
-      newDevice.id &&
-      newDevice.name &&
-      newDevice.type &&
-      newDevice.location &&
-      newDevice.status
-    ) {
-      setDevices((prev) => [...prev, newDevice]);
+    if (searchTerm) {
+      filtered = filtered.filter((d) =>
+        d.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
-    setOpenDialog(false);
-    setNewDevice({ id: "", name: "", type: "", location: "", status: "" });
-  };
 
-  const handleDeleteDevice = (id) => {
-    setDevices((prev) => prev.filter((d) => d.id !== id));
-  };
+    if (roomFilter !== "all") {
+      filtered = filtered.filter((d) => d.room === roomFilter);
+    }
+
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((d) => d.type === typeFilter);
+    }
+
+    setFilteredDevices(filtered);
+  }, [searchTerm, roomFilter, typeFilter, devices]);
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-        py: 6,
-        px: { xs: 2, sm: 3, md: 6 },
-        boxSizing: "border-box",
-      }}
-    >
-      <Container maxWidth="lg">
-        <Paper
-          elevation={3}
-          sx={{
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-          }}
-        >
-          <Typography variant="h5" fontWeight="bold">
-            Installed Security Devices
-          </Typography>
+    <Box p={3} sx={{ backgroundColor: theme.palette.background.default }}>
+      {/* Header */}
+      <Box mb={3}>
+        <Typography variant="h4" fontWeight="bold" color="text.primary">
+          My Devices
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Manage and monitor your smart home devices
+        </Typography>
+      </Box>
 
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>ID</TableCell>
-                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Device Name</TableCell>
-                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Type</TableCell>
-                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Location</TableCell>
-                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Status</TableCell>
-                  <TableCell
-                    sx={{ color: "#fff", fontWeight: "bold" }}
-                    align="center"
-                  >
-                    Action
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {devices.map((device, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      "&:hover": { backgroundColor: "#f0f4ff" },
-                      transition: "background-color 0.3s ease",
-                    }}
-                  >
-                    <TableCell>{device.id}</TableCell>
-                    <TableCell>{device.name}</TableCell>
-                    <TableCell>{device.type}</TableCell>
-                    <TableCell>{device.location}</TableCell>
-                    <TableCell>{device.status}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() => handleDeleteDevice(device.id)}
-                        color="error"
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <Divider />
-
-          <Box display="flex" justifyContent="center">
-            <Button
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => setOpenDialog(true)}
+      {/* Filters */}
+      <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                endAdornment: <SearchIcon fontSize="small" />,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              size="small"
+              select
+              label="Filter by Room"
+              value={roomFilter}
+              onChange={(e) => setRoomFilter(e.target.value)}
             >
-              Add New Device
-            </Button>
-          </Box>
+              <MenuItem value="all">All Rooms</MenuItem>
+              {rooms.map((room) => (
+                <MenuItem key={room} value={room}>
+                  {room}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              size="small"
+              select
+              label="Filter by Type"
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+            >
+              <MenuItem value="all">All Types</MenuItem>
+              {types.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={2} textAlign="right">
+            <ToggleButtonGroup
+              size="small"
+              value={view}
+              exclusive
+              onChange={(_, val) => val && setView(val)}
+            >
+              <ToggleButton value="grid">
+                <GridIcon />
+              </ToggleButton>
+              <ToggleButton value="list">
+                <ListIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+        </Grid>
+      </Paper>
+
+      {/* Devices */}
+      {filteredDevices.length === 0 ? (
+        <Paper sx={{ p: 5, textAlign: "center" }}>
+          <Typography variant="h6">No devices found.</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Try adjusting your search or filters.
+          </Typography>
         </Paper>
-      </Container>
-
-      {/* Add Device Modal */}
-      <Modal
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-            sx: {
-              backdropFilter: "blur(4px)",
-              backgroundColor: "rgba(0, 0, 0, 0.2)",
-            },
-          },
-        }}
-      >
-        <Fade in={openDialog}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: { xs: "90%", sm: 400 },
-              bgcolor: "background.paper",
-              borderRadius: 2,
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <Typography variant="h6" fontWeight="bold" mb={2}>
-              Add New Device
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <TextField
-                fullWidth
-                label="Device ID"
-                value={newDevice.id}
-                onChange={(e) => handleInputChange("id", e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="Device Name"
-                value={newDevice.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="Type"
-                value={newDevice.type}
-                onChange={(e) => handleInputChange("type", e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="Location"
-                value={newDevice.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="Status"
-                value={newDevice.status}
-                onChange={(e) => handleInputChange("status", e.target.value)}
-              />
-
-              <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
-                <Button variant="outlined" onClick={() => setOpenDialog(false)}>
-                  Cancel
-                </Button>
-                <Button variant="contained" onClick={handleAddDevice}>
-                  Add
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+      ) : view === "grid" ? (
+        <Grid container spacing={3}>
+          {filteredDevices.map((device) => (
+            <Grid item xs={12} sm={6} md={4} key={device.id}>
+              <Paper
+                sx={{
+                  p: 2,
+                  borderRadius: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  backgroundColor: theme.palette.background.paper,
+                }}
+                elevation={3}
+              >
+                <Box display="flex" alignItems="center" gap={2}>
+                  <IconButton>{iconMap[device.type]}</IconButton>
+                  <Box>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {device.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {device.room} • {device.type}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Divider />
+                <Box display="flex" justifyContent="space-between" mt={1}>
+                  <Chip
+                    label={device.status}
+                    color={
+                      device.status === "online"
+                        ? "success"
+                        : device.status === "offline"
+                        ? "error"
+                        : "default"
+                    }
+                    size="small"
+                  />
+                  <Chip
+                    label={device.state ? "On" : "Off"}
+                    color={device.state ? "primary" : "default"}
+                    size="small"
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Grid container direction="column" spacing={2}>
+          {filteredDevices.map((device) => (
+            <Grid item key={device.id}>
+              <Paper
+                sx={{
+                  p: 2,
+                  borderRadius: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  backgroundColor: theme.palette.background.paper,
+                }}
+                elevation={2}
+              >
+                <Box display="flex" alignItems="center" gap={2}>
+                  {iconMap[device.type]}
+                  <Box>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {device.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {device.room} • {device.type}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box display="flex" gap={1}>
+                  <Chip
+                    label={device.status}
+                    color={
+                      device.status === "online"
+                        ? "success"
+                        : device.status === "offline"
+                        ? "error"
+                        : "default"
+                    }
+                    size="small"
+                  />
+                  <Chip
+                    label={device.state ? "On" : "Off"}
+                    color={device.state ? "primary" : "default"}
+                    size="small"
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };
