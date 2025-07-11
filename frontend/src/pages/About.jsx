@@ -1,5 +1,4 @@
-import React from "react";
-import logoBlue from "../assets/logo-name.png"
+import logoBlue from "../assets/logo-name.png";
 import {
   Box,
   Container,
@@ -84,7 +83,10 @@ const About = () => {
       {/* Hero Section */}
       <Box
         sx={{
-          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+          background: `linear-gradient(135deg, ${alpha(
+            theme.palette.primary.main,
+            0.1
+          )} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
           py: { xs: 6, md: 10 },
           position: "relative",
           overflow: "hidden",
@@ -138,7 +140,8 @@ const About = () => {
                     fontSize: { xs: "1.2rem", md: "1.5rem" },
                   }}
                 >
-                  Your All-in-One Security Assistant — Smart, Scalable, and Secure
+                  Your All-in-One Security Assistant — Smart, Scalable, and
+                  Secure
                 </Typography>
                 <Button
                   variant="contained"
@@ -175,7 +178,10 @@ const About = () => {
                   sx={{
                     width: { xs: 250, md: 350 },
                     height: { xs: 250, md: 350 },
-                    background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.secondary.main, 0.2)} 100%)`,
+                    background: `linear-gradient(135deg, ${alpha(
+                      theme.palette.primary.main,
+                      0.2
+                    )} 0%, ${alpha(theme.palette.secondary.main, 0.2)} 100%)`,
                     borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
@@ -186,13 +192,21 @@ const About = () => {
                       position: "absolute",
                       width: "120%",
                       height: "120%",
-                      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+                      background: `linear-gradient(135deg, ${alpha(
+                        theme.palette.primary.main,
+                        0.1
+                      )} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
                       borderRadius: "50%",
                       zIndex: -1,
                     },
                   }}
                 >
-                  <Security sx={{ fontSize: { xs: 80, md: 120 }, color: theme.palette.primary.main }} />
+                  <Security
+                    sx={{
+                      fontSize: { xs: 80, md: 120 },
+                      color: theme.palette.primary.main,
+                    }}
+                  />
                 </Box>
               </Box>
             </Grid>
@@ -214,8 +228,13 @@ const About = () => {
           >
             Core Features
           </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: "auto" }}>
-            Comprehensive security solutions designed to protect what matters most to you
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{ maxWidth: 600, mx: "auto" }}
+          >
+            Comprehensive security solutions designed to protect what matters
+            most to you
           </Typography>
         </Box>
 
@@ -259,7 +278,11 @@ const About = () => {
                   >
                     {feature.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ lineHeight: 1.6 }}
+                  >
                     {feature.desc}
                   </Typography>
                 </CardContent>
@@ -270,7 +293,12 @@ const About = () => {
       </Container>
 
       {/* Store & Community Section */}
-      <Box sx={{ bgcolor: alpha(theme.palette.grey[100], 0.5), py: { xs: 6, md: 10 } }}>
+      <Box
+        sx={{
+          bgcolor: alpha(theme.palette.grey[100], 0.5),
+          py: { xs: 6, md: 10 },
+        }}
+      >
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
@@ -279,12 +307,18 @@ const About = () => {
                 sx={{
                   height: "100%",
                   borderRadius: 4,
-                  background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.primary.main, 0.1)} 100%)`,
+                  background: `linear-gradient(135deg, ${alpha(
+                    theme.palette.primary.main,
+                    0.05
+                  )} 0%, ${alpha(theme.palette.primary.main, 0.1)} 100%)`,
                   border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
                   transition: "all 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-4px)",
-                    boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    boxShadow: `0 20px 40px ${alpha(
+                      theme.palette.primary.main,
+                      0.15
+                    )}`,
                   },
                 }}
               >
@@ -301,13 +335,20 @@ const About = () => {
                       mb: 3,
                     }}
                   >
-                    <Storefront sx={{ fontSize: 30, color: theme.palette.primary.main }} />
+                    <Storefront
+                      sx={{ fontSize: 30, color: theme.palette.primary.main }}
+                    />
                   </Box>
                   <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                     TrueGate Store
                   </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
-                    Enjoy exclusive discounts and offers on latest security gadgets and upgrades tailored to your specific needs.
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{ mb: 3, lineHeight: 1.6 }}
+                  >
+                    Enjoy exclusive discounts and offers on latest security
+                    gadgets and upgrades tailored to your specific needs.
                   </Typography>
                   <Button
                     variant="contained"
@@ -334,12 +375,21 @@ const About = () => {
                 sx={{
                   height: "100%",
                   borderRadius: 4,
-                  background: `linear-gradient(135deg, ${alpha(theme.palette.secondary.main, 0.05)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
-                  border: `1px solid ${alpha(theme.palette.secondary.main, 0.1)}`,
+                  background: `linear-gradient(135deg, ${alpha(
+                    theme.palette.secondary.main,
+                    0.05
+                  )} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+                  border: `1px solid ${alpha(
+                    theme.palette.secondary.main,
+                    0.1
+                  )}`,
                   transition: "all 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-4px)",
-                    boxShadow: `0 20px 40px ${alpha(theme.palette.secondary.main, 0.15)}`,
+                    boxShadow: `0 20px 40px ${alpha(
+                      theme.palette.secondary.main,
+                      0.15
+                    )}`,
                   },
                 }}
               >
@@ -356,13 +406,20 @@ const About = () => {
                       mb: 3,
                     }}
                   >
-                    <Chat sx={{ fontSize: 30, color: theme.palette.secondary.main }} />
+                    <Chat
+                      sx={{ fontSize: 30, color: theme.palette.secondary.main }}
+                    />
                   </Box>
                   <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                     TrueGate Community
                   </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
-                    Connect with others, share tips, and learn how to better secure your home or business from experienced users.
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{ mb: 3, lineHeight: 1.6 }}
+                  >
+                    Connect with others, share tips, and learn how to better
+                    secure your home or business from experienced users.
                   </Typography>
                   <Button
                     variant="outlined"
@@ -425,7 +482,8 @@ const About = () => {
               lineHeight: 1.6,
             }}
           >
-            Watch our expert-led videos and learn how to set up your devices yourself, troubleshoot issues, and get the most out of our platform.
+            Watch our expert-led videos and learn how to set up your devices
+            yourself, troubleshoot issues, and get the most out of our platform.
           </Typography>
           <Button
             variant="contained"

@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React, { useState } from "react";
 import {
   AppBar,
@@ -107,9 +106,9 @@ const Navbar = () => {
           {user && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title=" Side Menu">
-              <IconButton edge="start" onClick={toggleDrawer(true)}>
-                <MenuIcon sx={{ }} />
-              </IconButton>
+                <IconButton edge="start" onClick={toggleDrawer(true)}>
+                  <MenuIcon sx={{}} />
+                </IconButton>
               </Tooltip>
             </Box>
           )}
@@ -139,7 +138,7 @@ const Navbar = () => {
               <>
                 <Tooltip title="Notifications">
                   <IconButton size="small" onClick={handleNotificationClick}>
-                    <NotificationsIcon fontSize="small"/>
+                    <NotificationsIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
 

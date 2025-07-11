@@ -1,4 +1,3 @@
-// SideBar.jsx
 import React from "react";
 import {
   Box,
@@ -31,11 +30,14 @@ const SideBar = ({ navLinks, onClose }) => {
       <Box>
         <Box sx={{ display: "flex", justifyContent: "center", mb: 2, px: 2 }}>
           {isDarkMode ? (
-            <img src={namedLogoLight} alt="TrueGate Logo" style={{ height: 25 }} />
-          ):(
+            <img
+              src={namedLogoLight}
+              alt="TrueGate Logo"
+              style={{ height: 25 }}
+            />
+          ) : (
             <img src={namedLogo} alt="TrueGate Logo" style={{ height: 25 }} />
           )}
-          
         </Box>
         <Divider sx={{ borderColor: theme.palette.divider, mb: 1 }} />
         <List>

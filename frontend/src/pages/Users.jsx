@@ -27,13 +27,36 @@ const Users = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [customers, setCustomers] = useState([
-    { id: "0001", firstName: "Buddhika", lastName: "Bandara", email: "buddhika@gmail.com", lastLogin: "2024-10-01" },
-    { id: "0002", firstName: "Yonali", lastName: "Kavindya", email: "yonali@gmail.com", lastLogin: "2024-10-01" },
-    { id: "0003", firstName: "Sandali", lastName: "Hiranya", email: "sandali@gmail.com", lastLogin: "2024-10-01" },
+    {
+      id: "0001",
+      firstName: "Buddhika",
+      lastName: "Bandara",
+      email: "buddhika@gmail.com",
+      lastLogin: "2024-10-01",
+    },
+    {
+      id: "0002",
+      firstName: "Yonali",
+      lastName: "Kavindya",
+      email: "yonali@gmail.com",
+      lastLogin: "2024-10-01",
+    },
+    {
+      id: "0003",
+      firstName: "Sandali",
+      lastName: "Hiranya",
+      email: "sandali@gmail.com",
+      lastLogin: "2024-10-01",
+    },
   ]);
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [newCustomer, setNewCustomer] = useState({ id: "", firstName: "", lastName: "", email: "" });
+  const [newCustomer, setNewCustomer] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
@@ -43,7 +66,12 @@ const Users = () => {
   };
 
   const handleAddCustomer = () => {
-    if (newCustomer.id && newCustomer.firstName && newCustomer.lastName && newCustomer.email) {
+    if (
+      newCustomer.id &&
+      newCustomer.firstName &&
+      newCustomer.lastName &&
+      newCustomer.email
+    ) {
       setCustomers((prev) => [...prev, newCustomer]);
       setOpenDialog(false);
       setNewCustomer({ id: "", firstName: "", lastName: "", email: "" });
@@ -56,7 +84,9 @@ const Users = () => {
   };
 
   const confirmDeleteCustomer = () => {
-    setCustomers((prev) => prev.filter((customer) => customer.id !== selectedCustomerId));
+    setCustomers((prev) =>
+      prev.filter((customer) => customer.id !== selectedCustomerId)
+    );
     setDeleteDialogOpen(false);
     setSelectedCustomerId(null);
   };
@@ -73,7 +103,10 @@ const Users = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Paper elevation={3} sx={{ p: 4, display: "flex", flexDirection: "column", gap: 3 }}>
+        <Paper
+          elevation={3}
+          sx={{ p: 4, display: "flex", flexDirection: "column", gap: 3 }}
+        >
           <Typography variant="h5" fontWeight="bold" color="text.primary">
             Dependants List
           </Typography>
@@ -82,12 +115,25 @@ const Users = () => {
             <Table size={isMobile ? "small" : "medium"}>
               <TableHead>
                 <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>ID</TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>First Name</TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>Last Name</TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>Email</TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>Last Login</TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }} align="center">
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
+                    ID
+                  </TableCell>
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
+                    First Name
+                  </TableCell>
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
+                    Last Name
+                  </TableCell>
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
+                    Email
+                  </TableCell>
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
+                    Last Login
+                  </TableCell>
+                  <TableCell
+                    sx={{ color: theme.palette.primary.contrastText }}
+                    align="center"
+                  >
                     Action
                   </TableCell>
                 </TableRow>
@@ -108,7 +154,10 @@ const Users = () => {
                     <TableCell>{customer.email}</TableCell>
                     <TableCell>{customer.lastLogin}</TableCell>
                     <TableCell align="center">
-                      <IconButton onClick={() => handleDeleteCustomer(customer.id)} color="error">
+                      <IconButton
+                        onClick={() => handleDeleteCustomer(customer.id)}
+                        color="error"
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -121,7 +170,11 @@ const Users = () => {
           <Divider />
 
           <Box display="flex" justifyContent="center">
-            <Button variant="contained" startIcon={<Add />} onClick={() => setOpenDialog(true)}>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => setOpenDialog(true)}
+            >
               Add New Dependant
             </Button>
           </Box>
@@ -129,7 +182,11 @@ const Users = () => {
       </Container>
 
       {/* Add Modal */}
-      <Modal open={openDialog} onClose={() => setOpenDialog(false)} closeAfterTransition>
+      <Modal
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        closeAfterTransition
+      >
         <Fade in={openDialog}>
           <Box
             sx={{
@@ -148,13 +205,37 @@ const Users = () => {
               Add New Dependant
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <TextField label="ID" value={newCustomer.id} onChange={(e) => handleInputChange("id", e.target.value)} fullWidth />
-              <TextField label="First Name" value={newCustomer.firstName} onChange={(e) => handleInputChange("firstName", e.target.value)} fullWidth />
-              <TextField label="Last Name" value={newCustomer.lastName} onChange={(e) => handleInputChange("lastName", e.target.value)} fullWidth />
-              <TextField label="Email" value={newCustomer.email} onChange={(e) => handleInputChange("email", e.target.value)} fullWidth />
+              <TextField
+                label="ID"
+                value={newCustomer.id}
+                onChange={(e) => handleInputChange("id", e.target.value)}
+                fullWidth
+              />
+              <TextField
+                label="First Name"
+                value={newCustomer.firstName}
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
+                fullWidth
+              />
+              <TextField
+                label="Last Name"
+                value={newCustomer.lastName}
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
+                fullWidth
+              />
+              <TextField
+                label="Email"
+                value={newCustomer.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                fullWidth
+              />
               <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
-                <Button variant="outlined" onClick={() => setOpenDialog(false)}>Cancel</Button>
-                <Button variant="contained" onClick={handleAddCustomer}>Add</Button>
+                <Button variant="outlined" onClick={() => setOpenDialog(false)}>
+                  Cancel
+                </Button>
+                <Button variant="contained" onClick={handleAddCustomer}>
+                  Add
+                </Button>
               </Box>
             </Box>
           </Box>
@@ -162,7 +243,11 @@ const Users = () => {
       </Modal>
 
       {/* Delete Modal */}
-      <Modal open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} closeAfterTransition>
+      <Modal
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        closeAfterTransition
+      >
         <Fade in={deleteDialogOpen}>
           <Box
             sx={{
@@ -182,11 +267,23 @@ const Users = () => {
               Delete Dependant
             </Typography>
             <Typography variant="body1" color="text.secondary" mb={3}>
-              Are you sure you want to delete this dependant? This action cannot be undone.
+              Are you sure you want to delete this dependant? This action cannot
+              be undone.
             </Typography>
             <Box display="flex" justifyContent="center" gap={2}>
-              <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-              <Button variant="contained" color="error" onClick={confirmDeleteCustomer}>Delete</Button>
+              <Button
+                variant="outlined"
+                onClick={() => setDeleteDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={confirmDeleteCustomer}
+              >
+                Delete
+              </Button>
             </Box>
           </Box>
         </Fade>

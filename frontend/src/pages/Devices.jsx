@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { mockDevices } from "../data/dummyDevices";
 import {
   Box,
@@ -25,7 +25,6 @@ import {
   Sensors as SensorsIcon,
   Power as PowerIcon,
 } from "@mui/icons-material";
-
 
 const iconMap = {
   light: <LightbulbIcon />,
@@ -68,10 +67,14 @@ const Devices = () => {
   }, [searchTerm, roomFilter, typeFilter, devices]);
 
   return (
-    <Box p={3} sx={{ backgroundColor: theme.palette.background.default,
-      pt:10,
-      minHeight: "100vh",
-     }}>
+    <Box
+      p={3}
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        pt: 10,
+        minHeight: "100vh",
+      }}
+    >
       {/* Header */}
       <Box mb={3}>
         <Typography variant="h4" fontWeight="bold" color="text.primary">

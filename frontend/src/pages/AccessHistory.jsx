@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const AccessHistory = () => {
-  return (
-    <div>AccessHistory</div>
-  )
-}
+  return <div>AccessHistory</div>;
+};
 
-export default AccessHistory
+export default AccessHistory;

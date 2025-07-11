@@ -78,7 +78,10 @@ const Profile = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} md={5}>
               <Box display="flex" flexDirection="column" alignItems="center">
-                <Avatar src={profileIcon} sx={{ width: 100, height: 100, mb: 2 }} />
+                <Avatar
+                  src={profileIcon}
+                  sx={{ width: 100, height: 100, mb: 2 }}
+                />
                 <Typography variant="h6" fontWeight="bold">
                   {user?.displayName}
                 </Typography>
@@ -94,13 +97,23 @@ const Profile = () => {
 
             <Grid item xs={12} md={7}>
               <Stack spacing={2}>
-                <Typography variant="subtitle1">Email: {user?.email}</Typography>
-                <Typography variant="subtitle1">First Name: {user?.firstName}</Typography>
-                <Typography variant="subtitle1">Last Name: {user?.lastName}</Typography>
+                <Typography variant="subtitle1">
+                  Email: {user?.email}
+                </Typography>
+                <Typography variant="subtitle1">
+                  First Name: {user?.firstName}
+                </Typography>
+                <Typography variant="subtitle1">
+                  Last Name: {user?.lastName}
+                </Typography>
                 <Typography variant="subtitle1">Phone: 0771234567</Typography>
                 <Typography variant="subtitle1">Role: {user?.role}</Typography>
-                <Typography variant="subtitle1">Account Created: 2023-06-01</Typography>
-                <Typography variant="subtitle1">Last Login: 2025-07-10 09:12 AM</Typography>
+                <Typography variant="subtitle1">
+                  Account Created: 2023-06-01
+                </Typography>
+                <Typography variant="subtitle1">
+                  Last Login: 2025-07-10 09:12 AM
+                </Typography>
                 <Typography variant="subtitle1">Dependants: 3 users</Typography>
               </Stack>
               <Stack direction="row" spacing={2} mt={3}>
@@ -147,7 +160,8 @@ const Profile = () => {
                     <VerifiedIcon sx={{ mr: 1 }} color="success" /> 17 Online
                   </Typography>
                   <Typography>
-                    <DangerousIcon sx={{ mr: 1 }} color="warning" /> 3 Offline or Faulty
+                    <DangerousIcon sx={{ mr: 1 }} color="warning" /> 3 Offline
+                    or Faulty
                   </Typography>
                 </Stack>
               </Paper>
@@ -159,7 +173,9 @@ const Profile = () => {
                   Linked Users
                 </Typography>
                 <Stack spacing={1}>
-                  <Typography>3 Users are linked to this primary account</Typography>
+                  <Typography>
+                    3 Users are linked to this primary account
+                  </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Roles: Member, Guest, Admin
                   </Typography>
@@ -242,7 +258,8 @@ const Profile = () => {
               Delete Account
             </Typography>
             <Typography variant="body1" color="text.secondary" mb={3}>
-              Are you sure you want to delete your account? This action cannot be undone.
+              Are you sure you want to delete your account? This action cannot
+              be undone.
             </Typography>
             <Stack direction="row" justifyContent="center" spacing={2}>
               <Button onClick={() => setDeleteMode(false)}>Cancel</Button>

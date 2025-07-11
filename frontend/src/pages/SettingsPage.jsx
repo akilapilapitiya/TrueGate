@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -79,7 +79,7 @@ const SettingsPage = () => {
           scrollButtons="auto"
           aria-label="settings tabs"
         >
-          <Tab icon={<Settings />} label="General"/>
+          <Tab icon={<Settings />} label="General" />
           <Tab icon={<SecurityIcon />} label="Security" />
           <Tab icon={<NotificationsIcon />} label="Notifications" />
           <Tab icon={<DevicesIcon />} label="Devices" />
@@ -88,10 +88,11 @@ const SettingsPage = () => {
 
         <Box p={3}>
           {tab === 0 && (
-            <Grid container spacing={4} 
-            sx={{display:"flex",
-            flexDirection: "column",
-            }}>
+            <Grid
+              container
+              spacing={4}
+              sx={{ display: "flex", flexDirection: "column" }}
+            >
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" gutterBottom>
                   Theme
@@ -139,10 +140,11 @@ const SettingsPage = () => {
           )}
 
           {tab === 1 && (
-            <Grid container spacing={4} 
-            sx={{display:"flex",
-            flexDirection: "column",
-            }}>
+            <Grid
+              container
+              spacing={4}
+              sx={{ display: "flex", flexDirection: "column" }}
+            >
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" gutterBottom>
                   Two-Factor Authentication
@@ -182,10 +184,11 @@ const SettingsPage = () => {
           )}
 
           {tab === 2 && (
-            <Grid container spacing={4} 
-            sx={{display:"flex",
-            flexDirection: "column",
-            }}>
+            <Grid
+              container
+              spacing={4}
+              sx={{ display: "flex", flexDirection: "column" }}
+            >
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" gutterBottom>
                   Notifications
@@ -225,10 +228,11 @@ const SettingsPage = () => {
           )}
 
           {tab === 3 && (
-            <Grid container spacing={4} 
-            sx={{display:"flex",
-            flexDirection: "column",
-            }}>
+            <Grid
+              container
+              spacing={4}
+              sx={{ display: "flex", flexDirection: "column" }}
+            >
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" gutterBottom>
                   Auto-Lock Doors
