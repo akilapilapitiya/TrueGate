@@ -1,186 +1,216 @@
+import { useRef, useState } from "react";
 import {
   Box,
+  TextField,
   Button,
   Checkbox,
-  Container,
   FormControlLabel,
-  FormGroup,
-  Grid,
-  TextField,
   Typography,
+  Link,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Fade,
 } from "@mui/material";
-import { useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import namedLogo from "../assets/logo-name.png";
-import loginBg from "../assets/login-bg.png";
+import { useNavigate } from "react-router-dom";
 import { checkLogInValidateData } from "../utils/Validate";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../utils/Firebase";
+import namedLogo from "../assets/logo-name.png";
 
 const Login = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const [rememberMe, setRememberMe] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isRememeberChecked, setIsRememeberChecked] = useState(false);
 
-  // User Refs for Input Fields
-  const email = useRef();
-  const password = useRef();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const signInLogic = () => {
-    // Validation Logic
-    const message = checkLogInValidateData(
-      email.current.value,
-      password.current.value
-    );
+  const handleSignIn = async () => {
+    const emailValue = emailRef.current?.value || "";
+    const passwordValue = passwordRef.current?.value || "";
+
+    // Validation
+    const message = checkLogInValidateData(emailValue, passwordValue);
     if (message) {
-      setErrorMessage(message); //Update Error State
+      setErrorMessage(message);
       return;
     }
-    // Login Logic #FIREBASE #####################################################
-    signInWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMessage(errorCode + errorMessage);
-      });
 
-    // Store Update Logic
-    // #########################################################################
-    // Rememeber Me Logic
+    // Remember Me Check
+    if (isRememeberChecked) {
+      console.log("Remember Me is checked");
+      // Optional: implement remember-me logic
+    }
+    navigate("/dashboard");
+
+    // Login Logic
+    // const messageState = await signInUser(emailValue, passwordValue);
+
+    // if (messageState === "Signin successful!") {
+    // } else {
+    //   console.error(messageState);
+    //   setErrorMessage(messageState);
+    // }
   };
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        backgroundImage: `url(${loginBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
-      }}
-    >
-       {/* Glass Blur Overlay */}
+    <Fade in timeout={700}>
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
+          top: 0,
+          left: 0,
           width: "100%",
-          height: "100%",
-          backdropFilter: "blur(1px)",
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          zIndex: 1,
-        }}
-      />
-
-      {/* Login Card */}
-      <Box
-        sx={{
-          zIndex: 2,
-          width: "90%",
-          maxWidth: "400px",
-          p: 4,
-          borderRadius: 3,
-          backgroundColor: "rgba(255, 255, 255, 0.91)",
-          boxShadow: 5,
+          height: "100dvh",
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          backdropFilter: "blur(15px)",
+          backgroundColor: theme.palette.background.default,
+          overflow: "hidden",
         }}
       >
-        <img
-          src={namedLogo}
-          alt="Logo"
-          style={{ width: "120px", marginBottom: "24px" }}
-        />
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Welcome Back
-        </Typography>
-        <Typography variant="body2"  color="#167192" sx={{ mb: 2 }}>
-          Please sign in to continue
-        </Typography>
-
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          fullWidth
-          size="small"
-          sx={{ mb: 2 }}
-          inputRef={email}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          size="small"
-          sx={{ mb: 2 }}
-          inputRef={password}
-        />
-
-        <FormGroup sx={{ width: "100%", mb: 2 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                size="small"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-            }
-            label="Remember me"
-          />
-        </FormGroup>
-
-        <NavLink
-          to="/password-reset"
-          style={{
-            fontSize: "14px",
-            marginBottom: "16px",
-            alignSelf: "flex-start",
-            color: "#167192",
+        <Paper
+          elevation={4}
+          sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            height: { xs: "auto", md: 500 },
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            borderRadius: 4,
+            overflow: "hidden",
+            m: 2,
+            boxShadow: theme.shadows[6],
           }}
         >
-          Forgot Password?
-        </NavLink>
+          {/* Left Panel - Login */}
+          <Box
+            sx={{
+              flex: 1,
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+            }}
+          >
+            <Box
+              sx={{
+                mb: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+              <Typography variant="h4" fontWeight={700} mb={1}>
+                Sign In
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={3}>
+                Welcome back! Please enter your credentials.
+              </Typography>
+            </Box>
 
-        {errorMessage && (
-          <Typography variant="body2" color="error" sx={{ mb: 2 }}>
-            {errorMessage}
-          </Typography>
-        )}
+            <Box
+              component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSignIn();
+              }}
+            >
+              <TextField
+                label="Email"
+                inputRef={emailRef}
+                type="email"
+                fullWidth
+                size="medium"
+                variant="outlined"
+                required
+              />
+              <TextField
+                label="Password"
+                type="password"
+                inputRef={passwordRef}
+                fullWidth
+                size="medium"
+                variant="outlined"
+                required
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  mt: 1,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isRememeberChecked}
+                      onChange={(e) => setIsRememeberChecked(e.target.checked)}
+                    />
+                  }
+                  label="Remember me"
+                  sx={{ m: 0 }}
+                />
 
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={signInLogic}
-          sx={{ mb: 2, textTransform: "none", fontWeight: "bold",backgroundColor: "#167192" }}
-        >
-          Sign In
-        </Button>
+                <Link
+                  component="button"
+                  onClick={() => navigate("/password-reset")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Forgot password?
+                </Link>
+              </Box>
 
-        <Typography variant="body2">
-          Don’t have an account?{" "}
-          <NavLink to="/register" style={{ color: "#1976d2" }}>
-            Create Account
-          </NavLink>
-        </Typography> 
+              {errorMessage && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  textAlign="center"
+                  sx={{ mt: 1 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+              <Button
+                variant="contained"
+                type="submit"
+                size="large"
+                sx={{
+                  mt: 1,
+                  py: 1.3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+              >
+                Login
+              </Button>
+              <Typography variant="body2" mt={1} textAlign="center">
+                Don’t have an account?{" "}
+                <Link
+                  component="button"
+                  onClick={() => navigate("/register")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Create one
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
       </Box>
-    </Box>
+    </Fade>
   );
 };
 

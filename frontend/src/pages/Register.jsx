@@ -1,256 +1,305 @@
+import { useRef, useState } from "react";
 import {
   Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
   TextField,
+  Button,
   Typography,
+  Link,
+  FormControlLabel,
+  Checkbox,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Fade,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
-import registerBg from "../assets/login-bg.png"; 
-import namedLogo from "../assets/logo-name.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
-import { auth } from "../utils/Firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { addUser } from "../utils/UserSlice";
+import namedLogo from "../assets/logo-name.png";
 
 const Register = () => {
-   // Declare refs here
-  const firstName = useRef();
-  const lastName = useRef();
-  const email = useRef();
-  const contact = useRef();
-  const dob = useRef();
-  const gender = useRef();
-  const password = useRef();
-  const confirmPassword = useRef();
-
-  const [errorMessage, setErrorMessage] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const RegisterLogic = () => {
-     // To get Gender selected value:
-    const selectedGenderInput = gender.current.querySelector('input[type="radio"]:checked');
-    const genderValue = selectedGenderInput ? selectedGenderInput.value : null;
-      //Validation Logic
+  // Refs for inputs
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const contactRef = useRef(null);
+  const dobRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  const [gender, setGender] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleGenderChange = (e) => setGender(e.target.value);
+
+  const handleRegister = () => {
+    // Validation
     const message = checkSignUpValidateData(
-      email.current.value,
-      password.current.value,
-      confirmPassword.current.value,
-      firstName.current.value,
-      lastName.current.value,
-      dob.current.value,
-      contact.current.value,
-      genderValue
+      emailRef.current?.value || "",
+      passwordRef.current?.value || "",
+      confirmPasswordRef.current?.value || "",
+      firstNameRef.current?.value || "",
+      lastNameRef.current?.value || "",
+      dobRef.current?.value || "",
+      contactRef.current?.value || "",
+      gender
     );
     if (message) {
       setErrorMessage(message);
-      return false;
+      return;
     }
 
-    createUserWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        updateProfile(user, {
-          displayName: firstName.current.value + " " + lastName.current.value,
-        })
-          .then(() => {
-            const { uid, email, displayName } = auth.currentUser;
-            dispatch(
-              addUser({
-                uid: uid,
-                email: email,
-                displayName: displayName,
-              })
-            );
-            navigate("/dashboard");
-          })
-          .catch((error) => {
-            // An error occurred
-            setErrorMessage(error.code + error.message);
-          });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMessage(errorCode + errorMessage);
-      });
+    // Terms and Conditions Check
+    if (!isChecked) {
+      setErrorMessage("You must agree to the terms and conditions");
+      return;
+    }
+    // Registration Logic
+    navigate("/dashboard");
   };
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundImage: `url(${registerBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: 2,
-      }}
-    >
+    <Fade in timeout={700}>
       <Box
         sx={{
-          width: "100%",
-          maxWidth: "600px",
-          borderRadius: 3,
-          boxShadow: 5,
-          backgroundColor: "rgba(255, 255, 255, 0.91)",
-          backdropFilter: "blur(12px)",
-          padding: 4,
+          position: "relative",
+          minHeight: "100vh",
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          paddingTop: "64px",
+          paddingBottom: 4,
+          overflowY: "auto",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
-        <img
-          src={namedLogo}
-          alt="Logo"
-          style={{ width: "120px", marginBottom: "24px" }}
-        />
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          Create New Account
-        </Typography>
-        <Typography variant="body2" gutterBottom sx={{color: "#167192", mb: 2 }}>
-          Secure your smart world with TrueGate
-        </Typography>
-
-        <Box sx={{ mt: 1, width: "100%" }}>
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="First Name"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={firstName}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Last Name"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={lastName}
-              />
-            </Grid>
-          </Grid>
-
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              size="small"
-              inputRef={email}
-            />
-          </Box>
-
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Contact Number"
-                type="tel"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={contact}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Date of Birth"
-                type="date"
-                variant="outlined"
-                fullWidth
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                inputRef={dob}
-              />
-            </Grid>
-          </Grid>
-
-          <Box sx={{ mb: 2 }}>
-            <FormControl fullWidth ref={gender}>
-              <FormLabel id="gender-label" sx={{ fontSize: "0.875rem" }}>
-                Gender
-              </FormLabel>
-              <RadioGroup row aria-labelledby="gender-label" name="gender">
-                <FormControlLabel
-                  value="female"
-                  control={<Radio size="small" />}
-                  label="Female"
-                />
-                <FormControlLabel
-                  value="male"
-                  control={<Radio size="small" />}
-                  label="Male"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Box>
-
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={password}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Confirm Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={confirmPassword}
-              />
-            </Grid>
-          </Grid>
-
-          {errorMessage && (
-            <Typography variant="body2" color="error" sx={{ mb: 2 }}>
-              {errorMessage}
-            </Typography>
-          )}
-
-          <Button
-            variant="contained"
-            fullWidth
-            size="medium"
-            sx={{ mb: 2, textTransform: "none", fontWeight: "bold",backgroundColor: "#167192" }}
-            onClick={RegisterLogic}
+        <Paper
+          elevation={4}
+          sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            height: { xs: "auto", md: "auto" },
+            borderRadius: 4,
+            m: 2,
+            mt: 4,
+            boxShadow: theme.shadows[6],
+          }}
+        >
+          <Box
+            sx={{
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              overflowY: "auto",
+            }}
           >
-            Register
-          </Button>
+            <Box sx={{ mb: 1, display: "flex", justifyContent: "center" }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+            </Box>
 
-          <Typography variant="body2" align="center">
-            Already have an account? <NavLink to="/login">Login</NavLink>
-          </Typography>
-        </Box>
+            <Typography variant="h4" fontWeight={700} mb={1} textAlign="center">
+              Create Account
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              mb={3}
+              textAlign="center"
+            >
+              Join us and start your journey
+            </Typography>
+
+            <Box
+              component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleRegister();
+              }}
+            >
+              {/* Responsive input pairs */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="First Name"
+                  inputRef={firstNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Last Name"
+                  inputRef={lastNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <TextField
+                label="Email"
+                type="email"
+                inputRef={emailRef}
+                fullWidth
+                size="medium"
+                variant="outlined"
+                required
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  type="tel"
+                  inputRef={contactRef}
+                  variant="outlined"
+                  size="medium"
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Date of Birth"
+                  type="date"
+                  inputRef={dobRef}
+                  variant="outlined"
+                  size="medium"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <FormControl sx={{ mb: 1 }}>
+                <FormLabel id="gender-label" sx={{ mb: 1 }}>
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  row={!isMobile}
+                  column={isMobile ? true : false}
+                  aria-labelledby="gender-label"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  sx={{ gap: 2 }}
+                >
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Password"
+                  type="password"
+                  inputRef={passwordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  inputRef={confirmPasswordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
+                }
+                label="I agree to the terms and conditions"
+              />
+
+              {errorMessage && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  textAlign="center"
+                  sx={{ mt: 1 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+
+              <Button
+                variant="contained"
+                type="submit"
+                size="large"
+                sx={{
+                  mt: 1,
+                  py: 1.3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+                fullWidth
+              >
+                Register
+              </Button>
+
+              <Typography variant="body2" mt={1} textAlign="center">
+                Already have an account?{" "}
+                <Link
+                  component="button"
+                  onClick={() => navigate("/login")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Login here
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
       </Box>
-    </Box>
+    </Fade>
   );
 };
 

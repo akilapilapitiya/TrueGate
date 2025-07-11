@@ -1,21 +1,31 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import namedLogo from "../assets/logo-name.png";
-import { useRef, useState } from "react";
-import { emailValidation, newPasswordValidateData } from "../utils/Validate";
+import React, { useRef, useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Fade,
+  Link,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { emailValidation, newPasswordValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const PasswordReset = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const referEmail = useRef();
-
   const [errorMessage, setErrorMessage] = useState("");
-  const [step, setStep] = useState(1); // 1: Email, 2: OTP, 3: Password
-
+  const [step, setStep] = useState(1);
   const [otpValue, setOtpValue] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Step 1: Email validation
   const handleEmailSubmit = () => {
     const msg = emailValidation(referEmail.current.value);
     if (msg) return setErrorMessage(msg);
@@ -24,7 +34,6 @@ const PasswordReset = () => {
     setStep(2);
   };
 
-  // Step 2: OTP validation
   const handleOtpSubmit = () => {
     if (otpValue.length !== 5) {
       return setErrorMessage("OTP must be 5 digits.");
@@ -34,142 +43,189 @@ const PasswordReset = () => {
     setStep(3);
   };
 
-  // Step 3: Password validation
   const handlePasswordSubmit = () => {
     const msg = newPasswordValidateData(newPassword, confirmPassword);
     if (msg) return setErrorMessage(msg);
 
-    // Password reset logic (call backend here if needed)
     setErrorMessage("");
     navigate("/login");
   };
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "rgb(161, 178, 255)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        p: 2,
-      }}
-    >
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
+    <Fade in timeout={700}>
+      <Box
         sx={{
-          maxWidth: "800px",
-          boxShadow: 3,
-          borderRadius: 2,
-          backgroundColor: "white",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100dvh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          overflow: "hidden",
         }}
       >
-        <Grid item xs={12} md={6} sx={{ p: 3 }}>
-          <img
-            src={namedLogo}
-            alt="Logo"
-            style={{ height: "30px", marginBottom: "16px" }}
-          />
-          <Typography variant="h6" gutterBottom>
-            Reset Your Password
-          </Typography>
-          <Typography variant="body2" gutterBottom sx={{ mb: 2 }}>
-            Enter your email and follow the steps
-          </Typography>
+        <Paper
+          elevation={4}
+          sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            borderRadius: 4,
+            overflow: "hidden",
+            m: 2,
+            boxShadow: theme.shadows[6],
+            p: 4,
+            backgroundColor: theme.palette.background.paper,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Box sx={{ mb: 1 }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+            </Box>
 
-          {/* Step 1: Email */}
-          {step === 1 && (
-            <>
-              <TextField
-                label="Email"
-                variant="outlined"
-                fullWidth
-                size="small"
-                inputRef={referEmail}
-                sx={{ mb: 2 }}
-              />
-              <Button
-                variant="contained"
-                fullWidth
-                size="small"
-                onClick={handleEmailSubmit}
-                sx={{ mb: 2 }}
-              >
-                Submit Email
-              </Button>
-            </>
-          )}
-
-          {/* Step 2: OTP */}
-          {step === 2 && (
-            <>
-              <TextField
-                label="Enter OTP"
-                variant="outlined"
-                fullWidth
-                size="small"
-                value={otpValue}
-                onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, ""))}
-                sx={{ mb: 2 }}
-              />
-              <Button
-                variant="contained"
-                fullWidth
-                size="small"
-                onClick={handleOtpSubmit}
-                sx={{ mb: 2 }}
-              >
-                Confirm OTP
-              </Button>
-            </>
-          )}
-
-          {/* Step 3: New Password */}
-          {step === 3 && (
-            <>
-              <TextField
-                label="New Password"
-                variant="outlined"
-                type="password"
-                fullWidth
-                size="small"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Confirm Password"
-                variant="outlined"
-                type="password"
-                fullWidth
-                size="small"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <Button
-                variant="contained"
-                fullWidth
-                size="small"
-                onClick={handlePasswordSubmit}
-                sx={{ mb: 2 }}
-              >
-                Reset Password
-              </Button>
-            </>
-          )}
-
-          {errorMessage && (
-            <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
-              {errorMessage}
+            <Typography variant="h5" fontWeight={700} textAlign="center">
+              Reset Your Password
             </Typography>
-          )}
-        </Grid>
-      </Grid>
-    </Box>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              textAlign="center"
+            >
+              Enter your email and follow the steps
+            </Typography>
+
+            {/* Step 1: Email */}
+            {step === 1 && (
+              <>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  inputRef={referEmail}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleEmailSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Submit Email
+                </Button>
+              </>
+            )}
+
+            {/* Step 2: OTP */}
+            {step === 2 && (
+              <>
+                <TextField
+                  label="Enter OTP"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={otpValue}
+                  onChange={(e) =>
+                    setOtpValue(e.target.value.replace(/\D/g, ""))
+                  }
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleOtpSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Confirm OTP
+                </Button>
+              </>
+            )}
+
+            {/* Step 3: New Password */}
+            {step === 3 && (
+              <>
+                <TextField
+                  label="New Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handlePasswordSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Reset Password
+                </Button>
+              </>
+            )}
+
+            {errorMessage && (
+              <Typography
+                variant="body2"
+                color="error"
+                textAlign="center"
+                sx={{ mt: 1 }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+
+            <Typography variant="body2" mt={1} textAlign="center">
+              Back to{" "}
+              <Link
+                component="button"
+                onClick={() => navigate("/login")}
+                underline="hover"
+                color="primary"
+                sx={{ fontWeight: 500, cursor: "pointer" }}
+              >
+                Login
+              </Link>
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
+    </Fade>
   );
 };
 

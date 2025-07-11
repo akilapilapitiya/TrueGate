@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React, { useState } from "react";
 import {
   AppBar,
@@ -8,6 +7,8 @@ import {
   Drawer,
   Button,
   Tooltip,
+  Popover,
+  Avatar,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -17,16 +18,18 @@ import {
   Forum as ForumIcon,
   Info as InfoIcon,
   Settings as SettingsIcon,
-  Person2 as Person2Icon,
   Notifications as NotificationsIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  YouTube as YouTubeIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Cloud as CloudIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../utils/Firebase";
 import { useAppTheme } from "../hooks/useAppTheme";
 import SideBar from "./SideBar";
+import ProfileCard from "./ProfileCard";
+import NotificationCard from "./NotificationCard";
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
@@ -34,7 +37,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const role = "houseOwner"; // Replace with dynamic role logic
-  const [user, setUser] = useState(null); // update with user state
+  const [user, setUser] = useState(true); // update with user state
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -48,15 +51,35 @@ const Navbar = () => {
           },
         ]
       : []),
+    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+    { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
+    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
+    { label: "Setup Guides", icon: <YouTubeIcon />, path: "youtube" },
     { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
     { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];
 
   const toggleDrawer = (state) => () => setOpen(state);
 
-  const handleSignOut = () => {
-    signOut(auth).catch(() => navigate("/error-page"));
+  // Notification handler
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
+  const handleNotificationClick = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
   };
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
+  };
+  const isNotificationOpen = Boolean(notificationAnchorEl);
+
+  // Profile Icon and Popover
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setAnchorEl(null);
+  };
+  const isProfileOpen = Boolean(anchorEl);
 
   return (
     <>
@@ -67,7 +90,7 @@ const Navbar = () => {
           bgcolor: theme.palette.background.paper,
           width: "100%",
           color: theme.palette.text.primary,
-          borderRadius:'none',
+          borderRadius: "0",
         }}
       >
         <Toolbar
@@ -76,15 +99,17 @@ const Navbar = () => {
             flexWrap: "wrap",
             px: { xs: 1, sm: 3 },
             gap: 1,
-            borderRadius:'none',
+            borderRadius: "0",
           }}
         >
           {/* Left: Menu Icon */}
           {user && (
             <Box sx={{ flexGrow: 0 }}>
-              <IconButton edge="start" onClick={toggleDrawer(true)}>
-                <MenuIcon sx={{ color: theme.palette.primary.main }} />
-              </IconButton>
+              <Tooltip title=" Side Menu">
+                <IconButton edge="start" onClick={toggleDrawer(true)}>
+                  <MenuIcon sx={{}} />
+                </IconButton>
+              </Tooltip>
             </Box>
           )}
 
@@ -108,37 +133,74 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
+
             {user && (
-              <IconButton size="small">
-                <SettingsIcon fontSize="small" />
-              </IconButton>
+              <>
+                <Tooltip title="Notifications">
+                  <IconButton size="small" onClick={handleNotificationClick}>
+                    <NotificationsIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+
+                <Popover
+                  open={isNotificationOpen}
+                  anchorEl={notificationAnchorEl}
+                  onClose={handleNotificationClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      borderRadius: 2,
+                      boxShadow: theme.shadows[4],
+                    },
+                  }}
+                >
+                  <NotificationCard onClose={handleNotificationClose} />
+                </Popover>
+              </>
             )}
 
             {user && (
-              <IconButton size="small">
-                <NotificationsIcon fontSize="small" />
-              </IconButton>
-            )}
+              <>
+                <Tooltip title=" User Profile">
+                  <Avatar
+                    onClick={handleProfileClick}
+                    src={user?.photoURL}
+                    alt={user?.displayName || "User"}
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
 
-            {user && (
-              <IconButton size="small" onClick={() => navigate("/profile")}>
-                <Person2Icon fontSize="small" />
-              </IconButton>
-            )}
-
-            {user && (
-              <Button
-                onClick={handleSignOut}
-                sx={{
-                  fontWeight: 600,
-                  textTransform: "none",
-                  color: theme.palette.primary.main,
-                  fontSize: { xs: "0.7rem", sm: "0.85rem" },
-                  px: { xs: 1, sm: 2 },
-                }}
-              >
-                SIGN OUT
-              </Button>
+                <Popover
+                  open={isProfileOpen}
+                  anchorEl={anchorEl}
+                  onClose={handleCloseProfile}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      borderRadius: 2,
+                      boxShadow: theme.shadows[4],
+                    },
+                  }}
+                >
+                  <ProfileCard onClose={handleCloseProfile} />
+                </Popover>
+              </>
             )}
           </Box>
         </Toolbar>

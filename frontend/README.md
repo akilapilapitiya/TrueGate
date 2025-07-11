@@ -13,6 +13,9 @@
 -  **Dashboard for API Status & Performance Monitoring**
 -  **User Management Page for Admins**
 -  **Role-Based Access Control**
+-  **Fake Store**
+-  **Device Management**
+-  **Fake CCTV Viewer**
 
 ---
 
@@ -32,6 +35,15 @@
 |  **Profile** | Update profile details, reset password |
 |  **Dashboard** | Shows API status & system performance |
 |  **User Management** | Admin-only page to manage user roles and data |
+|  **Device Management** | Admin-only page to manage Devices |
+|  **CCTV View** | View CCTV footage |
+|  **Community** | Mock a social media interface |
+|  **Password Reset** | Password Reset utilities |
+|  **Settings** | Manage user Settings |
+|  **Access History** | View Users access History |
+|  **Not Found** | page Not Found |
+|  **Error** | Error Encountered |
+
 
 ---
 
