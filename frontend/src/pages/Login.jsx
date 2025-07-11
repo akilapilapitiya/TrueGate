@@ -13,6 +13,7 @@ import {
   Fade,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { checkLogInValidateData } from "../utils/Validate";
 
 const Login = () => {
   const theme = useTheme();
@@ -30,17 +31,18 @@ const Login = () => {
     const passwordValue = passwordRef.current?.value || "";
 
     // Validation
-    // const message = checkLogInValidateData(emailValue, passwordValue);
-    // if (message) {
-    //   setErrorMessage(message);
-    //   return;
-    // }
+    const message = checkLogInValidateData(emailValue, passwordValue);
+    if (message) {
+      setErrorMessage(message);
+      return;
+    }
 
     // Remember Me Check
-    // if (isRememeberChecked) {
-    //   console.log("Remember Me is checked");
-    //   // Optional: implement remember-me logic
-    // }
+    if (isRememeberChecked) {
+      console.log("Remember Me is checked");
+      // Optional: implement remember-me logic
+    }
+    navigate("/dashboard");
 
     // Login Logic
     // const messageState = await signInUser(emailValue, passwordValue);
@@ -72,7 +74,7 @@ const Login = () => {
           elevation={4}
           sx={{
             width: "100%",
-            maxWidth: 960,
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
             height: { xs: "auto", md: 500 },
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
@@ -173,22 +175,6 @@ const Login = () => {
               </Typography>
             </Box>
           </Box>
-
-          {/* Right Panel */}
-          {!isMobile && (
-            <Box
-              sx={{
-                flex: 1,
-                backgroundColor:
-                  theme.palette.mode === "dark" ? "#1e1e2f" : "#e3f2fd",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h6" color="text.secondary"></Typography>
-            </Box>
-          )}
         </Paper>
       </Box>
     </Fade>
