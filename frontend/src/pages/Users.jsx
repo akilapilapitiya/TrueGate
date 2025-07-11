@@ -27,9 +27,9 @@ const Users = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [customers, setCustomers] = useState([
-    { id: "0001", firstName: "Buddhika", lastName: "Bandara", email: "buddhika@gmail.com" },
-    { id: "0002", firstName: "Yonali", lastName: "Kavindya", email: "yonali@gmail.com" },
-    { id: "0003", firstName: "Sandali", lastName: "Hiranya", email: "sandali@gmail.com" },
+    { id: "0001", firstName: "Buddhika", lastName: "Bandara", email: "buddhika@gmail.com", lastLogin: "2024-10-01" },
+    { id: "0002", firstName: "Yonali", lastName: "Kavindya", email: "yonali@gmail.com", lastLogin: "2024-10-01" },
+    { id: "0003", firstName: "Sandali", lastName: "Hiranya", email: "sandali@gmail.com", lastLogin: "2024-10-01" },
   ]);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -86,6 +86,7 @@ const Users = () => {
                   <TableCell sx={{ color: theme.palette.primary.contrastText }}>First Name</TableCell>
                   <TableCell sx={{ color: theme.palette.primary.contrastText }}>Last Name</TableCell>
                   <TableCell sx={{ color: theme.palette.primary.contrastText }}>Email</TableCell>
+                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>Last Login</TableCell>
                   <TableCell sx={{ color: theme.palette.primary.contrastText }} align="center">
                     Action
                   </TableCell>
@@ -105,6 +106,7 @@ const Users = () => {
                     <TableCell>{customer.firstName}</TableCell>
                     <TableCell>{customer.lastName}</TableCell>
                     <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.lastLogin}</TableCell>
                     <TableCell align="center">
                       <IconButton onClick={() => handleDeleteCustomer(customer.id)} color="error">
                         <Delete />
