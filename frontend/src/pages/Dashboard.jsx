@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import SecurityShop from "./SecurityShop"; // Import the new component
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -48,6 +49,7 @@ const Dashboard = () => {
         boxSizing: "border-box",
       }}
     >
+      {/* Main Dashboard Cards */}
       <Box
         sx={{
           display: "grid",
@@ -78,6 +80,9 @@ const Dashboard = () => {
           </Paper>
         ))}
       </Box>
+
+      {/* Security Shop Section */}
+      <SecurityShop />
     </Box>
   );
 };
