@@ -21,7 +21,6 @@ import {
   Refresh,
   Download,
   Share,
-  WarningAmber,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { mockFootage } from "../data/dummyFootage";
