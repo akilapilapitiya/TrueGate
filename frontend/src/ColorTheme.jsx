@@ -77,3 +77,4 @@ const getTheme = (colors) =>
   });
 
 export { lightColors, darkColors, getTheme };
+
