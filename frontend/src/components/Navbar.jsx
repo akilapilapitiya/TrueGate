@@ -34,6 +34,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const role = "houseOwner"; // Replace with dynamic role logic
+  const [user, setUser] = useState(null) // update with user state
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -103,20 +104,27 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
-
-            <IconButton size="small">
+            {user && (
+              <IconButton size="small">
               <SettingsIcon fontSize="small" />
             </IconButton>
-
-            <IconButton size="small">
+            )}
+            
+            {user && (
+              <IconButton size="small">
               <NotificationsIcon fontSize="small" />
             </IconButton>
-
-            <IconButton size="small" onClick={() => navigate("/profile")}>
+            )}
+            
+            {user && (
+              <IconButton size="small" onClick={() => navigate("/profile")}>
               <Person2Icon fontSize="small" />
             </IconButton>
 
-            <Button
+            )}
+            
+            {user && (
+              <Button
               onClick={handleSignOut}
               sx={{
                 fontWeight: 600,
@@ -128,6 +136,8 @@ const Navbar = () => {
             >
               SIGN OUT
             </Button>
+            )}
+            
           </Box>
         </Toolbar>
       </AppBar>
