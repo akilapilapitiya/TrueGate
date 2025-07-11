@@ -55,23 +55,23 @@ const ProfileCard = ({ onClose }) => {
       <Divider sx={{ mb: 1 }} />
 
       <List disablePadding>
-        <ListItemButton
-          onClick={() => {
-            navigate("/profile");
-            onClose();
-          }}
-        >
-          <ListItemText primary="Settings" />
-        </ListItemButton>
-        <ListItemButton
-          onClick={() => {
-            navigate("/settings");
-            onClose();
-          }}
-        >
-          <ListItemText primary="Profile" />
-        </ListItemButton>
-      </List>
+  <ListItemButton
+    onClick={() => {
+      navigate("/profile");
+      onClose();
+    }}
+  >
+    <ListItemText primary="Profile" /> 
+  </ListItemButton>
+  <ListItemButton
+    onClick={() => {
+      navigate("/settings");
+      onClose();
+    }}
+  >
+    <ListItemText primary="Settings" /> 
+  </ListItemButton>
+</List>
 
       <Button
         fullWidth
