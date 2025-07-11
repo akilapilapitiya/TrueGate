@@ -34,7 +34,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const role = "houseOwner"; // Replace with dynamic role logic
-  const [user, setUser] = useState(null) // update with user state
+  const [user, setUser] = useState(null); // update with user state
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -106,38 +106,36 @@ const Navbar = () => {
             </Tooltip>
             {user && (
               <IconButton size="small">
-              <SettingsIcon fontSize="small" />
-            </IconButton>
+                <SettingsIcon fontSize="small" />
+              </IconButton>
             )}
-            
+
             {user && (
               <IconButton size="small">
-              <NotificationsIcon fontSize="small" />
-            </IconButton>
+                <NotificationsIcon fontSize="small" />
+              </IconButton>
             )}
-            
+
             {user && (
               <IconButton size="small" onClick={() => navigate("/profile")}>
-              <Person2Icon fontSize="small" />
-            </IconButton>
-
+                <Person2Icon fontSize="small" />
+              </IconButton>
             )}
-            
+
             {user && (
               <Button
-              onClick={handleSignOut}
-              sx={{
-                fontWeight: 600,
-                textTransform: "none",
-                color: theme.palette.primary.main,
-                fontSize: { xs: "0.7rem", sm: "0.85rem" },
-                px: { xs: 1, sm: 2 },
-              }}
-            >
-              SIGN OUT
-            </Button>
+                onClick={handleSignOut}
+                sx={{
+                  fontWeight: 600,
+                  textTransform: "none",
+                  color: theme.palette.primary.main,
+                  fontSize: { xs: "0.7rem", sm: "0.85rem" },
+                  px: { xs: 1, sm: 2 },
+                }}
+              >
+                SIGN OUT
+              </Button>
             )}
-            
           </Box>
         </Toolbar>
       </AppBar>
