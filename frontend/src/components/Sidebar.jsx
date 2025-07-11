@@ -9,7 +9,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import namedLogo from "../assets/logo-name-white.png";
+import namedLogo from "../assets/logo-name.png";
 import { useAppTheme } from "../hooks/useAppTheme";
 
 const SideBar = ({ navLinks, onClose }) => {

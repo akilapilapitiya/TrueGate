@@ -1,40 +1,51 @@
 import React from "react";
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const boxStyle = {
     width: "100%",
     height: 200,
-    backgroundColor: "rgba(255, 255, 255, 0.37)",
+    backgroundColor: theme.palette.background.default,
     backdropFilter: "blur(10px)",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
+    border: `1px solid ${theme.palette.divider}`,
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 2,
     cursor: "pointer",
     transition: "all 0.3s ease",
     "&:hover": {
       transform: "translateY(-4px)",
-      boxShadow: "0 12px 24px rgba(0, 0, 0, 0.62)",
-      backgroundColor: "rgba(255, 255, 255, 0.23)",
+      boxShadow: theme.shadows[8],
+      backgroundColor: theme.palette.action.hover,
     },
     "&:active": {
       transform: "translateY(-2px)",
     },
   };
 
+  const cards = [
+    { label: "Review CCTV Footage", path: "/footage" },
+    { label: "Review Access History", path: "/history" },
+    { label: "Manage Security Devices", path: "/devices" },
+    { label: "Manage Registered Users", path: "/users" },
+    { label: "Update Profile Details", path: "/profile" },
+    { label: "About TrueGate", path: "/about" },
+  ];
+
   return (
     <Box
       sx={{
         width: "100vw",
         minHeight: "100vh",
-        backgroundColor: "rgb(255, 255, 255)",
+        backgroundColor: theme.palette.background.default,
         padding: { xs: 2, sm: 3, md: 4 },
         boxSizing: "border-box",
-        margin: 0,
       }}
     >
       <Box
@@ -46,83 +57,26 @@ const Dashboard = () => {
             md: "repeat(3, 1fr)",
           },
           gap: { xs: 2, sm: 3, md: 4 },
-          width: "100%",
           maxWidth: "1200px",
           margin: "0 auto",
           paddingTop: "10vh",
         }}
       >
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/footage");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            Review CCTV Footage
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/history");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            Review Access History
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/devices");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            Manage Security Equipment
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/users");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            Manage Registered Users
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/profile");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            Change Profile Details
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          onClick={() => {
-            navigate("/about");
-          }}
-          sx={boxStyle}
-        >
-          <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-            About TrueGate
-          </Typography>
-        </Paper>
+        {cards.map(({ label, path }) => (
+          <Paper
+            key={label}
+            elevation={6}
+            onClick={() => navigate(path)}
+            sx={boxStyle}
+          >
+            <Typography
+              variant="h5"
+              sx={{ color: theme.palette.text.primary, fontWeight: "bold" }}
+            >
+              {label}
+            </Typography>
+          </Paper>
+        ))}
       </Box>
     </Box>
   );
