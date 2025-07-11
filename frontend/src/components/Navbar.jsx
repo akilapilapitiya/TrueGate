@@ -30,6 +30,7 @@ import { auth } from "../utils/Firebase";
 import { useAppTheme } from "../hooks/useAppTheme";
 import SideBar from "./SideBar";
 import ProfileCard from "./ProfileCard";
+import NotificationCard from "./NotificationCard";
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
@@ -57,16 +58,24 @@ const Navbar = () => {
 
   const toggleDrawer = (state) => () => setOpen(state);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  // Notification handler
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
+  const handleNotificationClick = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
+  };
+  const isNotificationOpen = Boolean(notificationAnchorEl);
 
+  // Profile Icon and Popover
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleProfileClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleCloseProfile = () => {
     setAnchorEl(null);
   };
-
   const isProfileOpen = Boolean(anchorEl);
 
   return (
@@ -93,9 +102,11 @@ const Navbar = () => {
           {/* Left: Menu Icon */}
           {user && (
             <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title=" Side Menu">
               <IconButton edge="start" onClick={toggleDrawer(true)}>
-                <MenuIcon sx={{ color: theme.palette.primary.main }} />
+                <MenuIcon sx={{ }} />
               </IconButton>
+              </Tooltip>
             </Box>
           )}
 
@@ -121,24 +132,48 @@ const Navbar = () => {
             </Tooltip>
 
             {user && (
-              <Tooltip title="Notifications">
-              <IconButton size="small">
-                <NotificationsIcon fontSize="small" />
-              </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title="Notifications">
+                  <IconButton size="small" onClick={handleNotificationClick}>
+                    <NotificationsIcon fontSize="small"/>
+                  </IconButton>
+                </Tooltip>
+
+                <Popover
+                  open={isNotificationOpen}
+                  anchorEl={notificationAnchorEl}
+                  onClose={handleNotificationClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      borderRadius: 2,
+                      boxShadow: theme.shadows[4],
+                    },
+                  }}
+                >
+                  <NotificationCard onClose={handleNotificationClose} />
+                </Popover>
+              </>
             )}
 
             {user && (
               <>
-              <Tooltip title=" User Profile">
-                <Avatar
-                onClick={handleProfileClick}
-          src={user?.photoURL}
-          alt={user?.displayName || "User"}
-          sx={{ cursor: "pointer"}}
-        />
-        </Tooltip>
-        
+                <Tooltip title=" User Profile">
+                  <Avatar
+                    onClick={handleProfileClick}
+                    src={user?.photoURL}
+                    alt={user?.displayName || "User"}
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
 
                 <Popover
                   open={isProfileOpen}
