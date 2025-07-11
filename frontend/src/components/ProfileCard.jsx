@@ -11,6 +11,7 @@ import {
   ListItemText,
   useTheme,
 } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -37,20 +38,34 @@ const ProfileCard = ({ onClose }) => {
       }}
     >
       <Box display="flex" alignItems="center" gap={2} mb={2}>
-        <Avatar
-          src={user?.photoURL}
-          alt={user?.displayName || "User"}
-          sx={{ width: 48, height: 48 }}
-        />
-        <Box>
-          <Typography fontWeight={600}>
-            {user?.displayName || "User"}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {user?.email || ""}
-          </Typography>
-        </Box>
-      </Box>
+  <Avatar
+    alt={user?.displayName || "User"}
+    sx={{
+      width: 48,
+      height: 48,
+      bgcolor: theme.palette.primary.main,
+      color: theme.palette.getContrastText(theme.palette.primary.main),
+      border: `2px solid ${theme.palette.primary.light}`,
+      fontWeight: 600,
+      fontSize: 16,
+    }}
+  >
+    {user?.displayName
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase()}
+  </Avatar>
+  <Box>
+    <Typography fontWeight={600}>
+      {user?.displayName || "User"}
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      {user?.email || ""}
+    </Typography>
+  </Box>
+</Box>
 
       <Divider sx={{ mb: 1 }} />
 

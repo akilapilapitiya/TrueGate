@@ -82,7 +82,7 @@ const SecurityShop = () => {
       rating: 4.4,
       reviews: 89,
       image:
-        "https://images.unsplash.com/photo-1586281380923-a3501ba2a6e5?w=300&h=200&fit=crop",
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
       features: [
         "2K Resolution",
         "Color Night Vision",
