@@ -25,18 +25,17 @@ import Person2Icon from "@mui/icons-material/Person2";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { useTheme } from "@mui/material/styles";
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/Firebase";
 import namedLogo from "../assets/logo-name-white.png";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 const Navbar = () => {
-  const theme = useTheme();
+  const { isDarkMode, toggleTheme, theme } = useAppTheme();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
-  const role = "houseOwner"; // e.g., "houseOwner", "tenant", "admin"
+  const role = "houseOwner"; // Replace with dynamic role logic
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -65,8 +64,8 @@ const Navbar = () => {
       sx={{
         width: 250,
         height: "100vh",
-        bgcolor: "#3a4a60",
-        color: "#FFFFFF",
+        bgcolor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         display: "flex",
         flexDirection: "column",
         pt: 3,
@@ -76,7 +75,7 @@ const Navbar = () => {
         <Box sx={{ display: "flex", justifyContent: "left", mb: 2, px: 2 }}>
           <img src={namedLogo} alt="TrueGate Logo" style={{ height: 25 }} />
         </Box>
-        <Divider sx={{ borderColor: "#2A2A40", mb: 1 }} />
+        <Divider sx={{ borderColor: theme.palette.divider, mb: 1 }} />
         <List>
           {navLinks.map(({ label, icon, path }) => (
             <NavLink
@@ -91,10 +90,14 @@ const Navbar = () => {
                     borderRadius: 2,
                     mx: 1,
                     my: 0.5,
-                    color: isActive ? "#FFFFFF" : "#B0BEC5",
-                    bgcolor: isActive ? "#5f687f" : "transparent",
+                    color: isActive
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                    bgcolor: isActive
+                      ? theme.palette.action.selected
+                      : "transparent",
                     "&:hover": {
-                      bgcolor: "#2E2E3E",
+                      bgcolor: theme.palette.action.hover,
                     },
                   }}
                 >
@@ -123,8 +126,9 @@ const Navbar = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: "transparent",
+          bgcolor: theme.palette.background.paper,
           width: "100%",
+          color: theme.palette.text.primary,
         }}
       >
         <Toolbar
@@ -138,7 +142,7 @@ const Navbar = () => {
           {/* Left: Menu Icon */}
           <Box sx={{ flexGrow: 0 }}>
             <IconButton edge="start" onClick={toggleDrawer(true)}>
-              <MenuIcon sx={{ color: "#06aff1" }} />
+              <MenuIcon sx={{ color: theme.palette.primary.main }} />
             </IconButton>
           </Box>
 
@@ -153,12 +157,12 @@ const Navbar = () => {
               flexGrow: 1,
             }}
           >
-            <Tooltip title={darkMode ? "Light mode" : "Dark mode"}>
-              <IconButton size="small" onClick={() => setDarkMode(!darkMode)}>
-                {darkMode ? (
-                  <DarkModeIcon fontSize="small" />
-                ) : (
+            <Tooltip title={isDarkMode ? "Light mode" : "Dark mode"}>
+              <IconButton size="small" onClick={toggleTheme}>
+                {isDarkMode ? (
                   <LightModeIcon fontSize="small" />
+                ) : (
+                  <DarkModeIcon fontSize="small" />
                 )}
               </IconButton>
             </Tooltip>
@@ -180,7 +184,7 @@ const Navbar = () => {
               sx={{
                 fontWeight: 600,
                 textTransform: "none",
-                color: "#06aff1",
+                color: theme.palette.primary.main,
                 fontSize: { xs: "0.7rem", sm: "0.85rem" },
                 px: { xs: 1, sm: 2 },
               }}
@@ -191,7 +195,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer with blurred backdrop */}
+      {/* Drawer */}
       <Drawer
         anchor="left"
         open={open}
