@@ -91,7 +91,7 @@ const Navbar = () => {
           bgcolor: theme.palette.background.paper,
           width: "100%",
           color: theme.palette.text.primary,
-          borderRadius: "none",
+          borderRadius: "0",
         }}
       >
         <Toolbar
@@ -100,7 +100,7 @@ const Navbar = () => {
             flexWrap: "wrap",
             px: { xs: 1, sm: 3 },
             gap: 1,
-            borderRadius: "none",
+            borderRadius: "0",
           }}
         >
           {/* Left: Menu Icon */}
