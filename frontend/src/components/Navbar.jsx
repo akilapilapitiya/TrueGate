@@ -67,6 +67,7 @@ const Navbar = () => {
           bgcolor: theme.palette.background.paper,
           width: "100%",
           color: theme.palette.text.primary,
+          borderRadius:'none',
         }}
       >
         <Toolbar
@@ -75,14 +76,17 @@ const Navbar = () => {
             flexWrap: "wrap",
             px: { xs: 1, sm: 3 },
             gap: 1,
+            borderRadius:'none',
           }}
         >
           {/* Left: Menu Icon */}
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton edge="start" onClick={toggleDrawer(true)}>
-              <MenuIcon sx={{ color: theme.palette.primary.main }} />
-            </IconButton>
-          </Box>
+          {user && (
+            <Box sx={{ flexGrow: 0 }}>
+              <IconButton edge="start" onClick={toggleDrawer(true)}>
+                <MenuIcon sx={{ color: theme.palette.primary.main }} />
+              </IconButton>
+            </Box>
+          )}
 
           {/* Right: Icons */}
           <Box
