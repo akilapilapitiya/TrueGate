@@ -58,10 +58,10 @@ export const ThemeProviderWrapper = ({ children }) => {
   );
 };
 
-export const useTheme = () => {
+export function useAppThemeContext() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProviderWrapper");
-  }
+    throw new Error("useAppThemeContext must be used within a ThemeProviderWrapper");
+  } 
   return context;
-};
+}

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -71,10 +72,18 @@ const Home = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        bgcolor: theme.palette.background.default,
-        color: theme.palette.text.primary,
-        position: "relative",
+         minHeight: "100vh",
+    minWidth: "100%",
+    display: "flex",
+    flexDirection: "column",
+    background: isDarkMode
+      ? "linear-gradient(135deg, rgb(27, 38, 44), rgb(15, 76, 117))"
+      : "linear-gradient(135deg, rgb(50, 130, 184), rgb(187, 225, 250),rgb(15, 76, 117) )",
+    backgroundAttachment: "fixed",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    color: theme.palette.text.primary,
+    position: "relative",
       }}
     >
       {/* Theme Toggle */}
@@ -85,7 +94,7 @@ const Home = () => {
           top: 16,
           right: 16,
           zIndex: 1000,
-          color: isDarkMode ? "#fff" : colors.primary,
+          color: isDarkMode ? "#fff" : colors.brand.primary,
         }}
       >
         {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
@@ -98,15 +107,16 @@ const Home = () => {
             textAlign: "center",
             py: { xs: 8, md: 10 },
             px: 2,
-            background: colors.gradients.primary,
-            color: "#fff",
+            background: "transparent",
+            color: "0F4C75",
+            //boxShadow: "inset 0 -10px 30px rgba(11, 32, 47, 0.88)",
           }}
         >
           <Typography variant={isMobile ? "h4" : "h3"} fontWeight={700} gutterBottom>
             Welcome to TrueGate
           </Typography>
-          <Typography variant="h6" sx={{ mb: 4, maxWidth: "700px", mx: "auto" }}>
-            Smart, secure, and seamless — manage your entire home security from one intuitive dashboard.
+          <Typography variant="h5" sx={{ mb: 4, maxWidth: "700px", mx: "auto", opacity: 1, }}>
+            Smart, secure, and seamless - manage your entire home security from one intuitive dashboard.
           </Typography>
           <Box
             sx={{
@@ -120,7 +130,13 @@ const Home = () => {
             <Button
               variant="contained"
               size="large"
-              sx={{ borderRadius: 4, px: 4 }}
+              sx={{ 
+                borderRadius: 4,
+                 px: 4 ,
+                background: "linear-gradient(135deg, #0F4C75 0%, #42a5f5 100%)",
+                boxShadow: "0 4px 20px rgba(66,165,245,0.5)",
+                color: theme.palette.primary.contrastText,
+                }}
               onClick={() => navigate("/login")}
             >
               Login
@@ -131,8 +147,8 @@ const Home = () => {
               sx={{
                 borderRadius: 4,
                 px: 4,
-                color: "#fff",
-                borderColor: "#fff",
+                color: isDarkMode ? "#fff" : "#2474a9",
+                borderColor: "#175f8fff",
               }}
               onClick={() => navigate("/register")}
             >
@@ -147,13 +163,13 @@ const Home = () => {
 
       {/* Features Section */}
       <Slide in={showContent} direction="up" timeout={1200}>
-        <Box sx={{ px: 3, py: 6, background: theme.palette.background.default }}>
+        <Box sx={{ px: 3, py: 6, background: "transparent" }}>
           <Typography variant="h5" fontWeight={600} textAlign="center" mb={4}>
             Why Join TrueGate?
           </Typography>
-          <Grid container spacing={4} justifyContent="center">
-            {features.map((f, idx) => (
-              <Grid item xs={12} sm={6} md={4} key={idx}>
+         <Grid container spacing={4} justifyContent="center">
+  {features.map((f, idx) => (
+   <Grid item xs={12} sm={6} md={4} key={idx}>
                 <Box
                   sx={{
                     p: 3,
@@ -169,7 +185,15 @@ const Home = () => {
                     },
                   }}
                 >
-                  <Box sx={{ mb: 1, color: colors.primary }}>{f.icon}</Box>
+                  <Box sx={{ mb: 1 }}>
+               {React.cloneElement(f.icon, {
+               sx: {
+                    fontSize: 40,
+                    color: isDarkMode ? colors.primary : "#2474a9ff", // adjust to any color you like
+                    },
+                      })}
+                  </Box>
+
                   <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>
                     {f.title}
                   </Typography>
@@ -189,13 +213,27 @@ const Home = () => {
           textAlign: "center",
           py: 6,
           px: 2,
-          backgroundColor: isDarkMode ? "#1c4a5f" : "#e7f5f7",
+          background: "transparent",
         }}
       >
         <Typography variant="h6" fontWeight={500} sx={{ mb: 2 }}>
           Ready to experience smarter, safer living?
         </Typography>
-        <Button variant="contained" size="large" onClick={() => navigate("/register")}>
+        <Button variant="contained" size="large" onClick={() => navigate("/register")}
+          sx={{
+    borderRadius: 4,
+    px: 4,
+    py: 1.5,
+    background: "linear-gradient(135deg, #0F4C75 0%, #42a5f5 100%)",
+    color: "#fff",
+    boxShadow: "0 4px 20px rgba(50, 130, 184, 0.4)",
+    textTransform: "none",
+    "&:hover": {
+      background: "linear-gradient(135deg, rgb(15, 76, 117), rgb(50, 130, 184))",
+    },
+  }}
+          >
+
           Get Started Today
         </Button>
       </Box>
@@ -204,8 +242,8 @@ const Home = () => {
       <Box
         component="footer"
         sx={{
-          background: colors.gradients.secondary,
-          color: "#ffffff",
+          background: isDarkMode ? colors.gradients.dark : colors.gradients.light,
+          color:  theme.palette.text.primary,
           px: 6,
           py: 6,
         }}
