@@ -1,6 +1,7 @@
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
+  profileUpdateValidateData,
 } from "../utils/Validate";
 
 export const userLogin = (email, password, rememberChecked) => {
@@ -62,3 +63,19 @@ export const userSignOut = () => {
     // Logout Logic From API
     return null;
 }
+
+// ############################################ USER PROFILE UPDATE #############################################
+export const userProfileUpdate = (
+  firstName,
+  lastName,
+  contact
+) => {
+  // Validate profile update data
+  const message = profileUpdateValidateData(firstName, lastName, contact);
+  if (message) {
+    return message;
+  }
+
+  // Profile Update Logic from API
+  return null;
+};

@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { profileUpdateValidateData } from "../utils/Validate";
+import { userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
   const theme = useTheme();
@@ -58,12 +59,11 @@ const Profile = () => {
     const last = lastNameEdit.trim() || "";
     const phone = contactEdit.trim() || "";
 
-    const message = profileUpdateValidateData(first, last, phone);
+    const message = userProfileUpdate(first, last, phone);
     if (message) {
       setErrorMessage(message);
       return;
     }
-
     setErrorMessage(null);
     setEditMode(false);
   };
