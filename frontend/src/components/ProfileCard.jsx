@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Typography,
@@ -12,16 +11,22 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userSignOut } from "../services/authService";
 
 const ProfileCard = ({ onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
   const handleSignOut = async () => {
-    // Sign out logic here
+    const message = userSignOut(dispatch);
+    if (message) {
+      navigate("/error-page");
+    }
     onClose(); // Close popup
+    navigate("/");
   };
 
   return (
@@ -38,10 +43,24 @@ const ProfileCard = ({ onClose }) => {
     >
       <Box display="flex" alignItems="center" gap={2} mb={2}>
         <Avatar
-          src={user?.photoURL}
           alt={user?.displayName || "User"}
-          sx={{ width: 48, height: 48 }}
-        />
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: theme.palette.primary.main,
+            color: theme.palette.getContrastText(theme.palette.primary.main),
+            border: `2px solid ${theme.palette.primary.light}`,
+            fontWeight: 600,
+            fontSize: 16,
+          }}
+        >
+          {user?.displayName
+            ?.split(" ")
+            .map((n) => n[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase()}
+        </Avatar>
         <Box>
           <Typography fontWeight={600}>
             {user?.displayName || "User"}
@@ -61,7 +80,15 @@ const ProfileCard = ({ onClose }) => {
             onClose();
           }}
         >
-          <ListItemText primary="View Profile" />
+          <ListItemText primary="Profile" />
+        </ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate("/settings");
+            onClose();
+          }}
+        >
+          <ListItemText primary="Settings" />
         </ListItemButton>
       </List>
 

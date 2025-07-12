@@ -1,10 +1,15 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "../components/LoadingSpinner";
+
+const SecurityShop = lazy(() => import("./SecurityShop"));
 
 const Dashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
   const boxStyle = {
     width: "100%",
@@ -29,14 +34,23 @@ const Dashboard = () => {
     },
   };
 
+  // Base dashboard cards
   const cards = [
     { label: "Review CCTV Footage", path: "/footage" },
     { label: "Review Access History", path: "/history" },
-    { label: "Manage Security Devices", path: "/devices" },
-    { label: "Manage Registered Users", path: "/users" },
     { label: "Update Profile Details", path: "/profile" },
     { label: "About TrueGate", path: "/about" },
   ];
+
+  // Admin-specific cards
+  if (user?.role === "admin") {
+    cards.splice(
+      2,
+      0,
+      { label: "Manage Security Devices", path: "/devices" },
+      { label: "Manage Registered Users", path: "/users" }
+    );
+  }
 
   return (
     <Box
@@ -48,6 +62,7 @@ const Dashboard = () => {
         boxSizing: "border-box",
       }}
     >
+      {/* Dashboard Cards */}
       <Box
         sx={{
           display: "grid",
@@ -78,6 +93,13 @@ const Dashboard = () => {
           </Paper>
         ))}
       </Box>
+
+      {/* Security Shop (lazy loaded) */}
+      {user?.role === "admin" && (
+        <Suspense fallback={<LoadingSpinner/>}>
+          <SecurityShop />
+        </Suspense>
+      )}
     </Box>
   );
 };

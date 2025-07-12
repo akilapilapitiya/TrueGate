@@ -96,7 +96,11 @@ const PasswordReset = () => {
               Reset Your Password
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" textAlign="center">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              textAlign="center"
+            >
               Enter your email and follow the steps
             </Typography>
 
@@ -115,7 +119,12 @@ const PasswordReset = () => {
                   fullWidth
                   size="large"
                   onClick={handleEmailSubmit}
-                  sx={{ py: 1.3, borderRadius: 2, textTransform: "none", fontWeight: 600 }}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
                 >
                   Submit Email
                 </Button>
@@ -131,14 +140,21 @@ const PasswordReset = () => {
                   fullWidth
                   size="medium"
                   value={otpValue}
-                  onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, ""))}
+                  onChange={(e) =>
+                    setOtpValue(e.target.value.replace(/\D/g, ""))
+                  }
                 />
                 <Button
                   variant="contained"
                   fullWidth
                   size="large"
                   onClick={handleOtpSubmit}
-                  sx={{ py: 1.3, borderRadius: 2, textTransform: "none", fontWeight: 600 }}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
                 >
                   Confirm OTP
                 </Button>
@@ -171,7 +187,12 @@ const PasswordReset = () => {
                   fullWidth
                   size="large"
                   onClick={handlePasswordSubmit}
-                  sx={{ py: 1.3, borderRadius: 2, textTransform: "none", fontWeight: 600 }}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
                 >
                   Reset Password
                 </Button>
@@ -179,7 +200,12 @@ const PasswordReset = () => {
             )}
 
             {errorMessage && (
-              <Typography variant="body2" color="error" textAlign="center" sx={{ mt: 1 }}>
+              <Typography
+                variant="body2"
+                color="error"
+                textAlign="center"
+                sx={{ mt: 1 }}
+              >
                 {errorMessage}
               </Typography>
             )}

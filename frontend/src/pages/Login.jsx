@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Box,
   TextField,
@@ -13,13 +13,15 @@ import {
   Fade,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { checkLogInValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
+import { userLogin } from "../services/authService";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [isRememeberChecked, setIsRememeberChecked] = useState(false);
@@ -31,28 +33,13 @@ const Login = () => {
     const emailValue = emailRef.current?.value || "";
     const passwordValue = passwordRef.current?.value || "";
 
-    // Validation
-    const message = checkLogInValidateData(emailValue, passwordValue);
+    // User Login handled
+    const message = userLogin(emailValue, passwordValue, isRememeberChecked, dispatch);
     if (message) {
       setErrorMessage(message);
       return;
     }
-
-    // Remember Me Check
-    if (isRememeberChecked) {
-      console.log("Remember Me is checked");
-      // Optional: implement remember-me logic
-    }
     navigate("/dashboard");
-
-    // Login Logic
-    // const messageState = await signInUser(emailValue, passwordValue);
-
-    // if (messageState === "Signin successful!") {
-    // } else {
-    //   console.error(messageState);
-    //   setErrorMessage(messageState);
-    // }
   };
 
   return (
@@ -96,16 +83,22 @@ const Login = () => {
               backgroundColor: theme.palette.background.paper,
             }}
           >
-            <Box sx={{ mb: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Box
+              sx={{
+                mb: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
               <Typography variant="h4" fontWeight={700} mb={1}>
-              Sign In
-            </Typography>
-            <Typography variant="body1" color="text.secondary" mb={3}>
-              Welcome back! Please enter your credentials.
-            </Typography>
+                Sign In
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={3}>
+                Welcome back! Please enter your credentials.
+              </Typography>
             </Box>
-            
 
             <Box
               component="form"

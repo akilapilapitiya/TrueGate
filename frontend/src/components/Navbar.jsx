@@ -1,15 +1,15 @@
-// Navbar.jsx
 import React, { useState } from "react";
+import { lazy, Suspense } from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Box,
   Drawer,
-  Button,
   Tooltip,
   Popover,
   Avatar,
+  Chip,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -19,18 +19,20 @@ import {
   Forum as ForumIcon,
   Info as InfoIcon,
   Settings as SettingsIcon,
-  Person2 as Person2Icon,
   Notifications as NotificationsIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  YouTube as YouTubeIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Cloud as CloudIcon,
+  NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../utils/Firebase";
 import { useAppTheme } from "../hooks/useAppTheme";
-import SideBar from "./SideBar";
-import ProfileCard from "./ProfileCard";
-import NotificationCard from "./NotificationCard";
+import { useSelector } from "react-redux";
+const SideBar = lazy(() => import("./SideBar"));
+const ProfileCard = lazy(() => import("./ProfileCard"));
+const NotificationCard = lazy(() => import("./NotificationCard"));
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
@@ -38,7 +40,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const role = "houseOwner"; // Replace with dynamic role logic
-  const [user, setUser] = useState(true); // update with user state
+  const user = useSelector((store) => store.user);
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -52,6 +54,10 @@ const Navbar = () => {
           },
         ]
       : []),
+    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+    { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
+    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
+    { label: "Setup Guides", icon: <YouTubeIcon />, path: "youtube" },
     { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
     { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];
@@ -87,7 +93,7 @@ const Navbar = () => {
           bgcolor: theme.palette.background.paper,
           width: "100%",
           color: theme.palette.text.primary,
-          borderRadius: "none",
+          borderRadius: "0",
         }}
       >
         <Toolbar
@@ -96,16 +102,16 @@ const Navbar = () => {
             flexWrap: "wrap",
             px: { xs: 1, sm: 3 },
             gap: 1,
-            borderRadius: "none",
+            borderRadius: "0",
           }}
         >
           {/* Left: Menu Icon */}
           {user && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title=" Side Menu">
-              <IconButton edge="start" onClick={toggleDrawer(true)}>
-                <MenuIcon sx={{ }} />
-              </IconButton>
+                <IconButton edge="start" onClick={toggleDrawer(true)}>
+                  <MenuIcon sx={{}} />
+                </IconButton>
               </Tooltip>
             </Box>
           )}
@@ -121,6 +127,19 @@ const Navbar = () => {
               flexGrow: 1,
             }}
           >
+            {/* {Not Verified Sign}  */}
+            {user && !user.emailVerified && (
+              <Tooltip title="Email is Not Verified. Please check your mail inbox">
+                <Chip
+                  icon={<NewReleasesIcon />}
+                  label="Email is Not Verified"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ mt: 1, cursor: "pointer" }}
+                  onClick={() => navigate("/profile")}
+                />
+              </Tooltip>
+            )}
             <Tooltip title={isDarkMode ? "Light mode" : "Dark mode"}>
               <IconButton size="small" onClick={toggleTheme}>
                 {isDarkMode ? (
@@ -130,12 +149,11 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
-
             {user && (
               <>
                 <Tooltip title="Notifications">
                   <IconButton size="small" onClick={handleNotificationClick}>
-                    <NotificationsIcon fontSize="small"/>
+                    <NotificationsIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
 
