@@ -5,7 +5,7 @@ import {
   profileUpdateValidateData,
 } from "../utils/Validate";
 
-export const userLogin = (email, password, rememberChecked) => {
+export const userLogin = (email, password, rememberChecked, dispatch) => {
   // Validate email and password
   const message = checkLogInValidateData(email, password);
   if (message) {

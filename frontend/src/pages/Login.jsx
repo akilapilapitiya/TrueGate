@@ -15,11 +15,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import namedLogo from "../assets/logo-name.png";
 import { userLogin } from "../services/authService";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [isRememeberChecked, setIsRememeberChecked] = useState(false);
@@ -32,7 +34,7 @@ const Login = () => {
     const passwordValue = passwordRef.current?.value || "";
 
     // User Login handled
-    const message = userLogin(emailValue, passwordValue, isRememeberChecked);
+    const message = userLogin(emailValue, passwordValue, isRememeberChecked, dispatch);
     if (message) {
       setErrorMessage(message);
       return;
