@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const SecurityShop = lazy(() => import("./SecurityShop"));
 
@@ -43,7 +44,9 @@ const Dashboard = () => {
 
   // Admin-specific cards
   if (user?.role === "admin") {
-    cards.splice(2, 0,
+    cards.splice(
+      2,
+      0,
       { label: "Manage Security Devices", path: "/devices" },
       { label: "Manage Registered Users", path: "/users" }
     );
@@ -92,9 +95,11 @@ const Dashboard = () => {
       </Box>
 
       {/* Security Shop (lazy loaded) */}
-      <Suspense fallback={<div>Loading Shop...</div>}>
-        <SecurityShop />
-      </Suspense>
+      {user?.role === "admin" && (
+        <Suspense fallback={<LoadingSpinner/>}>
+          <SecurityShop />
+        </Suspense>
+      )}
     </Box>
   );
 };
