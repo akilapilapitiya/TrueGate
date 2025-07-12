@@ -1,3 +1,4 @@
+import React, { lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -5,42 +6,45 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-// Layout and Pages
+// Layout
 import RootLayout from "./layout/RootLayout";
+
+// Home Priority
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import Community from "./pages/Community";
-import PasswordReset from "./pages/PasswordReset";
-import Devices from "./pages/Devices";
-import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
-import Users from "./pages/Users";
-import About from "./pages/About";
-import ErrorPage from "./pages/ErrorPage";
-import Footage from "./pages/Footage";
-import AccessHistory from "./pages/AccessHistory";
+
+// Custom Loading Spinner
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// Lazy-loaded pages
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Community = lazy(() => import("./pages/Community"));
+const PasswordReset = lazy(() => import("./pages/PasswordReset"));
+const Devices = lazy(() => import("./pages/Devices"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Users = lazy(() => import("./pages/Users"));
+const About = lazy(() => import("./pages/About"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+const Footage = lazy(() => import("./pages/Footage"));
+const AccessHistory = lazy(() => import("./pages/AccessHistory"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 
 // Route Guards
 import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
 
-//OPTIONAL: Use mock data temporarily
-//REMOVE THESE LINES once you integrate your real auth system or Redux state
+// Redux
 import { useSelector } from "react-redux";
-import SettingsPage from "./pages/SettingsPage";
-// const [user, setUser] = useState(true); //MOCK USER — remove this
-// const [admin, setAdmin] = useState(true); //MOCK ADMIN — remove this
 
 const App = () => {
-  // Use Redux state instead of mock values
-  const user = useSelector((state) => state.user); // Gets user from Redux store
-  const admin = user?.role === "admin"; // Sets admin based on user role
+  const user = useSelector((state) => state.user);
+  const admin = user?.role === "admin";
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        {/*Public Routes */}
+        {/* Public Routes */}
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
@@ -48,7 +52,7 @@ const App = () => {
         <Route path="about" element={<About />} />
         <Route path="error-page" element={<ErrorPage />} />
 
-        {/*Protected Routes - only visible if logged in */}
+        {/* Protected Routes */}
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="profile" element={<Profile />} />
           <Route path="community" element={<Community />} />
@@ -58,20 +62,23 @@ const App = () => {
           <Route path="settings" element={<SettingsPage />} />
         </Route>
 
-        {/*Admin-Only Routes */}
+        {/* Admin-only Routes */}
         <Route element={<AdminRoute user={user} admin={admin} />}>
           <Route path="devices" element={<Devices />} />
           <Route path="users" element={<Users />} />
         </Route>
 
-        {/*Catch-all Route (404) */}
+        {/* Catch-all Route */}
         <Route path="*" element={<NotFound />} />
       </Route>
     )
   );
 
-  // 🚀 Wrap App with RouterProvider
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<LoadingSpinner size="medium" variant="overlay" />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 };
 
 export default App;

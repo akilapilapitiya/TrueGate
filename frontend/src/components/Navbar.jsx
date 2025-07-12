@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { lazy, Suspense } from "react";
 import {
   AppBar,
   Toolbar,
@@ -27,9 +28,9 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAppTheme } from "../hooks/useAppTheme";
-import SideBar from "./SideBar";
-import ProfileCard from "./ProfileCard";
-import NotificationCard from "./NotificationCard";
+const SideBar = lazy(() => import("./SideBar"));
+const ProfileCard = lazy(() => import("./ProfileCard"));
+const NotificationCard = lazy(() => import("./NotificationCard"));
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
