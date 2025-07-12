@@ -53,5 +53,12 @@ export const userRegister = (
   }
 
   // Registration Logic from API
+  const mode = "admin"; // Defaulted at Resgistration here
   return null;
 };
+
+// ############################################ USER LOGOUT #############################################
+export const userSignOut = () => {
+    // Logout Logic From API
+    return null;
+}
