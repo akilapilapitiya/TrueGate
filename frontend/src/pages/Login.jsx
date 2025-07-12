@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { checkLogInValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
+import { userLogin } from "../services/authService";
 
 const Login = () => {
   const theme = useTheme();
@@ -31,28 +32,13 @@ const Login = () => {
     const emailValue = emailRef.current?.value || "";
     const passwordValue = passwordRef.current?.value || "";
 
-    // Validation
-    const message = checkLogInValidateData(emailValue, passwordValue);
+    // User Login handled
+    const message = userLogin(emailValue, passwordValue, isRememeberChecked);
     if (message) {
       setErrorMessage(message);
       return;
     }
-
-    // Remember Me Check
-    if (isRememeberChecked) {
-      console.log("Remember Me is checked");
-      // Optional: implement remember-me logic
-    }
     navigate("/dashboard");
-
-    // Login Logic
-    // const messageState = await signInUser(emailValue, passwordValue);
-
-    // if (messageState === "Signin successful!") {
-    // } else {
-    //   console.error(messageState);
-    //   setErrorMessage(messageState);
-    // }
   };
 
   return (
