@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { profileUpdateValidateData } from "../utils/Validate";
-import { userProfileUpdate } from "../services/authService";
+import { userDeleteAccount, userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
   const theme = useTheme();
@@ -68,9 +68,17 @@ const Profile = () => {
     setEditMode(false);
   };
 
-  const deleteUser = () => {
+  const deleteUser =() => {
+  const message = userDeleteAccount();
+
+  if (message) {
     setDeleteMode(false);
-  };
+    navigate('/error-page');
+    return;
+  }
+  setDeleteMode(false);
+  navigate('/')
+};
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, py: 6, px: 3 }}>

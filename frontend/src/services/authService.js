@@ -79,3 +79,12 @@ export const userProfileUpdate = (
   // Profile Update Logic from API
   return null;
 };
+
+// ############################################ USER DELETE ACCOUNT #############################################
+export const userDeleteAccount = () => {
+  const message = "null";
+  if (message) {
+    return message;
+  }
+  return null;
+};
