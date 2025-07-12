@@ -17,7 +17,7 @@ const MockAuthProvider = ({ enableMock = true }) => {
           lastName: "Doe",
           displayName: "John Doe",
           gender: "male",
-          role: "admin", // use "client" || "admin",
+          role: "clinet", // use "client" || "admin",
           emailVerified: true,
 
         })
