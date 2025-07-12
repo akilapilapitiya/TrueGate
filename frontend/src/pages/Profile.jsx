@@ -21,6 +21,7 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   LockReset as LockResetIcon,
+  NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
@@ -42,13 +43,13 @@ const Profile = () => {
 
   const [firstNameEdit, setFirstNameEdit] = useState(user?.firstName);
   const [lastNameEdit, setLastNameEdit] = useState(user?.lastName);
-  const [contactEdit, setContactEdit] = useState("0771234567");
+  const [contactEdit, setContactEdit] = useState(user?.phone);
 
   useEffect(() => {
     if (editMode) {
       setFirstNameEdit(user?.firstName);
       setLastNameEdit(user?.lastName);
-      setContactEdit("0771234567");
+      setContactEdit(user?.phone);
     }
   }, [editMode]);
 
@@ -85,13 +86,23 @@ const Profile = () => {
                 <Typography variant="h6" fontWeight="bold">
                   {user?.displayName}
                 </Typography>
-                <Chip
-                  icon={<VerifiedIcon />}
-                  label="Verified"
-                  color="success"
-                  variant="outlined"
-                  sx={{ mt: 1 }}
-                />
+                {user?.emailVerified ? (
+                  <Chip
+                    icon={<VerifiedIcon />}
+                    label=" Email is Verified"
+                    color="success"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                ) : (
+                  <Chip
+                    icon={<NewReleasesIcon />}
+                    label="Email is Not Verified"
+                    color="warning"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                )}
               </Box>
             </Grid>
 

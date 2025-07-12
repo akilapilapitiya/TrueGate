@@ -12,11 +12,14 @@ const MockAuthProvider = ({ enableMock = true }) => {
         addUser({
           uid: "dummy-uid-123",
           email: "testuser@example.com",
-          displayName: "John Doe",
+          phone: "0123456789",
           firstName: "John",
           lastName: "Doe",
+          displayName: "John Doe",
           gender: "male",
-          role: "admin", // use "houseOwner" or "admin"
+          role: "admin", // use "client" || "admin",
+          emailVerified: true,
+
         })
       );
     }

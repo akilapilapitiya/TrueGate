@@ -9,7 +9,7 @@ import {
   ListItemButton,
   ListItemText,
   useTheme,
-} from "@mui/material";;
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { userSignOut } from "../services/authService";
@@ -21,8 +21,8 @@ const ProfileCard = ({ onClose }) => {
 
   const handleSignOut = async () => {
     const message = userSignOut();
-    if (message){
-      navigate('/error-page')
+    if (message) {
+      navigate("/error-page");
     }
     onClose(); // Close popup
     navigate("/");
