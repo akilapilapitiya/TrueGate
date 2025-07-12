@@ -90,7 +90,7 @@ const Navbar = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.paper,
+          bgcolor: "transparent",
           width: "100%",
           color: theme.palette.text.primary,
           borderRadius: "0",
