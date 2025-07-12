@@ -13,13 +13,15 @@ import {
   Fade,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { checkLogInValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
+import { userLogin } from "../services/authService";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [isRememeberChecked, setIsRememeberChecked] = useState(false);
@@ -31,28 +33,13 @@ const Login = () => {
     const emailValue = emailRef.current?.value || "";
     const passwordValue = passwordRef.current?.value || "";
 
-    // Validation
-    const message = checkLogInValidateData(emailValue, passwordValue);
+    // User Login handled
+    const message = userLogin(emailValue, passwordValue, isRememeberChecked, dispatch);
     if (message) {
       setErrorMessage(message);
       return;
     }
-
-    // Remember Me Check
-    if (isRememeberChecked) {
-      console.log("Remember Me is checked");
-      // Optional: implement remember-me logic
-    }
     navigate("/dashboard");
-
-    // Login Logic
-    // const messageState = await signInUser(emailValue, passwordValue);
-
-    // if (messageState === "Signin successful!") {
-    // } else {
-    //   console.error(messageState);
-    //   setErrorMessage(messageState);
-    // }
   };
 
   return (

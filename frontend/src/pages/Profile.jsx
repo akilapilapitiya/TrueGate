@@ -21,6 +21,7 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   LockReset as LockResetIcon,
+  NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
@@ -28,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { profileUpdateValidateData } from "../utils/Validate";
+import { userDeleteAccount, userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
   const theme = useTheme();
@@ -42,13 +44,13 @@ const Profile = () => {
 
   const [firstNameEdit, setFirstNameEdit] = useState(user?.firstName);
   const [lastNameEdit, setLastNameEdit] = useState(user?.lastName);
-  const [contactEdit, setContactEdit] = useState("0771234567");
+  const [contactEdit, setContactEdit] = useState(user?.phone);
 
   useEffect(() => {
     if (editMode) {
       setFirstNameEdit(user?.firstName);
       setLastNameEdit(user?.lastName);
-      setContactEdit("0771234567");
+      setContactEdit(user?.phone);
     }
   }, [editMode]);
 
@@ -57,19 +59,26 @@ const Profile = () => {
     const last = lastNameEdit.trim() || "";
     const phone = contactEdit.trim() || "";
 
-    const message = profileUpdateValidateData(first, last, phone);
+    const message = userProfileUpdate(first, last, phone);
     if (message) {
       setErrorMessage(message);
       return;
     }
-
     setErrorMessage(null);
     setEditMode(false);
   };
 
-  const deleteUser = () => {
+  const deleteUser =() => {
+  const message = userDeleteAccount();
+
+  if (message) {
     setDeleteMode(false);
-  };
+    navigate('/error-page');
+    return;
+  }
+  setDeleteMode(false);
+  navigate('/')
+};
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, py: 6, px: 3 }}>
@@ -85,13 +94,23 @@ const Profile = () => {
                 <Typography variant="h6" fontWeight="bold">
                   {user?.displayName}
                 </Typography>
-                <Chip
-                  icon={<VerifiedIcon />}
-                  label="Verified"
-                  color="success"
-                  variant="outlined"
-                  sx={{ mt: 1 }}
-                />
+                {user?.emailVerified ? (
+                  <Chip
+                    icon={<VerifiedIcon />}
+                    label=" Email is Verified"
+                    color="success"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                ) : (
+                  <Chip
+                    icon={<NewReleasesIcon />}
+                    label="Email is Not Verified"
+                    color="warning"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                )}
               </Box>
             </Grid>
 

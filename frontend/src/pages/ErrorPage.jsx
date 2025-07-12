@@ -2,10 +2,6 @@ import { Box, Button, Typography, Stack, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-const COLORS = {
-  background: "linear-gradient(to bottom right, #fef6f9, #ecf7f8)",
-};
-
 const ErrorPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -15,7 +11,7 @@ const ErrorPage = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        background: COLORS.background,
+        background: `linear-gradient(to bottom right, ${theme.palette.background.default}, ${theme.palette.background.paper})`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -56,7 +52,7 @@ const ErrorPage = () => {
           size="large"
           onClick={() => navigate("/")}
           sx={{
-            borderRadius: 8,
+            borderRadius: theme.shape.borderRadius * 2,
             px: 4,
             py: 1.5,
             fontWeight: 600,

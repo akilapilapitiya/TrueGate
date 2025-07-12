@@ -1,12 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import AuthListener from "../utils/MockAuthProvider";
+import AuthInitializer from "../utils/AuthInitializer";
 
 const RootLayout = () => {
   const location = useLocation();
   return (
     <div className="root-container">
-      <AuthListener />
+      <AuthInitializer />
       <div className="navbar-container">
         <Navbar />
       </div>

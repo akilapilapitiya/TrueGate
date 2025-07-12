@@ -10,18 +10,23 @@ import {
   ListItemText,
   useTheme,
 } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userSignOut } from "../services/authService";
 
 const ProfileCard = ({ onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
   const handleSignOut = async () => {
-    // Sign out logic here
+    const message = userSignOut(dispatch);
+    if (message) {
+      navigate("/error-page");
+    }
     onClose(); // Close popup
+    navigate("/");
   };
 
   return (
