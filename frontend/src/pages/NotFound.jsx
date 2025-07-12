@@ -2,11 +2,7 @@ import { Box, Button, Typography, Stack, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-const COLORS = {
-  background: "linear-gradient(to bottom right, #fef6f9, #ecf7f8)",
-};
-
-const ErrorPage = () => {
+const NotFound = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
@@ -15,7 +11,7 @@ const ErrorPage = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        background: COLORS.background,
+        background: theme.palette.background.default,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -30,7 +26,7 @@ const ErrorPage = () => {
           fontWeight={800}
           sx={{ letterSpacing: -1 }}
         >
-          Error
+          404
         </Typography>
 
         <Typography
@@ -38,7 +34,7 @@ const ErrorPage = () => {
           fontWeight={600}
           color="text.primary"
         >
-          Something went wrong
+          Page Not Found
         </Typography>
 
         <Typography
@@ -46,8 +42,7 @@ const ErrorPage = () => {
           color="text.secondary"
           sx={{ maxWidth: 450 }}
         >
-          An unexpected error occurred. Please try again later or return to the
-          homepage.
+          Sorry, the page you’re looking for doesn’t exist or has been moved.
         </Typography>
 
         <Button
@@ -70,4 +65,4 @@ const ErrorPage = () => {
   );
 };
 
-export default ErrorPage;
+export default NotFound;

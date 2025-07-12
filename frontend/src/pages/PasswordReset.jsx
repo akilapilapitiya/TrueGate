@@ -1,334 +1,231 @@
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { newPasswordValidateData } from "../utils/Validate";
-import { updatePassword } from "firebase/auth";
-import { auth } from "../utils/Firebase";
-import { useNavigate } from "react-router-dom";
-import SuccessModal from "../components/modals/SuccessModal";
-import { colorPallete } from "../ColorTheme";
-
-// MUI
+import React, { useRef, useState } from "react";
 import {
   Box,
-  Button,
-  Container,
   TextField,
+  Button,
   Typography,
+  useTheme,
+  useMediaQuery,
   Paper,
-  Divider,
+  Fade,
+  Link,
 } from "@mui/material";
-import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
+import { useNavigate } from "react-router-dom";
+import { emailValidation, newPasswordValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const PasswordReset = () => {
-  const store = useSelector((state) => state.user);
-  const [changeEligible, setChangeEligible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const email = useRef(null);
-  const contact = useRef(null);
-  const newPassword = useRef(null);
-  const reNewPassword = useRef(null);
+  const referEmail = useRef();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [step, setStep] = useState(1);
+  const [otpValue, setOtpValue] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const validateEmailInput = () => {
-    if (!store) return; // External users validation not yet implemented
-    if (email.current.value !== store.email) return;
-    setChangeEligible(true);
+  const handleEmailSubmit = () => {
+    const msg = emailValidation(referEmail.current.value);
+    if (msg) return setErrorMessage(msg);
+
+    setErrorMessage("");
+    setStep(2);
   };
 
-  const handleUpdatePassword = () => {
-    const message = newPasswordValidateData(
-      newPassword.current.value,
-      reNewPassword.current.value
-    );
-    setErrorMessage(message);
-    if (message) return;
-
-    const user = auth.currentUser;
-    if (!user) {
-      setErrorMessage("You must be logged in to change your password.");
-      return;
+  const handleOtpSubmit = () => {
+    if (otpValue.length !== 5) {
+      return setErrorMessage("OTP must be 5 digits.");
     }
 
-    updatePassword(user, newPassword.current.value)
-      .then(() => {
-        setChangeEligible(false);
-        setShowSuccessModal(true);
-      })
-      .catch((error) => {
-        if (error.code === "auth/requires-recent-login") {
-          setErrorMessage(
-            "You need to re-login before changing your password."
-          );
-        } else {
-          setErrorMessage("Failed to update password: " + error.message);
-        }
-      });
+    setErrorMessage("");
+    setStep(3);
+  };
+
+  const handlePasswordSubmit = () => {
+    const msg = newPasswordValidateData(newPassword, confirmPassword);
+    if (msg) return setErrorMessage(msg);
+
+    setErrorMessage("");
+    navigate("/login");
   };
 
   return (
-    <Box
-      sx={{
-        background: colorPallete.pageBackgroundColorPasswordReset,
-        minHeight: "100vh",
-        margin: "-8px",
-        padding: "8px",
-      }}
-    >
-      <Container maxWidth="sm" sx={{ mt: 6 }}>
+    <Fade in timeout={700}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100dvh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          overflow: "hidden",
+        }}
+      >
         <Paper
-          elevation={3}
+          elevation={4}
           sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            borderRadius: 4,
+            overflow: "hidden",
+            m: 2,
+            boxShadow: theme.shadows[6],
             p: 4,
-            background: colorPallete.containerBackgroundColorPasswordReset,
+            backgroundColor: theme.palette.background.paper,
           }}
         >
-          <Typography
-            variant="h4"
-            gutterBottom
+          <Box
             sx={{
-              color: colorPallete.passwordResetPageNormalText,
-              fontWeight: "bold",
-              textAlign: "center",
-              fontSize: fontSizes.mainHeading,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
             }}
           >
-            PASSWORD RESET
-          </Typography>
-
-          <Divider
-            sx={{
-              mb: 3,
-              borderColor: colorPallete.passwordResetPageNormalText,
-            }}
-          />
-
-          {!changeEligible && (
-            <Box sx={{ mt: 3 }}>
-              <TextField
-                label="Email Address"
-                fullWidth
-                inputRef={email}
-                sx={{
-                  background: colorPallete.textFieldBackgroundColor,
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset",
-                    WebkitTextFillColor: "white",
-                    transition: "background 5000s ease-in-out 0s",
-                  },
-                  fontSize: textBoxSizes.medium.fontSize,
-                  width: textBoxSizes.medium.width,
-                  minHeight: textBoxSizes.medium.minHeight,
-                }}
-              />
-              {!store && (
-                <TextField
-                  label="Contact Number"
-                  fullWidth
-                  inputRef={contact}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    fontSize: textBoxSizes.medium.fontSize,
-                    width: textBoxSizes.medium.width,
-                    minHeight: textBoxSizes.medium.minHeight,
-                  }}
-                />
-              )}
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 2,
-                  background: colorPallete.registerButtonColor,
-                  color: colorPallete.registerButtonAccentColor,
-                  borderColor: colorPallete.registerButtonAccentColor,
-                  minWidth: buttonSizes.subButton.minWidth,
-                  fontSize: buttonSizes.subButton.fontSize,
-                  padding: buttonSizes.subButton.padding,
-                  "&:hover": {
-                    background: colorPallete.registerButtonHoverColor,
-                    color: colorPallete.registerButtonHoverAccentColor,
-                    borderColor: colorPallete.registerButtonHoverAccentColor,
-                  },
-                }}
-                onClick={validateEmailInput}
-              >
-                {store ? "Confirm Email" : "Confirm Identity"}
-              </Button>
+            <Box sx={{ mb: 1 }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
             </Box>
-          )}
 
-          {changeEligible && (
-            <Box sx={{ mt: 4 }}>
-              <Typography
-                sx={{ color: colorPallete.passwordResetPageNormalText }}
-              >
-                Please enter your new password
-              </Typography>
-              <TextField
-                label="New Password"
-                type="password"
-                fullWidth
-                inputRef={newPassword}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  fontSize: textBoxSizes.medium.fontSize,
-                  width: textBoxSizes.medium.width,
-                  minHeight: textBoxSizes.medium.minHeight,
-                }}
-              />
-              <TextField
-                label="Re-enter New Password"
-                type="password"
-                fullWidth
-                inputRef={reNewPassword}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  fontSize: textBoxSizes.medium.fontSize,
-                  width: textBoxSizes.medium.width,
-                  minHeight: textBoxSizes.medium.minHeight,
-                }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{
-                  mt: 4,
-                  background: colorPallete.registerButtonColor,
-                  color: colorPallete.registerButtonAccentColor,
-                  borderColor: colorPallete.registerButtonAccentColor,
-                  minWidth: buttonSizes.subButton.minWidth,
-                  fontSize: buttonSizes.subButton.fontSize,
-                  padding: buttonSizes.subButton.padding,
-                  "&:hover": {
-                    background: colorPallete.registerButtonHoverColor,
-                    color: colorPallete.registerButtonHoverAccentColor,
-                    borderColor: colorPallete.registerButtonHoverAccentColor,
-                  },
-                }}
-                onClick={handleUpdatePassword}
-              >
-                Reset Password
-              </Button>
-            </Box>
-          )}
-
-          {errorMessage && (
-            <Typography color="error" sx={{ mt: 3 }}>
-              {errorMessage}
+            <Typography variant="h5" fontWeight={700} textAlign="center">
+              Reset Your Password
             </Typography>
-          )}
-        </Paper>
 
-        {showSuccessModal && (
-          <SuccessModal
-            message="Your password has been updated successfully!"
-            onClose={() => {
-              setShowSuccessModal(false);
-              navigate("/profile");
-            }}
-          />
-        )}
-      </Container>
-    </Box>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              textAlign="center"
+            >
+              Enter your email and follow the steps
+            </Typography>
+
+            {/* Step 1: Email */}
+            {step === 1 && (
+              <>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  inputRef={referEmail}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleEmailSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Submit Email
+                </Button>
+              </>
+            )}
+
+            {/* Step 2: OTP */}
+            {step === 2 && (
+              <>
+                <TextField
+                  label="Enter OTP"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={otpValue}
+                  onChange={(e) =>
+                    setOtpValue(e.target.value.replace(/\D/g, ""))
+                  }
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleOtpSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Confirm OTP
+                </Button>
+              </>
+            )}
+
+            {/* Step 3: New Password */}
+            {step === 3 && (
+              <>
+                <TextField
+                  label="New Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  size="medium"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handlePasswordSubmit}
+                  sx={{
+                    py: 1.3,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Reset Password
+                </Button>
+              </>
+            )}
+
+            {errorMessage && (
+              <Typography
+                variant="body2"
+                color="error"
+                textAlign="center"
+                sx={{ mt: 1 }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+
+            <Typography variant="body2" mt={1} textAlign="center">
+              Back to{" "}
+              <Link
+                component="button"
+                onClick={() => navigate("/login")}
+                underline="hover"
+                color="primary"
+                sx={{ fontWeight: 500, cursor: "pointer" }}
+              >
+                Login
+              </Link>
+            </Typography>
+          </Box>
+        </Paper>
+      </Box>
+    </Fade>
   );
 };
 

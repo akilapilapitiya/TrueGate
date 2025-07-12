@@ -1,24 +1,17 @@
-import Navbar from "../components/Navbar";
 import { Outlet, useLocation } from "react-router-dom";
-import AuthListener from "../utils/AuthListener";
-import { CssBaseline } from "@mui/material";
+import Navbar from "../components/Navbar";
+import AuthListener from "../utils/MockAuthProvider";
 
 const RootLayout = () => {
   const location = useLocation();
-
   return (
-    <div>
-      <CssBaseline />
-      <AuthListener /> {/* Handles login/logout sync */}
-      {location.pathname !== "/login" &&
-        location.pathname !== "/register" &&
-        location.pathname !== "/" &&
-        location.pathname !== "/error" && (
-          <div className="navbar">
-            <Navbar />
-          </div>
-        )}
-      <div className="main-body">
+    <div className="root-container">
+      <AuthListener />
+      <div className="navbar-container">
+        <Navbar />
+      </div>
+
+      <div className="main-container">
         <Outlet />
       </div>
     </div>

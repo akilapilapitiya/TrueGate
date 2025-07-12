@@ -1,591 +1,305 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { checkSignUpValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "../utils/Firebase";
-import { doc, setDoc } from "firebase/firestore";
-import { colorPallete } from "../ColorTheme";
-
 import {
   Box,
-  Button,
-  Container,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
   TextField,
+  Button,
   Typography,
+  Link,
+  FormControlLabel,
+  Checkbox,
+  useTheme,
+  useMediaQuery,
   Paper,
+  Fade,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { buttonSizes, fontSizes, textBoxSizes } from "../Responsive";
+import { useNavigate } from "react-router-dom";
+import { checkSignUpValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const Register = () => {
-  const [errorMessage, setErrorMessage] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
-  const email = useRef(null);
-  const firstName = useRef(null);
-  const surName = useRef(null);
-  const dob = useRef(null);
-  const contact = useRef(null);
-  const password = useRef(null);
-  const rePassword = useRef(null);
-  const genderMale = useRef(null);
-  const genderFemale = useRef(null);
-  const modeAdmin = useRef(null);
-  const modeClient = useRef(null);
+  // Refs for inputs
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const contactRef = useRef(null);
+  const dobRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
-  const handleSignUpClick = () => {
-    const gender = genderMale.current?.checked
-      ? "male"
-      : genderFemale.current?.checked
-      ? "female"
-      : null;
+  const [gender, setGender] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
 
-    const mode = modeAdmin.current?.checked
-      ? "admin"
-      : modeClient.current?.checked
-      ? "client"
-      : null;
+  const handleGenderChange = (e) => setGender(e.target.value);
 
-    const dobDate = dob.current?.value ? new Date(dob.current.value) : null;
-
+  const handleRegister = () => {
+    // Validation
     const message = checkSignUpValidateData(
-      email.current?.value || "",
-      password.current?.value || "",
-      rePassword.current?.value || "",
-      firstName.current?.value || "",
-      surName.current?.value || "",
-      dob.current?.value || "",
-      contact.current?.value || "",
-      gender,
-      mode
+      emailRef.current?.value || "",
+      passwordRef.current?.value || "",
+      confirmPasswordRef.current?.value || "",
+      firstNameRef.current?.value || "",
+      lastNameRef.current?.value || "",
+      dobRef.current?.value || "",
+      contactRef.current?.value || "",
+      gender
     );
-
     if (message) {
       setErrorMessage(message);
       return;
     }
 
-    createUserWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        updateProfile(user, {
-          displayName: firstName.current.value,
-          phoneNumber: contact.current.value,
-        })
-          .then(() => {
-            setDoc(doc(db, "users", user.uid), {
-              firstName: firstName.current.value,
-              surName: surName.current.value,
-              dob: dobDate ? dobDate.toISOString() : null,
-              gender,
-              mode,
-              contact: contact.current.value,
-              email: email.current.value,
-            })
-              .then(() => navigate("/landing"))
-              .catch((error) =>
-                setErrorMessage("Failed to save user data: " + error.message)
-              );
-          })
-          .catch((error) =>
-            setErrorMessage("Profile update failed: " + error.message)
-          );
-      })
-      .catch((error) => setErrorMessage(error.code + " - " + error.message));
+    // Terms and Conditions Check
+    if (!isChecked) {
+      setErrorMessage("You must agree to the terms and conditions");
+      return;
+    }
+    // Registration Logic
+    navigate("/dashboard");
   };
 
   return (
-    <Box
-      sx={{
-        background: colorPallete.pageBackgroundColorRegister,
-        minHeight: "100vh",
-        margin: "-8px",
-        padding: "8px",
-      }}
-    >
-      <Container maxWidth="sm">
+    <Fade in timeout={700}>
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          paddingTop: "64px",
+          paddingBottom: 4,
+          overflowY: "auto",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
         <Paper
-          elevation={3}
+          elevation={4}
           sx={{
-            mt: 6,
-            p: 4,
-            backgroundColor: colorPallete.containerBackgroundColorRegister,
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            height: { xs: "auto", md: "auto" },
+            borderRadius: 4,
+            m: 2,
+            mt: 4,
+            boxShadow: theme.shadows[6],
           }}
         >
-          <Typography
-            variant="h4"
-            gutterBottom
+          <Box
             sx={{
-              textAlign: "center",
-              fontWeight: "bold",
-              color: colorPallete.registerPageNormalText,
-              fontSize: fontSizes.mainHeading,
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              overflowY: "auto",
             }}
           >
-            CREATE A NEW ACCOUNT
-          </Typography>
-          <Divider
-            sx={{ mb: 3, borderColor: colorPallete.registerPageNormalText }}
-          />
+            <Box sx={{ mb: 1, display: "flex", justifyContent: "center" }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+            </Box>
 
-          <Box component="form" noValidate onSubmit={(e) => e.preventDefault()}>
-            <Grid container spacing={2} sx={{display: "flex", alignItems: 'center'}}>
-              <Grid item xs={12} >
-                <TextField
-                  inputRef={firstName}
-                  label="First Name"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  inputRef={surName}
-                  label="Surname"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  inputRef={email}
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  inputRef={dob}
-                  label="Date of Birth"
-                  type="date"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  inputRef={password}
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  inputRef={rePassword}
-                  label="Re-enter Password"
-                  type="password"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  inputRef={contact}
-                  label="Contact Number"
-                  type="tel"
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "white",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "white",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root.Mui-focused": {
-                      color: "white",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "white",
-                      opacity: 1,
-                    },
-                    "& input:-webkit-autofill": {
-                      boxShadow: "0 0 0 1000px #121212 inset",
-                      WebkitTextFillColor: "white",
-                      transition: "background 5000s ease-in-out 0s",
-                    },
-                    fontSize: textBoxSizes.short.fontSize,
-                    width: textBoxSizes.short.width,
-                    minHeight: textBoxSizes.short.minHeight,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12} sx={{ color: "#ffff" }}>
-                <FormControl fullWidth>
-                  <FormLabel sx={{ color: "#ffff" }}>Gender</FormLabel>
-                  <RadioGroup row>
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          inputRef={genderMale}
-                          defaultChecked
-                          sx={{
-                            color: "#ffff",
-                            "&.Mui-checked": {
-                              color: colorPallete.selectorActiveColor,
-                            },
-                          }}
-                        />
-                      }
-                      value="male"
-                      label="Male"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          inputRef={genderFemale}
-                          sx={{
-                            color: "#ffff",
-                            "&.Mui-checked": {
-                              color: colorPallete.selectorActiveColor,
-                            },
-                          }}
-                        />
-                      }
-                      value="female"
-                      label="Female"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sx={{ color: "#ffff" }}>
-                <FormControl fullWidth>
-                  <FormLabel sx={{ color: "#ffff" }}>User Mode</FormLabel>
-                  <RadioGroup row>
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          inputRef={modeAdmin}
-                          sx={{
-                            color: "#ffff",
-                            "&.Mui-checked": {
-                              color: colorPallete.selectorActiveColor,
-                            },
-                          }}
-                        />
-                      }
-                      value="admin"
-                      label="Administrator"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          inputRef={modeClient}
-                          defaultChecked
-                          sx={{
-                            color: "#ffff",
-                            "&.Mui-checked": {
-                              color: colorPallete.selectorActiveColor,
-                            },
-                          }}
-                        />
-                      }
-                      value="client"
-                      label="Client"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>
-
-            {errorMessage && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {errorMessage}
-              </Typography>
-            )}
+            <Typography variant="h4" fontWeight={700} mb={1} textAlign="center">
+              Create Account
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              mb={3}
+              textAlign="center"
+            >
+              Join us and start your journey
+            </Typography>
 
             <Box
-              sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}
+              component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleRegister();
+              }}
             >
+              {/* Responsive input pairs */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="First Name"
+                  inputRef={firstNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Last Name"
+                  inputRef={lastNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <TextField
+                label="Email"
+                type="email"
+                inputRef={emailRef}
+                fullWidth
+                size="medium"
+                variant="outlined"
+                required
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  type="tel"
+                  inputRef={contactRef}
+                  variant="outlined"
+                  size="medium"
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Date of Birth"
+                  type="date"
+                  inputRef={dobRef}
+                  variant="outlined"
+                  size="medium"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <FormControl sx={{ mb: 1 }}>
+                <FormLabel id="gender-label" sx={{ mb: 1 }}>
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  row={!isMobile}
+                  column={isMobile ? true : false}
+                  aria-labelledby="gender-label"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  sx={{ gap: 2 }}
+                >
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Password"
+                  type="password"
+                  inputRef={passwordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  inputRef={confirmPasswordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
+                }
+                label="I agree to the terms and conditions"
+              />
+
+              {errorMessage && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  textAlign="center"
+                  sx={{ mt: 1 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+
               <Button
-                startIcon={<PersonAddIcon />}
-                onClick={handleSignUpClick}
                 variant="contained"
+                type="submit"
+                size="large"
                 sx={{
-                  backgroundColor: colorPallete.buttonBackgroundColorLogin,
-                  color: colorPallete.buttonTextColorLogin,
-                  borderColor: colorPallete.buttonBorderColorLogin,
-                  minWidth: buttonSizes.subButton.minWidth,
-                  fontSize: buttonSizes.subButton.fontSize,
-                  padding: buttonSizes.subButton.padding,
-                  "&:hover": {
-                    backgroundColor:
-                      colorPallete.buttonHoverBackgroundColorLogin,
-                    color: colorPallete.buttonHoverTextColorLogin,
-                    borderColor: colorPallete.buttonHoverBorderColorLogin,
-                  },
-                  "&:active": {
-                    backgroundColor:
-                      colorPallete.buttonActiveBackgroundColorLogin,
-                    color: colorPallete.buttonActiveTextColorLogin,
-                    borderColor: colorPallete.buttonActiveBorderColorLogin,
-                  },
+                  mt: 1,
+                  py: 1.3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textTransform: "none",
                 }}
+                fullWidth
               >
-                Sign Up
+                Register
               </Button>
-              <Button
-                component={NavLink}
-                to="/login"
-                variant="text"
-                sx={{
-                  backgroundColor: colorPallete.buttonBackgroundColorRegister,
-                  color: colorPallete.buttonTextColorRegister,
-                  borderColor: colorPallete.buttonBorderColorRegister,
-                  minWidth: buttonSizes.subButton.minWidth,
-                  fontSize: buttonSizes.subButton.fontSize,
-                  padding: buttonSizes.subButton.padding,
-                  "&:hover": {
-                    backgroundColor:
-                      colorPallete.buttonHoverBackgroundColorRegister,
-                    color: colorPallete.buttonHoverTextColorRegister,
-                    borderColor: colorPallete.buttonHoverBorderColorRegister,
-                  },
-                  "&:active": {
-                    backgroundColor:
-                      colorPallete.buttonActiveBackgroundColorRegister,
-                    color: colorPallete.buttonActiveTextColorRegister,
-                    borderColor: colorPallete.buttonActiveBorderColorRegister,
-                  },
-                }}
-              >
-                Already have an account?
-              </Button>
+
+              <Typography variant="body2" mt={1} textAlign="center">
+                Already have an account?{" "}
+                <Link
+                  component="button"
+                  onClick={() => navigate("/login")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Login here
+                </Link>
+              </Typography>
             </Box>
           </Box>
         </Paper>
-      </Container>
-    </Box>
+      </Box>
+    </Fade>
   );
 };
 

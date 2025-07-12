@@ -1,297 +1,216 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { checkLogInValidateData } from "../utils/Validate";
 import { useRef, useState } from "react";
-import { colorPallete } from "../ColorTheme";
-
-// Firebase
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../utils/Firebase";
-import Loading from "../components/Loading";
-import { useDispatch } from "react-redux";
-import { addUser } from "../utils/UserSlice";
-
-// MUI
 import {
-  Container,
+  Box,
   TextField,
   Button,
+  Checkbox,
+  FormControlLabel,
   Typography,
-  Box,
-  Stack,
-  Divider,
   Link,
+  useTheme,
+  useMediaQuery,
   Paper,
+  Fade,
 } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
-import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import {
-  anchorLinkSizes,
-  buttonSizes,
-  fontSizes,
-  textBoxSizes,
-} from "../Responsive";
+import { useNavigate } from "react-router-dom";
+import { checkLogInValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
 
 const Login = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isRememeberChecked, setIsRememeberChecked] = useState(false);
 
-  const email = useRef(null);
-  const password = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const handleLogInClick = async () => {
-    setErrorMessage(null);
-    setLoading(true);
+  const handleSignIn = async () => {
+    const emailValue = emailRef.current?.value || "";
+    const passwordValue = passwordRef.current?.value || "";
 
-    const message = checkLogInValidateData(
-      email.current.value,
-      password.current.value
-    );
+    // Validation
+    const message = checkLogInValidateData(emailValue, passwordValue);
     if (message) {
       setErrorMessage(message);
-      setLoading(false);
       return;
     }
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      );
-
-      dispatch(
-        addUser({
-          uid: userCredential.user.uid,
-          email: userCredential.user.email,
-        })
-      );
-
-      setLoading(false);
-      navigate("/landing");
-    } catch (error) {
-      setErrorMessage(`${error.code} - ${error.message}`);
-      setLoading(false);
+    // Remember Me Check
+    if (isRememeberChecked) {
+      console.log("Remember Me is checked");
+      // Optional: implement remember-me logic
     }
+    navigate("/dashboard");
+
+    // Login Logic
+    // const messageState = await signInUser(emailValue, passwordValue);
+
+    // if (messageState === "Signin successful!") {
+    // } else {
+    //   console.error(messageState);
+    //   setErrorMessage(messageState);
+    // }
   };
 
   return (
-    <Box
-      sx={{
-        background: colorPallete.pageBackgroundColorLogin,
-        minHeight: "100vh",
-        margin: "-8px",
-        padding: "8px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Container maxWidth="sm">
-        {loading ? (
-          <Loading />
-        ) : (
-          <Paper
-            elevation={3}
+    <Fade in timeout={700}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100dvh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          overflow: "hidden",
+        }}
+      >
+        <Paper
+          elevation={4}
+          sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            height: { xs: "auto", md: 500 },
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            borderRadius: 4,
+            overflow: "hidden",
+            m: 2,
+            boxShadow: theme.shadows[6],
+          }}
+        >
+          {/* Left Panel - Login */}
+          <Box
             sx={{
+              flex: 1,
               p: 4,
-              mt: 6,
-              backgroundColor: colorPallete.containerBackgroundColorLogin,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
             }}
           >
-            <Typography
-              variant="h4"
-              gutterBottom
+            <Box
               sx={{
-                textAlign: "center",
-                fontWeight: "bold",
-                color: "white",
-                fontSize: fontSizes.mainHeading,
+                mb: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              WELCOME BACK !
-            </Typography>
-            <Divider
-              sx={{ mb: 3, borderColor: colorPallete.loginPageNormalText }}
-            />
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+              <Typography variant="h4" fontWeight={700} mb={1}>
+                Sign In
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={3}>
+                Welcome back! Please enter your credentials.
+              </Typography>
+            </Box>
 
             <Box
               component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               onSubmit={(e) => {
                 e.preventDefault();
-                handleLogInClick();
+                handleSignIn();
               }}
-              noValidate
-              autoComplete="off"
             >
               <TextField
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset",
-                    WebkitTextFillColor: "white",
-                    transition: "background 5000s ease-in-out 0s",
-                  },
-                  fontSize: textBoxSizes.medium.fontSize,
-                  width: textBoxSizes.medium.width,
-                  minHeight: textBoxSizes.medium.minHeight,
-                }}
-                inputRef={email}
-                label="Email Address"
+                label="Email"
+                inputRef={emailRef}
                 type="email"
                 fullWidth
+                size="medium"
                 variant="outlined"
-                margin="normal"
+                required
               />
               <TextField
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "white",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "white",
-                    opacity: 1,
-                  },
-                  "& input:-webkit-autofill": {
-                    boxShadow: "0 0 0 1000px #121212 inset",
-                    WebkitTextFillColor: "white",
-                    transition: "background 5000s ease-in-out 0s",
-                  },
-                  fontSize: textBoxSizes.medium.fontSize,
-                  width: textBoxSizes.medium.width,
-                  minHeight: textBoxSizes.medium.minHeight,
-                }}
-                inputRef={password}
                 label="Password"
                 type="password"
+                inputRef={passwordRef}
                 fullWidth
-                margin="normal"
+                size="medium"
                 variant="outlined"
+                required
               />
-
-              {errorMessage && (
-                <Typography variant="body2" color="error" sx={{ mt: 1, mb: 1 }}>
-                  {errorMessage}
-                </Typography>
-              )}
-
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{ mt: 2 }}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  mt: 1,
+                }}
               >
-                <Button
-                  endIcon={<LoginIcon />}
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    background: colorPallete.registerButtonColor,
-                    color: colorPallete.registerButtonAccentColor,
-                    borderColor: colorPallete.registerButtonAccentColor,
-                    minWidth: buttonSizes.subButton.minWidth,
-                    fontSize: buttonSizes.subButton.fontSize,
-                    padding: buttonSizes.subButton.padding,
-                    "&:hover": {
-                      background: colorPallete.registerButtonHoverColor,
-                      color: colorPallete.registerButtonHoverAccentColor,
-                      borderColor: colorPallete.registerButtonHoverAccentColor,
-                    },
-                  }}
-                >
-                  Log in
-                </Button>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isRememeberChecked}
+                      onChange={(e) => setIsRememeberChecked(e.target.checked)}
+                    />
+                  }
+                  label="Remember me"
+                  sx={{ m: 0 }}
+                />
+
                 <Link
-                  component={NavLink}
-                  to="/resetpassword"
-                  weigh="hover"
-                  sx={{
-                    color: colorPallete.linkColorForgotPassword,
-                    fontWeight: "bold",
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: anchorLinkSizes.footerLink.fontSize,
-                    lineHeight: anchorLinkSizes.footerLink.lineHeight,
-                    textDecoration: anchorLinkSizes.footerLink.textDecoration,
-                    display: anchorLinkSizes.footerLink.display,
-                  }}
+                  component="button"
+                  onClick={() => navigate("/password-reset")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
                 >
                   Forgot password?
                 </Link>
-              </Stack>
-
-              <Divider sx={{ my: 3 }} />
-
-              <Box textAlign="center">
-                <Button
-                  endIcon={<AppRegistrationIcon />}
-                  type="button"
-                  onClick={() => navigate("/register")}
-                  variant="outlined"
-                  sx={{
-                    background: colorPallete.loginButtonColor,
-                    color: colorPallete.loginButtonAccentColor,
-                    borderColor: colorPallete.loginButtonAccentColor,
-                    minWidth: buttonSizes.subButton.minWidth,
-                    fontSize: buttonSizes.subButton.fontSize,
-                    padding: buttonSizes.subButton.padding,
-                    "&:hover": {
-                      background: colorPallete.loginButtonHoverColor,
-                      color: colorPallete.loginButtonHoverAccentColor,
-                      borderColor: colorPallete.loginButtonHoverAccentColor,
-                    },
-                  }}
-                >
-                  Create a new account
-                </Button>
               </Box>
+
+              {errorMessage && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  textAlign="center"
+                  sx={{ mt: 1 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+              <Button
+                variant="contained"
+                type="submit"
+                size="large"
+                sx={{
+                  mt: 1,
+                  py: 1.3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+              >
+                Login
+              </Button>
+              <Typography variant="body2" mt={1} textAlign="center">
+                Don’t have an account?{" "}
+                <Link
+                  component="button"
+                  onClick={() => navigate("/register")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Create one
+                </Link>
+              </Typography>
             </Box>
-          </Paper>
-        )}
-      </Container>
-    </Box>
+          </Box>
+        </Paper>
+      </Box>
+    </Fade>
   );
 };
 

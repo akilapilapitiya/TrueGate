@@ -1,127 +1,88 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-} from "@mui/material";
-import { Line, Bar, Pie } from "react-chartjs-2";
-import { colorPallete } from "../ColorTheme";
-
-// Register chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { lazy, Suspense } from "react";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+const SecurityShop = lazy(() => import("./SecurityShop"));
 
 const Dashboard = () => {
-  // Sample data for line chart (API latency)
-  const lineData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    datasets: [
-      {
-        label: "API Latency (ms)",
-        data: [120, 110, 105, 115, 100, 90],
-        fill: false,
-        borderColor: "#3f51b5",
-        tension: 0.3,
-      },
-    ],
+  const theme = useTheme();
+  const navigate = useNavigate();
+
+  const boxStyle = {
+    width: "100%",
+    height: 200,
+    backgroundColor: theme.palette.background.default,
+    backdropFilter: "blur(10px)",
+    border: `1px solid ${theme.palette.divider}`,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 2,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-4px)",
+      boxShadow: theme.shadows[8],
+      backgroundColor: theme.palette.action.hover,
+    },
+    "&:active": {
+      transform: "translateY(-2px)",
+    },
   };
 
-  // Sample data for bar chart (Request counts)
-  const barData = {
-    labels: ["GET", "POST", "PUT", "DELETE"],
-    datasets: [
-      {
-        label: "Requests",
-        data: [5000, 3000, 1200, 700],
-        backgroundColor: ["#3f51b5", "#f50057", "#00bcd4", "#ff9800"],
-      },
-    ],
-  };
-
-  // Sample data for pie chart (Error rate distribution)
-  const pieData = {
-    labels: ["4xx Errors", "5xx Errors", "Success"],
-    datasets: [
-      {
-        label: "Error Rate",
-        data: [15, 5, 80],
-        backgroundColor: ["#f44336", "#9c27b0", "#4caf50"],
-      },
-    ],
-  };
-
-  // Options with smaller chart sizes handled via CSS
+  const cards = [
+    { label: "Review CCTV Footage", path: "/footage" },
+    { label: "Review Access History", path: "/history" },
+    { label: "Manage Security Devices", path: "/devices" },
+    { label: "Manage Registered Users", path: "/users" },
+    { label: "Update Profile Details", path: "/profile" },
+    { label: "About TrueGate", path: "/about" },
+  ];
 
   return (
     <Box
       sx={{
-        backgroundColor: colorPallete.pageBackgroundColorDashboard,
+        width: "100vw",
         minHeight: "100vh",
-        margin: "-8px",
-        padding: "8px",
+        backgroundColor: theme.palette.background.default,
+        padding: { xs: 2, sm: 3, md: 4 },
+        boxSizing: "border-box",
       }}
     >
-      <div className="dashboard-container">
-        <h2>API Performance Dashboard</h2>
-        <div className="grid-container">
-          <div className="chart-box">
-            <h3>API Latency (ms)</h3>
-            <Line data={lineData} />
-          </div>
-          <div className="chart-box">
-            <h3>Request Counts</h3>
-            <Bar data={barData} />
-          </div>
-          <div className="chart-box">
-            <h3>Error Rate Distribution</h3>
-            <Pie data={pieData} />
-          </div>
-        </div>
-        <div className="stats-grid">
-          <div className="stat-item">
-            <h4>Total Requests</h4>
-            <p>10,900</p>
-          </div>
-          <div className="stat-item">
-            <h4>Average Latency</h4>
-            <p>105 ms</p>
-          </div>
-          <div className="stat-item">
-            <h4>Error Rate</h4>
-            <p>20%</p>
-          </div>
-          <div className="stat-item">
-            <h4>Uptime</h4>
-            <p>99.9%</p>
-          </div>
-        </div>
-      </div>
+      {/* Main Dashboard Cards */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            md: "repeat(3, 1fr)",
+          },
+          gap: { xs: 2, sm: 3, md: 4 },
+          maxWidth: "1200px",
+          margin: "0 auto",
+          paddingTop: "10vh",
+        }}
+      >
+        {cards.map(({ label, path }) => (
+          <Paper
+            key={label}
+            elevation={6}
+            onClick={() => navigate(path)}
+            sx={boxStyle}
+          >
+            <Typography
+              variant="h5"
+              sx={{ color: theme.palette.text.primary, fontWeight: "bold" }}
+            >
+              {label}
+            </Typography>
+          </Paper>
+        ))}
+      </Box>
+
+      {/* Security Shop Section */}
+      <SecurityShop />
     </Box>
   );
 };

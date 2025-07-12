@@ -19,8 +19,7 @@ export const checkSignUpValidateData = (
   surName,
   dob,
   contact,
-  gender,
-  mode
+  gender
 ) => {
   //Regex
   const isFirstNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(firstName);
@@ -35,10 +34,11 @@ export const checkSignUpValidateData = (
   const isRePasswordValid = password == rePassword;
 
   if (!isFirstNameValid) return "First name is not valid";
-  if (!isSurNameValid) return "Surname is not valid";
+  if (!isSurNameValid) return "Last Name is not valid";
   if (!isEmailVaild) return "Email ID is not valid";
   if (!isDateValid) return "Date of Birth is not valid";
   if (!isContactValid) return "Contact number is not valid";
+  if (!gender) return "Select a gender";
   if (!isPasswordValid) return "Password is not valid";
   if (!isRePasswordValid) return "Re-entered password does not match";
   return null;
@@ -55,11 +55,20 @@ export const profileUpdateValidateData = (firstName, surName, contact) => {
   const isSurNameValid = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/.test(cleanSurName);
   const isContactValid = /^\d{10}$/.test(cleanContact);
 
-  if (!isFirstNameValid) return "First name is not valid";
-  if (!isSurNameValid) return "Surname is not valid";
+
+  if (!isFirstNameValid) return "First Name is not valid";
+
+  if (!isSurNameValid) return "Last Name is not valid";
   if (!isContactValid) return "Contact number is not valid";
   return null;
 };
+
+export const emailValidation = (email) => {
+  const isEmailVaild = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(email);
+  if (!isEmailVaild) return "Email ID is not valid";
+  return null;
+
+} 
 
 export const newPasswordValidateData = (newPassword, reNewPassword) => {
   const isPasswordValid =

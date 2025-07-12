@@ -1,378 +1,285 @@
-import React from "react";
 import {
   Box,
-  Typography,
   Button,
-  Stack,
-  Container,
+  Typography,
+  Grid,
+  useMediaQuery,
+  Fade,
+  Slide,
+  Link,
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { colorPallete } from "../ColorTheme";
-import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import namedLogo from "../assets/logo-name.png";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
+import { useEffect, useState } from "react";
 import SecurityIcon from "@mui/icons-material/Security";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import { NavLink } from "react-router-dom";
-import Link from "@mui/material/Link";
-import LoginIcon from "@mui/icons-material/Login";
-import { fontSizes, buttonSizes, anchorLinkSizes } from "../Responsive";
+import DevicesIcon from "@mui/icons-material/Devices";
+import GroupIcon from "@mui/icons-material/Group";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import EventIcon from "@mui/icons-material/Event";
+import HomeWorkIcon from "@mui/icons-material/HomeWork";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { useAppTheme } from "../hooks/useAppTheme";
+
+const features = [
+  {
+    title: "Real-time CCTV Access",
+    desc: "Watch live or recorded security footage from anywhere.",
+    icon: <SecurityIcon fontSize="large" />,
+  },
+  {
+    title: "Device Management",
+    desc: "Control all connected security devices from one dashboard.",
+    icon: <DevicesIcon fontSize="large" />,
+  },
+  {
+    title: "Family Access Control",
+    desc: "Securely share and manage access with your loved ones.",
+    icon: <GroupIcon fontSize="large" />,
+  },
+  {
+    title: "Live Alerts & Logs",
+    desc: "Stay informed with instant alerts and activity tracking.",
+    icon: <NotificationsActiveIcon fontSize="large" />,
+  },
+  {
+    title: "Smart Scheduling",
+    desc: "Automate device activity with custom schedules.",
+    icon: <EventIcon fontSize="large" />,
+  },
+  {
+    title: "Multi-Home Support",
+    desc: "Manage multiple properties in one place securely.",
+    icon: <HomeWorkIcon fontSize="large" />,
+  },
+];
 
 const Home = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const { theme, isDarkMode, toggleTheme, colors } = useAppTheme();
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShowContent(true), 300);
+  }, []);
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+        position: "relative",
+      }}
+    >
+      {/* Theme Toggle */}
+      <IconButton
+        onClick={toggleTheme}
         sx={{
-          background: colorPallete.pageBackgroundColorHome,
-          minHeight: "100vh",
-          width: "100vw",
-          margin: "-8px",
-          padding: "8px",
-          paddingBottom: "2vw",
+          position: "absolute",
+          top: 16,
+          right: 16,
+          zIndex: 1000,
+          color: isDarkMode ? "#fff" : colors.primary,
         }}
       >
-        <Container
+        {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+      </IconButton>
+
+      {/* Hero Section */}
+      <Fade in={showContent} timeout={1000}>
+        <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            background: "rgba(0, 0, 0, 0.7)",
-            width: "100%",
-            height: "100%",
-            padding: 4,
-            borderRadius: 2,
-            marginTop: 4,
-            boxShadow: 3,
             textAlign: "center",
-            color: "white",
+            py: { xs: 8, md: 10 },
+            px: 2,
+            background: colors.gradients.primary,
+            color: "#fff",
           }}
         >
-          <Typography variant="h2" component="h1" gutterBottom>
-            WELCOME TO TRUEGATE
+          <Typography variant={isMobile ? "h4" : "h3"} fontWeight={700} gutterBottom>
+            Welcome to TrueGate
           </Typography>
-          <Typography
-            variant="h5"
-            color="text.secondary"
-            gutterBottom
+          <Typography variant="h6" sx={{ mb: 4, maxWidth: "700px", mx: "auto" }}>
+            Smart, secure, and seamless — manage your entire home security from one intuitive dashboard.
+          </Typography>
+          <Box
             sx={{
-              color: "#ffff",
-              fontSize: fontSizes.subHeading,
-              fontWeight: "bold",
+              display: "flex",
+              gap: 3,
+              justifyContent: "center",
+              flexWrap: "wrap",
+              mb: 2,
             }}
           >
-            Manage your account, explore features, and get started easily.
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            gutterBottom
-            sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
-          >
-            {" "}
-            TrueGate is your gateway to a secure and user-friendly experience.
-            Whether you're new or returning, we have everything you need to get
-            started.
-          </Typography>
-
-          <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
             <Button
-              endIcon={<AppRegistrationIcon />}
               variant="contained"
-              onClick={() => navigate("/register")}
+              size="large"
+              sx={{ borderRadius: 4, px: 4 }}
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+            <Button
+              variant="outlined"
               size="large"
               sx={{
-                background: colorPallete.registerButtonColor,
-                color: colorPallete.registerButtonAccentColor,
-                borderColor: colorPallete.registerButtonAccentColor,
-                minWidth: buttonSizes.mainButton.minWidth,
-                fontSize: buttonSizes.mainButton.fontSize,
-                padding: buttonSizes.mainButton.padding,
-                "&:hover": {
-                  background: colorPallete.registerButtonHoverColor,
-                  color: colorPallete.registerButtonHoverAccentColor,
-                  borderColor: colorPallete.registerButtonHoverAccentColor,
-                },
+                borderRadius: 4,
+                px: 4,
+                color: "#fff",
+                borderColor: "#fff",
               }}
+              onClick={() => navigate("/register")}
             >
               Register
             </Button>
-            <Button
-              endIcon={<LoginIcon />}
-              variant="outlined"
-              onClick={() => navigate("/login")}
-              size="large"
-              sx={{
-                background: colorPallete.loginButtonColor,
-                color: colorPallete.loginButtonAccentColor,
-                borderColor: colorPallete.loginButtonAccentColor,
-                minWidth: buttonSizes.mainButton.minWidth,
-                fontSize: buttonSizes.mainButton.fontSize,
-                padding: buttonSizes.mainButton.padding,
-                "&:hover": {
-                  background: colorPallete.loginButtonHoverColor,
-                  color: colorPallete.loginButtonHoverAccentColor,
-                  borderColor: colorPallete.loginButtonHoverAccentColor,
-                },
-              }}
-            >
-              Sign In
-            </Button>
-          </Stack>
-        </Container>
+          </Box>
+          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            Trusted by thousands of families and growing.
+          </Typography>
+        </Box>
+      </Fade>
 
-        <Container
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 4,
-          }}
-        >
-          <Container
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.7)",
-              width: "40%",
-              height: "100%",
-              padding: 4,
-              borderRadius: 2,
-              marginTop: 2,
-              boxShadow: 3,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            <PeopleAltIcon
-              sx={{
-                fontSize: "4rem",
-                color: "#ffff",
-                alignSelf: "center",
-              }}
-            />
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
-            >
-              Manage Users with Ease
-            </Typography>
-            <Typography sx={{ color: "#ffff", fontSize: fontSizes.sentence }}>
-              TrueGate provides a user-friendly interface for managing your
-              account and accessing features seamlessly.
-            </Typography>
-          </Container>
-          <Container
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.7)",
-              width: "40%",
-              height: "100%",
-              padding: 4,
-              borderRadius: 2,
-              marginTop: 2,
-              boxShadow: 3,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            <ElectricBoltIcon
-              sx={{
-                fontSize: "4rem",
-                color: "#ffff",
-                alignSelf: "center",
-              }}
-            />
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
-            >
-              Fast API Integration
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              gutterBottom
-              sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
-            >
-              {" "}
-              TrueGate is built with a focus on performance ensuring that your
-              API requests are handled efficiently.
-            </Typography>
-          </Container>
-        </Container>
+      {/* Features Section */}
+      <Slide in={showContent} direction="up" timeout={1200}>
+        <Box sx={{ px: 3, py: 6, background: theme.palette.background.default }}>
+          <Typography variant="h5" fontWeight={600} textAlign="center" mb={4}>
+            Why Join TrueGate?
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
+            {features.map((f, idx) => (
+              <Grid item xs={12} sm={6} md={4} key={idx}>
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: 4,
+                    bgcolor: theme.palette.background.paper,
+                    boxShadow: 3,
+                    height: "100%",
+                    textAlign: "center",
+                    transition: "0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: 6,
+                    },
+                  }}
+                >
+                  <Box sx={{ mb: 1, color: colors.primary }}>{f.icon}</Box>
+                  <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>
+                    {f.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {f.desc}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Slide>
 
-        <Container
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 4,
-          }}
-        >
-          <Container
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.7)",
-              width: "40%",
-              height: "100%",
-              padding: 4,
-              borderRadius: 2,
-              marginTop: 2,
-              boxShadow: 3,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            <SecurityIcon
-              sx={{
-                fontSize: "4rem",
-                color: "#ffff",
-                alignSelf: "center",
-              }}
-            />
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
-            >
-              High Security Standards
-            </Typography>
-            <Typography sx={{ color: "#ffff", fontSize: fontSizes.sentence }}>
-              Ensure your data is safe with TrueGate's robust security measures.
-              We prioritize your privacy and security at every step.
-            </Typography>
-          </Container>
-          <Container
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              background: "rgba(0, 0, 0, 0.7)",
-              width: "40%",
-              height: "100%",
-              padding: 4,
-              borderRadius: 2,
-              marginTop: 2,
-              boxShadow: 3,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            <SupportAgentIcon
-              sx={{
-                fontSize: "4rem",
-                color: "#ffff",
-                alignSelf: "center",
-              }}
-            />
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              sx={{ weight: "bold", fontSize: fontSizes.subHeading }}
-            >
-              24/7 Support
-            </Typography>
-            <Typography
-              variant="body1"
-              color="#ffff"
-              gutterBottom
-              sx={{ color: "#ffff", fontSize: fontSizes.sentence }}
-            >
-              {" "}
-              Our team is here to assist you around the clock. Whether you have
-              questions or need help, we're just a message away.
-            </Typography>
-          </Container>
-        </Container>
-      </Box>
+      {/* CTA Section */}
       <Box
         sx={{
-          height: "8vw",
-          padding: "2vw",
-          background: colorPallete.homeFooterBackgroundColor,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          borders: "none",
-          paddingRight: "10%",
+          textAlign: "center",
+          py: 6,
+          px: 2,
+          backgroundColor: isDarkMode ? "#1c4a5f" : "#e7f5f7",
         }}
       >
-        <Box
-          component="img"
-          src={namedLogo}
-          alt="logo"
-          sx={{ height: "100%" }}
-        />
-        <Typography
-          variant="body1"
-          color="black"
-          gutterBottom
-          sx={{
-            color: "#ffff",
-            weight: "bold",
-            fontFamily: "Arial, sans-serif",
-            alignSelf: "center",
-            textAlign: "center",
-            fontSize: fontSizes.sentence,
-          }}
-        >
-          Developed and Designed by TrueGate Team <br />
-          Copyrights 2025 <br />
-          All Rights Reserved
+        <Typography variant="h6" fontWeight={500} sx={{ mb: 2 }}>
+          Ready to experience smarter, safer living?
         </Typography>
-        <Typography
-          sx={{
-            color: "#ffff",
-            fontFamily: "Arial, sans-serif",
-            fontWeight: "bold",
-            fontSize: fontSizes.sentence,
-          }}
-        >
-          QUICK LINKS <br />
-          <Link
-            component={NavLink}
-            to="/login"
-            weigh="hover"
-            sx={{
-              color: "#ffff",
-              fontFamily: "Arial, sans-serif",
-              fontSize: anchorLinkSizes.footerLink.fontSize,
-              lineHeight: anchorLinkSizes.footerLink.lineHeight,
-              textDecoration: anchorLinkSizes.footerLink.textDecoration,
-              display: anchorLinkSizes.footerLink.display,
-            }}
-          >
-            Login
-          </Link>{" "}
-          <br />
-          <Link
-            component={NavLink}
-            to="/login"
-            weigh="hover"
-            sx={{
-              color: "#ffff",
-              fontFamily: "Arial, sans-serif",
-              fontSize: anchorLinkSizes.footerLink.fontSize,
-              lineHeight: anchorLinkSizes.footerLink.lineHeight,
-              textDecoration: anchorLinkSizes.footerLink.textDecoration,
-              display: anchorLinkSizes.footerLink.display,
-            }}
-          >
-            Register
-          </Link>
-        </Typography>
+        <Button variant="contained" size="large" onClick={() => navigate("/register")}>
+          Get Started Today
+        </Button>
       </Box>
-    </>
+
+      {/* Footer */}
+      <Box
+        component="footer"
+        sx={{
+          background: colors.gradients.secondary,
+          color: "#ffffff",
+          px: 6,
+          py: 6,
+        }}
+      >
+        <Grid container spacing={4} justifyContent="space-between">
+          <Grid item xs={12} md={3}>
+            <Typography variant="h6" fontWeight={700} gutterBottom>
+              TrueGate
+            </Typography>
+            <Typography variant="body2">
+              Building smarter, safer homes with intelligent security solutions.
+            </Typography>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+              Quick Links
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Link href="/" color="inherit" underline="hover">
+                Home
+              </Link>
+              <Link href="/features" color="inherit" underline="hover">
+                Features
+              </Link>
+              <Link href="/login" color="inherit" underline="hover">
+                Login
+              </Link>
+              <Link href="/register" color="inherit" underline="hover">
+                Register
+              </Link>
+            </Box>
+          </Grid>
+          <Grid item xs={6} md={2}>
+            <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+              Support
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Link href="/faq" color="inherit" underline="hover">
+                FAQ
+              </Link>
+              <Link href="/help" color="inherit" underline="hover">
+                Help Center
+              </Link>
+              <Link href="/contact" color="inherit" underline="hover">
+                Contact
+              </Link>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+              Follow Us
+            </Typography>
+            <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
+              <IconButton color="inherit" href="#">
+                <FacebookIcon />
+              </IconButton>
+              <IconButton color="inherit" href="#">
+                <TwitterIcon />
+              </IconButton>
+              <IconButton color="inherit" href="#">
+                <InstagramIcon />
+              </IconButton>
+              <IconButton color="inherit" href="#">
+                <YouTubeIcon />
+              </IconButton>
+            </Box>
+          </Grid>
+        </Grid>
+        <Box sx={{ textAlign: "center", mt: 4, opacity: 0.8 }}>
+          <Typography variant="body2">© 2025 TrueGate Inc. All rights reserved.</Typography>
+          <Typography variant="body2">Built for smarter homes & safer families.</Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
