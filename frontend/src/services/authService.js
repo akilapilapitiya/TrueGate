@@ -1,3 +1,4 @@
+import { mockLoginUser } from "../utils/MockAuthProvider";
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
@@ -18,6 +19,7 @@ export const userLogin = (email, password, rememberChecked) => {
   }
 
   //Login Logic from API
+  mockLoginUser(dispatch); 
   return null;
 };
 

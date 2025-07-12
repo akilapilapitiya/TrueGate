@@ -131,15 +131,14 @@ const Navbar = () => {
             {user && !user.emailVerified && (
               <Tooltip title="Email is Not Verified. Please check your mail inbox">
                 <Chip
-                icon={<NewReleasesIcon />}
-                label="Email is Not Verified"
-                color="warning"
-                variant="outlined"
-                sx={{ mt: 1 , cursor: "pointer"}}
-                onClick={() => navigate("/profile")}
-              />
+                  icon={<NewReleasesIcon />}
+                  label="Email is Not Verified"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ mt: 1, cursor: "pointer" }}
+                  onClick={() => navigate("/profile")}
+                />
               </Tooltip>
-              
             )}
             <Tooltip title={isDarkMode ? "Light mode" : "Dark mode"}>
               <IconButton size="small" onClick={toggleTheme}>
@@ -150,36 +149,39 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
-            <>
-              <Tooltip title="Notifications">
-                <IconButton size="small" onClick={handleNotificationClick}>
-                  <NotificationsIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+            {user && (
+              <>
+                <Tooltip title="Notifications">
+                  <IconButton size="small" onClick={handleNotificationClick}>
+                    <NotificationsIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
 
-              <Popover
-                open={isNotificationOpen}
-                anchorEl={notificationAnchorEl}
-                onClose={handleNotificationClose}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                PaperProps={{
-                  sx: {
-                    mt: 1,
-                    borderRadius: 2,
-                    boxShadow: theme.shadows[4],
-                  },
-                }}
-              >
-                <NotificationCard onClose={handleNotificationClose} />
-              </Popover>
-            </>
+                <Popover
+                  open={isNotificationOpen}
+                  anchorEl={notificationAnchorEl}
+                  onClose={handleNotificationClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  PaperProps={{
+                    sx: {
+                      mt: 1,
+                      borderRadius: 2,
+                      boxShadow: theme.shadows[4],
+                    },
+                  }}
+                >
+                  <NotificationCard onClose={handleNotificationClose} />
+                </Popover>
+              </>
+            )}
+
             {user && (
               <>
                 <Tooltip title=" User Profile">
