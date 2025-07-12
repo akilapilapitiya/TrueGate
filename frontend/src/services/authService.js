@@ -1,10 +1,11 @@
-import { mockLoginUser } from "../utils/MockAuthProvider";
+import { addUser, removeUser } from "../utils/UserSlice";
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
   profileUpdateValidateData,
 } from "../utils/Validate";
 
+// ############################################ USER LOGIN #############################################
 export const userLogin = (email, password, rememberChecked, dispatch) => {
   // Validate email and password
   const message = checkLogInValidateData(email, password);
@@ -19,7 +20,23 @@ export const userLogin = (email, password, rememberChecked, dispatch) => {
   }
 
   //Login Logic from API
-  mockLoginUser(dispatch); 
+
+  // Redux Add user
+  const user = {
+    uid: "dummy-uid-123",
+    email: "testuser@example.com",
+    phone: "0123456789",
+    firstName: "John",
+    lastName: "Doe",
+    displayName: "John Doe",
+    gender: "male",
+    role: "admin",
+    emailVerified: true,
+  };
+  // Save user to localStorage
+  localStorage.setItem("authUser", JSON.stringify(user));
+  // Dispatch to Redux
+  dispatch(addUser(user));
   return null;
 };
 
@@ -61,17 +78,17 @@ export const userRegister = (
 };
 
 // ############################################ USER LOGOUT #############################################
-export const userSignOut = () => {
-    // Logout Logic From API
-    return null;
-}
+export const userSignOut = (dispatch) => {
+  // Logout Logic From API
+
+  //State management
+  localStorage.removeItem("authUser");
+  dispatch(removeUser());
+  return null;
+};
 
 // ############################################ USER PROFILE UPDATE #############################################
-export const userProfileUpdate = (
-  firstName,
-  lastName,
-  contact
-) => {
+export const userProfileUpdate = (firstName, lastName, contact) => {
   // Validate profile update data
   const message = profileUpdateValidateData(firstName, lastName, contact);
   if (message) {

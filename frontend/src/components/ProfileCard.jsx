@@ -11,16 +11,17 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userSignOut } from "../services/authService";
 
 const ProfileCard = ({ onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
   const handleSignOut = async () => {
-    const message = userSignOut();
+    const message = userSignOut(dispatch);
     if (message) {
       navigate("/error-page");
     }
