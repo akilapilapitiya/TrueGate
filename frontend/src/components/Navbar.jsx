@@ -28,7 +28,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAppTheme } from "../hooks/useAppTheme";
-const SideBar = lazy(() => import("./SideBar"));
+const SideBar = lazy(() => import("./Sidebar"));
 const ProfileCard = lazy(() => import("./ProfileCard"));
 const NotificationCard = lazy(() => import("./NotificationCard"));
 
