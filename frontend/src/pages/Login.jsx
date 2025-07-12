@@ -13,7 +13,6 @@ import {
   Fade,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { checkLogInValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
 import { userLogin } from "../services/authService";
 

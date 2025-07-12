@@ -1,16 +1,57 @@
-import { checkLogInValidateData } from "../utils/Validate";
+import {
+  checkLogInValidateData,
+  checkSignUpValidateData,
+} from "../utils/Validate";
 
 export const userLogin = (email, password, rememberChecked) => {
-    // Validate email and password
+  // Validate email and password
   const message = checkLogInValidateData(email, password);
-  if (message) {return message; }
+  if (message) {
+    return message;
+  }
 
-    // Remember Me Check
-    if (rememberChecked) {
+  // Remember Me Check
+  if (rememberChecked) {
     console.log("Remember Me is checked");
     // Token Logic
-    }
+  }
 
-    //Login Logic form API
-    return null;
+  //Login Logic from API
+  return null;
+};
+
+// ############################################ USER REGISTRATION #############################################
+export const userRegister = (
+  email,
+  password,
+  confirmPassword,
+  firstName,
+  lastName,
+  dob,
+  contact,
+  gender,
+  agree
+) => {
+  // Validate registration data
+  const message = checkSignUpValidateData(
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    dob,
+    contact,
+    gender
+  );
+  if (message) {
+    return message;
+  }
+
+  // Terms and Conditions Check
+  if (!agree) {
+    return "You must agree to the terms and conditions";
+  }
+
+  // Registration Logic from API
+  return null;
 };

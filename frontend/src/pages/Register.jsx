@@ -19,6 +19,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { checkSignUpValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
+import { userRegister } from "../services/authService";
 
 const Register = () => {
   const theme = useTheme();
@@ -37,32 +38,34 @@ const Register = () => {
   const [gender, setGender] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
+  const today = new Date().toISOString().split("T")[0]; // For Birthday prevent future days
 
   const handleGenderChange = (e) => setGender(e.target.value);
 
   const handleRegister = () => {
-    // Validation
-    const message = checkSignUpValidateData(
-      emailRef.current?.value || "",
-      passwordRef.current?.value || "",
-      confirmPasswordRef.current?.value || "",
-      firstNameRef.current?.value || "",
-      lastNameRef.current?.value || "",
-      dobRef.current?.value || "",
-      contactRef.current?.value || "",
-      gender
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    const confirmPassword = confirmPasswordRef.current?.value || "";
+    const firstname = firstNameRef.current?.value || "";
+    const lastName = lastNameRef.current?.value || "";
+    const dob = dobRef.current?.value || "";
+    const contact = contactRef.current?.value || "";
+
+    const message = userRegister(
+      email,
+      password,
+      confirmPassword,
+      firstname,
+      lastName,
+      dob,
+      contact,
+      gender,
+      isChecked
     );
     if (message) {
       setErrorMessage(message);
       return;
     }
-
-    // Terms and Conditions Check
-    if (!isChecked) {
-      setErrorMessage("You must agree to the terms and conditions");
-      return;
-    }
-    // Registration Logic
     navigate("/dashboard");
   };
 
@@ -190,6 +193,9 @@ const Register = () => {
                   size="medium"
                   InputLabelProps={{ shrink: true }}
                   fullWidth={isMobile}
+                  inputProps={{
+                    max: today,
+                  }}
                 />
               </Box>
 
