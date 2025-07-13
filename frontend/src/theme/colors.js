@@ -142,6 +142,13 @@ export const customColors = {
     // Accent gradients
     accent: "linear-gradient(45deg, rgba(46, 204, 113, 0.8) 0%, rgba(52, 152, 219, 0.8) 100%)",
     premium: "linear-gradient(135deg, rgba(22, 113, 146, 0.8) 0%, rgba(155, 89, 182, 0.6) 100%)",
+
+    // For Features and CTA sections
+    featuresDark: "radial-gradient(circle at 50% 50%, rgba(46,204,113,0.08) 0%, transparent 60%), linear-gradient(135deg, #0f172a, #1e293b)",
+    featuresLight: "radial-gradient(circle at 50% 50%, rgba(52,152,219,0.08) 0%, transparent 60%), linear-gradient(135deg, #fafffc, #ffffff)",
+
+    ctaDark: "linear-gradient(135deg, rgba(46,204,113,0.1) 0%, rgba(52,152,219,0.08) 100%), linear-gradient(135deg, #0f172a, #1e293b)",
+    ctaLight: "linear-gradient(135deg, rgba(52,152,219,0.05) 0%, rgba(46,204,113,0.08) 100%), linear-gradient(135deg, #ffffff, #f4fefc)",
   },
   tech: {
     neon: "rgb(0, 255, 127)",

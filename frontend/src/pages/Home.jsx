@@ -25,6 +25,13 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useAppTheme } from "../hooks/useAppTheme";
 
+const sectionGradient = (isDark) => ({
+  background: isDark
+    ? 'radial-gradient(circle at 30% 20%, rgba(22, 113, 146, 0.15) 0%, transparent 40%), linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98))'
+    : 'radial-gradient(circle at 70% 80%, rgba(46, 204, 113, 0.2) 0%, transparent 40%), linear-gradient(135deg, #dff3e0ff, #E3F2FD)',
+
+});
+
 const features = [
   {
     title: "Real-time CCTV Access",
@@ -72,7 +79,7 @@ const Home = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
         position: "relative",
       }}
@@ -93,9 +100,9 @@ const Home = () => {
           height: 56,
           transition: 'all 0.3s ease',
           '&:hover': {
-            bgcolor: 'rgba(255, 255, 255, 0.25)',
+            bgcolor: 'rgba(103, 51, 43, 0.25)',
             transform: 'translateY(-2px)',
-            boxShadow: '0 8px 32px rgba(22, 113, 146, 0.3)',
+            boxShadow: '0 8px 32px rgba(13, 84, 115, 0.3)',
           },
         }}
       >
@@ -402,7 +409,7 @@ const Home = () => {
 
       {/* Features Section */}
       <Slide in={showContent} direction="up" timeout={1200}>
-        <Box sx={{ px: 3, py: 6, background: theme.palette.background.default }}>
+        <Box sx={{ px: 3, py: 6, ...sectionGradient(isDarkMode), position: 'relative', zIndex: 1 }}>
           <Typography 
             variant="h5" 
             fontWeight={600} 
@@ -419,7 +426,7 @@ const Home = () => {
                   sx={{
                     p: 3,
                     borderRadius: 4,
-                    bgcolor: theme.palette.background.paper,
+                    backgroundColor: theme.palette.background.paper,
                     boxShadow: isDarkMode ? 
                       `0 4px 12px rgba(76, 175, 80, 0.1)` : 
                       `0 4px 12px rgba(34, 139, 34, 0.1)`,
@@ -427,14 +434,14 @@ const Home = () => {
                     textAlign: "center",
                     transition: "all 0.3s ease",
                     border: `1px solid ${isDarkMode ? 'rgba(76, 175, 80, 0.2)' : 'rgba(34, 139, 34, 0.1)'}`,
-                    background: isDarkMode ? 
-                      colors.gradients.card : 
-                      'linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 252, 248, 0.9) 100%)',
+                    background: isDarkMode
+                         ? colors.gradients.featuresDark
+                         : colors.gradients.featuresLight,
                     "&:hover": {
                       transform: "translateY(-4px)",
                       boxShadow: isDarkMode ? 
-                        `0 8px 24px rgba(76, 175, 80, 0.2)` : 
-                        `0 8px 24px rgba(34, 139, 34, 0.2)`,
+                        `0 8px 24px rgba(19, 62, 21, 0.2)` : 
+                        `0 8px 24px rgba(29, 129, 29, 0.59)`,
                       borderColor: colors.brand.primary,
                     },
                   }}
@@ -479,16 +486,15 @@ const Home = () => {
       </Slide>
 
       {/* CTA Section */}
-      <Box
-        sx={{
-          textAlign: "center",
-          py: 6,
-          px: 2,
-          backgroundColor: isDarkMode ? 
-            'rgba(76, 175, 80, 0.1)' : 
-            'rgba(34, 139, 34, 0.05)',
-          borderTop: `1px solid ${isDarkMode ? 'rgba(76, 175, 80, 0.2)' : 'rgba(34, 139, 34, 0.1)'}`,
-          borderBottom: `1px solid ${isDarkMode ? 'rgba(76, 175, 80, 0.2)' : 'rgba(34, 139, 34, 0.1)'}`,
+     <Box
+    sx={{
+    textAlign: "center",
+    py: 6,
+    px: 2,
+    ...sectionGradient(isDarkMode),
+    position: 'relative',
+    zIndex: 1,
+
         }}
       >
         <Typography 
@@ -511,7 +517,7 @@ const Home = () => {
             borderRadius: 4,
             px: 4,
             py: 1.5,
-            boxShadow: `0 4px 12px rgba(34, 139, 34, 0.3)`,
+            boxShadow: `0 4px 12px rgba(34, 139, 34, 0.46)`,
             '&:hover': {
               bgcolor: colors.brand.tertiary,
               transform: 'translateY(-2px)',
