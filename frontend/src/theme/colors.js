@@ -1,6 +1,6 @@
 export const lightColors = {
   primary: {
-    main: "rgb(22, 113, 146)", 
+    main: "rgba(5, 91, 122, 1)", 
     light: "rgb(52, 144, 176)", 
     dark: "rgb(15, 85, 110)", 
     contrastText: "rgb(255, 255, 255)",
@@ -86,7 +86,7 @@ export const darkColors = {
   },
   background: {
     default: "rgba(15, 23, 42, 0.95)", 
-    paper: "rgba(30, 41, 59, 0.8)", 
+    paper: "rgba(34, 45, 62, 0.8)", 
   },
   text: {
     primary: "rgb(248, 250, 252)", 

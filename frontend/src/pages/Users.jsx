@@ -1,23 +1,24 @@
 import {
+  Avatar,
   Box,
   Button,
   Container,
   Divider,
+  Fade,
   IconButton,
   Modal,
   Paper,
-  TextField,
-  Typography,
-  Backdrop,
-  Fade,
+  Stack,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  useTheme,
+  TextField,
+  Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { Add, Delete } from "@mui/icons-material";
@@ -50,6 +51,7 @@ const Users = () => {
     },
   ]);
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [newCustomer, setNewCustomer] = useState({
     id: "",
@@ -91,66 +93,129 @@ const Users = () => {
     setSelectedCustomerId(null);
   };
 
+  const filteredCustomers = customers.filter((customer) =>
+    `${customer.firstName} ${customer.lastName} ${customer.email}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Box
       sx={{
         width: "100%",
         minHeight: "100vh",
-        backgroundColor: theme.palette.background.default,
+        background: theme.palette.mode === "dark"
+          ? `linear-gradient(to right, #254f61ff, #203a43, #2c5364)`
+          : `linear-gradient(to right, #f5f7fa, #c3cfe2)`,
         py: 6,
         px: { xs: 2, sm: 3, md: 6 },
-        boxSizing: "border-box",
       }}
     >
       <Container maxWidth="lg">
         <Paper
           elevation={3}
-          sx={{ p: 4, display: "flex", flexDirection: "column", gap: 3 }}
+          sx={{
+            p: 4,
+            borderRadius: 4,
+            background: theme.palette.mode === "dark"
+              ? "linear-gradient(135deg, #17343cff, #162853ff)"
+              : "linear-gradient(135deg, #9cc6e1ff, #daf0f1ff)",
+          }}
         >
-          <Typography variant="h5" fontWeight="bold" color="text.primary">
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            mb={3}
+            color="primary"
+            textAlign="center"
+          >
             Dependants List
           </Typography>
+
+          <Box mb={3} display="flex" justifyContent="flex-end">
+           <TextField
+  label="Search"
+  variant="outlined"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  sx={{
+    backgroundColor: theme.palette.mode === "dark" ? "#071e38ff" : "#bbdce9ff",  // ✅ background
+    color: theme.palette.text.primary,                                      // ✅ text color
+    input: {
+      color: theme.palette.text.primary,
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: theme.palette.primary.main,                            // ✅ border color
+      },
+      "&:hover fieldset": {
+        borderColor: theme.palette.primary.dark,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.secondary.main,
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: theme.palette.text.secondary,
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: theme.palette.secondary.main,
+    },
+  }}
+/>
+
+          </Box>
 
           <TableContainer>
             <Table size={isMobile ? "small" : "medium"}>
               <TableHead>
-                <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    ID
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    First Name
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Last Name
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Email
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Last Login
-                  </TableCell>
-                  <TableCell
-                    sx={{ color: theme.palette.primary.contrastText }}
-                    align="center"
-                  >
-                    Action
-                  </TableCell>
+                <TableRow
+                  sx={{
+                    background: theme.palette.mode === "dark"
+                      ? "linear-gradient(90deg, #1e4844ff, #0a4a60ff)"
+                      : "linear-gradient(90deg, #6297edff, #8af0e9ff)",
+                  }}
+                >
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>ID</TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Name</TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Email</TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Last Login</TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }} align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {customers.map((customer) => (
+                {filteredCustomers.map((customer) => (
                   <TableRow
                     key={customer.id}
                     hover
                     sx={{
                       transition: "background-color 0.3s ease",
-                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor:
+                          theme.palette.mode === "dark"
+                            ? "#3077bd95"
+                            : "#e3f2fd",
+                      },
                     }}
                   >
                     <TableCell>{customer.id}</TableCell>
-                    <TableCell>{customer.firstName}</TableCell>
-                    <TableCell>{customer.lastName}</TableCell>
+                    <TableCell>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Avatar
+                          sx={{
+                            bgcolor: theme.palette.secondary.main,
+                            color: "#fff",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {customer.firstName[0]}
+                          {customer.lastName[0]}
+                        </Avatar>
+                        <Typography fontWeight="500">
+                          {customer.firstName} {customer.lastName}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
                     <TableCell>{customer.email}</TableCell>
                     <TableCell>{customer.lastLogin}</TableCell>
                     <TableCell align="center">
@@ -167,13 +232,24 @@ const Users = () => {
             </Table>
           </TableContainer>
 
-          <Divider />
+          <Divider sx={{ my: 4 }} />
 
           <Box display="flex" justifyContent="center">
             <Button
-              variant="contained"
               startIcon={<Add />}
               onClick={() => setOpenDialog(true)}
+              sx={{
+                background: "linear-gradient(90deg, #43cea2, #185a9d)",
+                color: "#fff",
+                px: 3,
+                py: 1,
+                borderRadius: 3,
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  background: "linear-gradient(90deg, #32a88f, #114d91)",
+                },
+              }}
             >
               Add New Dependant
             </Button>
@@ -182,11 +258,7 @@ const Users = () => {
       </Container>
 
       {/* Add Modal */}
-      <Modal
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        closeAfterTransition
-      >
+      <Modal open={openDialog} onClose={() => setOpenDialog(false)} closeAfterTransition>
         <Fade in={openDialog}>
           <Box
             sx={{
@@ -204,7 +276,7 @@ const Users = () => {
             <Typography variant="h6" fontWeight="bold" mb={2}>
               Add New Dependant
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Stack spacing={2}>
               <TextField
                 label="ID"
                 value={newCustomer.id}
@@ -229,7 +301,7 @@ const Users = () => {
                 onChange={(e) => handleInputChange("email", e.target.value)}
                 fullWidth
               />
-              <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
+              <Box display="flex" justifyContent="flex-end" gap={1}>
                 <Button variant="outlined" onClick={() => setOpenDialog(false)}>
                   Cancel
                 </Button>
@@ -237,7 +309,7 @@ const Users = () => {
                   Add
                 </Button>
               </Box>
-            </Box>
+            </Stack>
           </Box>
         </Fade>
       </Modal>
