@@ -1,4 +1,5 @@
 import { addUser, removeUser } from "../utils/UserSlice";
+import axiosInstance from "./axiosInstance"; 
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
@@ -6,39 +7,61 @@ import {
 } from "../utils/Validate";
 
 // ############################################ USER LOGIN #############################################
-export const userLogin = (email, password, rememberChecked, dispatch) => {
-  // Validate email and password
+
+
+export const userLogin = async (email, password, rememberChecked, dispatch) => {
+  console.log("Starting userLogin...");
+
   const message = checkLogInValidateData(email, password);
   if (message) {
-    return message;
+    console.log("Validation failed:", message);
+    return { success: false, message };
   }
 
-  // Remember Me Check
+  let csrfToken;
+  try {
+    console.log("Fetching CSRF token...");
+    const csrfRes = await axiosInstance.get('/csrf-token');
+    csrfToken = csrfRes.data.csrfToken;
+    console.log("CSRF token received at login:", csrfToken);
+    axiosInstance.defaults.headers['x-csrf-token'] = csrfToken;
+  } catch (err) {
+    console.error("Error fetching CSRF token:", err);
+    return { success: false, message: "Failed to get CSRF token" };
+  }
+
   if (rememberChecked) {
     console.log("Remember Me is checked");
-    // Token Logic
+  } else {
+    console.log("Remember Me is not checked");
   }
 
-  //Login Logic from API
+  try {
+    const nonce = ""; // Set your nonce here if required
+    console.log("Sending login request with:", { email, password, nonce });
+    const loginRes = await axiosInstance.post('/login', { email, password, nonce });
 
-  // Redux Add user
-  const user = {
-    uid: "dummy-uid-123",
-    email: "testuser@example.com",
-    phone: "0123456789",
-    firstName: "John",
-    lastName: "Doe",
-    displayName: "John Doe",
-    gender: "male",
-    role: "admin",
-    emailVerified: true,
-  };
-  // Save user to localStorage
-  localStorage.setItem("authUser", JSON.stringify(user));
-  // Dispatch to Redux
-  dispatch(addUser(user));
-  return null;
+    console.log("Login response received:", loginRes.data);
+    const user = loginRes.data.user;
+
+    if (!user) {
+      console.log("Login failed: No user data returned");
+      return { success: false, message: "Login failed: No user data returned" };
+    }
+
+    console.log("Login successful, saving user and dispatching...");
+    localStorage.setItem("authUser", JSON.stringify(user));
+    dispatch(addUser(user));
+
+    return { success: true };
+  } catch (err) {
+    console.error("Login API error:", err.response?.data || err.message);
+    return { success: false, message: err.response?.data?.error || "Login failed" };
+  }
 };
+
+
+
 
 // ############################################ USER REGISTRATION #############################################
 export const userRegister = (

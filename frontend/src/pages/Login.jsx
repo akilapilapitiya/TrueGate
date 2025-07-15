@@ -21,7 +21,7 @@ const Login = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [isRememeberChecked, setIsRememeberChecked] = useState(false);
@@ -30,17 +30,19 @@ const Login = () => {
   const passwordRef = useRef(null);
 
   const handleSignIn = async () => {
-    const emailValue = emailRef.current?.value || "";
-    const passwordValue = passwordRef.current?.value || "";
+  const email = emailRef.current?.value || "";
+  const password = passwordRef.current?.value || "";
 
-    // User Login handled
-    const message = userLogin(emailValue, passwordValue, isRememeberChecked, dispatch);
-    if (message) {
-      setErrorMessage(message);
-      return;
-    }
+  const result = await userLogin(email, password, isRememeberChecked, dispatch);
+
+  if (result.success) {
+    setErrorMessage(null);
     navigate("/dashboard");
-  };
+  } else {
+    setErrorMessage(result.message);
+  }
+};
+
 
   return (
     <Fade in timeout={700}>
