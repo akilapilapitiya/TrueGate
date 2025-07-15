@@ -1,69 +1,54 @@
 import { addUser, removeUser } from "../utils/UserSlice";
-import axiosInstance from "./axiosInstance"; 
+import axiosInstance from "./axiosInstance";
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
   profileUpdateValidateData,
 } from "../utils/Validate";
 
-// ############################################ USER LOGIN #############################################
-
-
+// USER LOGIN
 export const userLogin = async (email, password, rememberChecked, dispatch) => {
-  console.log("Starting userLogin...");
-
   const message = checkLogInValidateData(email, password);
   if (message) {
-    console.log("Validation failed:", message);
     return { success: false, message };
   }
 
   let csrfToken;
   try {
-    console.log("Fetching CSRF token...");
-    const csrfRes = await axiosInstance.get('/csrf-token');
+    const csrfRes = await axiosInstance.get("/csrf-token");
     csrfToken = csrfRes.data.csrfToken;
-    console.log("CSRF token received at login:", csrfToken);
-    axiosInstance.defaults.headers['x-csrf-token'] = csrfToken;
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfToken;
   } catch (err) {
-    console.error("Error fetching CSRF token:", err);
     return { success: false, message: "Failed to get CSRF token" };
   }
 
-  if (rememberChecked) {
-    console.log("Remember Me is checked");
-  } else {
-    console.log("Remember Me is not checked");
-  }
-
   try {
-    const nonce = ""; // Set your nonce here if required
-    console.log("Sending login request with:", { email, password, nonce });
-    const loginRes = await axiosInstance.post('/login', { email, password, nonce });
+    const nonce = ""; // if needed
+    const res = await axiosInstance.post("/login", { email, password, nonce });
+    const { user, token } = res.data;
 
-    console.log("Login response received:", loginRes.data);
-    const user = loginRes.data.user;
-
-    if (!user) {
-      console.log("Login failed: No user data returned");
-      return { success: false, message: "Login failed: No user data returned" };
+    if (!user || !token) {
+      return { success: false, message: "Login failed: No user/token" };
     }
 
-    console.log("Login successful, saving user and dispatching...");
-    localStorage.setItem("authUser", JSON.stringify(user));
-    dispatch(addUser(user));
+    const storage = rememberChecked ? localStorage : sessionStorage;
+    storage.setItem("authUser", JSON.stringify(user));
+    storage.setItem("authToken", token);
+
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+    dispatch(addUser({ user, token }));
 
     return { success: true };
   } catch (err) {
-    console.error("Login API error:", err.response?.data || err.message);
-    return { success: false, message: err.response?.data?.error || "Login failed" };
+    return {
+      success: false,
+      message: err.response?.data?.error || "Login failed",
+    };
   }
 };
 
 
-
-
-// ############################################ USER REGISTRATION #############################################
+// USER REGISTRATION
 export const userRegister = async (
   email,
   password,
@@ -74,7 +59,7 @@ export const userRegister = async (
   contact,
   gender,
   agree,
-  dispatch // optional for Redux
+  dispatch
 ) => {
   const message = checkSignUpValidateData(
     email,
@@ -91,7 +76,10 @@ export const userRegister = async (
   }
 
   if (!agree) {
-    return { success: false, message: "You must agree to the terms and conditions" };
+    return {
+      success: false,
+      message: "You must agree to the terms and conditions",
+    };
   }
 
   let csrfToken;
