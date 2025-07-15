@@ -42,7 +42,7 @@ const Register = () => {
 
   const handleGenderChange = (e) => setGender(e.target.value);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const email = emailRef.current?.value || "";
     const password = passwordRef.current?.value || "";
     const confirmPassword = confirmPasswordRef.current?.value || "";
@@ -51,7 +51,7 @@ const Register = () => {
     const dob = dobRef.current?.value || "";
     const contact = contactRef.current?.value || "";
 
-    const message = userRegister(
+    const result = await userRegister(
       email,
       password,
       confirmPassword,
@@ -62,11 +62,13 @@ const Register = () => {
       gender,
       isChecked
     );
-    if (message) {
-      setErrorMessage(message);
-      return;
+
+    if (result.success) {
+      setErrorMessage(null);
+      navigate("/dashboard");
+    } else {
+      setErrorMessage(result.message);
     }
-    navigate("/dashboard");
   };
 
   return (

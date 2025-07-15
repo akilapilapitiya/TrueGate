@@ -64,7 +64,7 @@ export const userLogin = async (email, password, rememberChecked, dispatch) => {
 
 
 // ############################################ USER REGISTRATION #############################################
-export const userRegister = (
+export const userRegister = async (
   email,
   password,
   confirmPassword,
@@ -73,9 +73,9 @@ export const userRegister = (
   dob,
   contact,
   gender,
-  agree
+  agree,
+  dispatch // optional for Redux
 ) => {
-  // Validate registration data
   const message = checkSignUpValidateData(
     email,
     password,
@@ -87,17 +87,52 @@ export const userRegister = (
     gender
   );
   if (message) {
-    return message;
+    return { success: false, message };
   }
 
-  // Terms and Conditions Check
   if (!agree) {
-    return "You must agree to the terms and conditions";
+    return { success: false, message: "You must agree to the terms and conditions" };
   }
 
-  // Registration Logic from API
-  const mode = "admin"; // Defaulted at Resgistration here
-  return null;
+  let csrfToken;
+  try {
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    csrfToken = csrfRes.data.csrfToken;
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfToken;
+    console.log("CSRF token for register:", csrfToken);
+  } catch (err) {
+    console.error("Failed to get CSRF token:", err);
+    return { success: false, message: "CSRF token fetch failed" };
+  }
+
+  const payload = {
+    email,
+    password,
+    firstName,
+    lastName,
+    birthDate: dob,
+    gender,
+    role: "admin",
+    contactNumber: contact,
+  };
+
+  try {
+    const res = await axiosInstance.post("/register", payload);
+    console.log("Registration successful:", res.data);
+
+    if (res.data.user) {
+      localStorage.setItem("authUser", JSON.stringify(res.data.user));
+      if (dispatch) dispatch(addUser(res.data.user));
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Registration failed:", err.response?.data || err.message);
+    return {
+      success: false,
+      message: err.response?.data?.error || "Registration failed",
+    };
+  }
 };
 
 // ############################################ USER LOGOUT #############################################
