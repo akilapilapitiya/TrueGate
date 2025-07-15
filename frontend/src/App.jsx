@@ -32,14 +32,14 @@ const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 
 // Route Guards
-import { ProtectedRoute, AdminRoute } from "./utils/ProtectedRoute";
+import { ProtectedRoute, AdminRoute, VerifiedRoute } from "./utils/ProtectedRoute";
 
 // Redux
 import { useSelector } from "react-redux";
+import EmailVerificationNotice from "./pages/EmailVerifivationNotice";
 
 const App = () => {
   const user = useSelector((state) => state.user);
-  const admin = user?.role === "admin";
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -55,17 +55,22 @@ const App = () => {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="profile" element={<Profile />} />
-          <Route path="community" element={<Community />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="footage" element={<Footage />} />
-          <Route path="history" element={<AccessHistory />} />
-          <Route path="settings" element={<SettingsPage />} />
+          <Route path="dashboard" element={<Dashboard />} />        
+          <Route path="email-verify" element={<EmailVerificationNotice />} />
         </Route>
 
         {/* Admin-only Routes */}
-        <Route element={<AdminRoute user={user} admin={admin} />}>
+        <Route element={<AdminRoute user={user} />}>
           <Route path="devices" element={<Devices />} />
           <Route path="users" element={<Users />} />
+        </Route>
+
+        {/* Email Verification Peotected Routes */}
+        <Route element={<VerifiedRoute user={user} />}>
+          <Route path="community" element={<Community />} />
+          <Route path="footage" element={<Footage />} />
+          <Route path="history" element={<AccessHistory />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
 
         {/* Catch-all Route */}

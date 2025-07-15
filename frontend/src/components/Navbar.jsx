@@ -6,10 +6,10 @@ import {
   IconButton,
   Box,
   Drawer,
-  Button,
   Tooltip,
   Popover,
   Avatar,
+  Chip,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -25,9 +25,11 @@ import {
   YouTube as YouTubeIcon,
   ShoppingCart as ShoppingCartIcon,
   Cloud as CloudIcon,
+  NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAppTheme } from "../hooks/useAppTheme";
+import { useSelector } from "react-redux";
 const SideBar = lazy(() => import("./Sidebar"));
 const ProfileCard = lazy(() => import("./ProfileCard"));
 const NotificationCard = lazy(() => import("./NotificationCard"));
@@ -38,7 +40,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const role = "houseOwner"; // Replace with dynamic role logic
-  const [user, setUser] = useState(true); // update with user state
+  const user = useSelector((store) => store.user);
 
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
@@ -88,7 +90,7 @@ const Navbar = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.paper,
+          bgcolor: "transparent",
           width: "100%",
           color: theme.palette.text.primary,
           borderRadius: "0",
@@ -125,6 +127,19 @@ const Navbar = () => {
               flexGrow: 1,
             }}
           >
+            {/* {Not Verified Sign}  */}
+            {user && !user.emailVerified && (
+              <Tooltip title="Email is Not Verified. Please check your mail inbox">
+                <Chip
+                  icon={<NewReleasesIcon />}
+                  label="Email is Not Verified"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ mt: 1, cursor: "pointer" }}
+                  onClick={() => navigate("/profile")}
+                />
+              </Tooltip>
+            )}
             <Tooltip title={isDarkMode ? "Light mode" : "Dark mode"}>
               <IconButton size="small" onClick={toggleTheme}>
                 {isDarkMode ? (
@@ -134,7 +149,6 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
-
             {user && (
               <>
                 <Tooltip title="Notifications">

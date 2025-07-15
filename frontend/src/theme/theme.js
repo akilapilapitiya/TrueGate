@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { lightColors, darkColors } from "./colors";
+import { customColors } from "./colors";
 
 const baseTheme = {
   typography: {
@@ -55,30 +56,16 @@ const baseTheme = {
       },
     },
   },
-  customColors: {
-    brand: {
-      primary: "#ff6b35",
-      secondary: "#004e89",
-      tertiary: "#1a659e",
-    },
-    status: {
-      online: "#4caf50",
-      offline: "#f44336",
-      away: "#ff9800",
-    },
-    gradients: {
-      primary: "linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)",
-      secondary: "linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)",
-    },
-  },
+   customColors: customColors,
 };
-
+ 
 export const lightTheme = createTheme({
   ...baseTheme,
   palette: {
     mode: "light",
     ...lightColors,
   },
+  customColors: customColors,
 });
 
 export const darkTheme = createTheme({
@@ -87,4 +74,5 @@ export const darkTheme = createTheme({
     mode: "dark",
     ...darkColors,
   },
+  customColors: customColors,
 });
