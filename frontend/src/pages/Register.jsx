@@ -43,33 +43,37 @@ const Register = () => {
   const handleGenderChange = (e) => setGender(e.target.value);
 
   const handleRegister = async () => {
-    const email = emailRef.current?.value || "";
-    const password = passwordRef.current?.value || "";
-    const confirmPassword = confirmPasswordRef.current?.value || "";
-    const firstname = firstNameRef.current?.value || "";
-    const lastName = lastNameRef.current?.value || "";
-    const dob = dobRef.current?.value || "";
-    const contact = contactRef.current?.value || "";
+  const email = emailRef.current?.value || "";
+  const password = passwordRef.current?.value || "";
+  const confirmPassword = confirmPasswordRef.current?.value || "";
+  const firstname = firstNameRef.current?.value || "";
+  const lastName = lastNameRef.current?.value || "";
+  const dob = dobRef.current?.value || "";
+  const contact = contactRef.current?.value || "";
 
-    const result = await userRegister(
-      email,
-      password,
-      confirmPassword,
-      firstname,
-      lastName,
-      dob,
-      contact,
-      gender,
-      isChecked
-    );
+  const result = await userRegister(
+    email,
+    password,
+    confirmPassword,
+    firstname,
+    lastName,
+    dob,
+    contact,
+    gender,
+    isChecked
+  );
 
-    if (result.success) {
+  if (result.success) {
+    setErrorMessage("Registration successful! Check your email.");
+    setTimeout(() => {
       setErrorMessage(null);
-      navigate("/dashboard");
-    } else {
-      setErrorMessage(result.message);
-    }
-  };
+      navigate("/login");
+    }, 2500);
+  } else {
+    setErrorMessage(result.message);
+  }
+};
+
 
   return (
     <Fade in timeout={700}>

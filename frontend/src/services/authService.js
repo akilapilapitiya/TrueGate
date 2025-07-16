@@ -49,6 +49,7 @@ export const userLogin = async (email, password, rememberChecked, dispatch) => {
 
 
 // USER REGISTRATION
+
 export const userRegister = async (
   email,
   password,
@@ -58,8 +59,7 @@ export const userRegister = async (
   dob,
   contact,
   gender,
-  agree,
-  dispatch
+  agree
 ) => {
   const message = checkSignUpValidateData(
     email,
@@ -82,40 +82,38 @@ export const userRegister = async (
     };
   }
 
-  let csrfToken;
   try {
+    // CSRF token
     const csrfRes = await axiosInstance.get("/csrf-token");
-    csrfToken = csrfRes.data.csrfToken;
+    const csrfToken = csrfRes.data.csrfToken;
     axiosInstance.defaults.headers["x-csrf-token"] = csrfToken;
-    console.log("CSRF token for register:", csrfToken);
-  } catch (err) {
-    console.error("Failed to get CSRF token:", err);
-    return { success: false, message: "CSRF token fetch failed" };
-  }
 
-  const payload = {
-    email,
-    password,
-    firstName,
-    lastName,
-    birthDate: dob,
-    gender,
-    role: "admin",
-    contactNumber: contact,
-  };
+    const payload = {
+      email,
+      password,
+      firstName,
+      lastName,
+      birthDate: dob,
+      gender,
+      role: "admin",
+      contactNumber: contact,
+    };
 
-  try {
     const res = await axiosInstance.post("/register", payload);
-    console.log("Registration successful:", res.data);
 
-    if (res.data.user) {
-      localStorage.setItem("authUser", JSON.stringify(res.data.user));
-      if (dispatch) dispatch(addUser(res.data.user));
+    // Check if registration was successful
+    if (res.status === 200) {
+      return {
+        success: true,
+        message: res.data.message || "Registered successfully. Please check your email.",
+      };
     }
 
-    return { success: true };
+    return {
+      success: false,
+      message: res.data.message || "Registration succeeded, but something went wrong.",
+    };
   } catch (err) {
-    console.error("Registration failed:", err.response?.data || err.message);
     return {
       success: false,
       message: err.response?.data?.error || "Registration failed",
@@ -123,11 +121,11 @@ export const userRegister = async (
   }
 };
 
-// ############################################ USER LOGOUT #############################################
+// USER LOGOUT 
 export const userSignOut = async (dispatch) => {
   try {
     // Optional: Invalidate session on server
-    await axiosInstance.post("/logout"); // Only if you have a backend logout endpoint
+    await axiosInstance.post("/logout"); 
   } catch (err) {
     console.warn("Logout API failed:", err.message);
   }

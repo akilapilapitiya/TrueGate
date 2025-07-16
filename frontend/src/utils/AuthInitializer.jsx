@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "./UserSlice";
 import axiosInstance from "../services/axiosInstance";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AuthInitializer = ({ children }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const AuthInitializer = ({ children }) => {
     setReady(true);
   }, [dispatch]);
 
-  if (!ready) return <div>Loading...</div>; // Can be spinner or splash
+  if (!ready) return <LoadingSpinner />; 
 
   return children;
 };
