@@ -43,37 +43,37 @@ const Register = () => {
   const handleGenderChange = (e) => setGender(e.target.value);
 
   const handleRegister = async () => {
-  const email = emailRef.current?.value || "";
-  const password = passwordRef.current?.value || "";
-  const confirmPassword = confirmPasswordRef.current?.value || "";
-  const firstname = firstNameRef.current?.value || "";
-  const lastName = lastNameRef.current?.value || "";
-  const dob = dobRef.current?.value || "";
-  const contact = contactRef.current?.value || "";
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    const confirmPassword = confirmPasswordRef.current?.value || "";
+    const firstname = firstNameRef.current?.value || "";
+    const lastName = lastNameRef.current?.value || "";
+    const dob = dobRef.current?.value || "";
+    const contact = contactRef.current?.value || "";
 
-  const result = await userRegister(
-    email,
-    password,
-    confirmPassword,
-    firstname,
-    lastName,
-    dob,
-    contact,
-    gender,
-    isChecked
-  );
+    const result = await userRegister(
+      email,
+      password,
+      confirmPassword,
+      firstname,
+      lastName,
+      dob,
+      contact,
+      gender,
+      isChecked
+    );
 
-  if (result.success) {
-    setErrorMessage("Registration successful! Check your email.");
-    setTimeout(() => {
-      setErrorMessage(null);
-      navigate("/login");
-    }, 2500);
-  } else {
-    setErrorMessage(result.message);
-  }
-};
+    if (result.success) {
+      // Show success message and redirect after short delay
+      setErrorMessage("Registration successful! Check your email.");
 
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000); // Redirects to login page after 2 seconds
+    } else {
+      setErrorMessage(result.message);
+    }
+  };
 
   return (
     <Fade in timeout={700}>
@@ -271,7 +271,11 @@ const Register = () => {
               {errorMessage && (
                 <Typography
                   variant="body2"
-                  color="error"
+                  color={
+                    errorMessage.toLowerCase().includes("success")
+                      ? "success.main"
+                      : "error"
+                  }
                   textAlign="center"
                   sx={{ mt: 1 }}
                 >
