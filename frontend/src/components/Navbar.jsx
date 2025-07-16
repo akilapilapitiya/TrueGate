@@ -106,7 +106,7 @@ const Navbar = () => {
           }}
         >
           {/* Left: Menu Icon */}
-          {user && (
+          {user.user && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title=" Side Menu">
                 <IconButton edge="start" onClick={toggleDrawer(true)}>
@@ -128,7 +128,7 @@ const Navbar = () => {
             }}
           >
             {/* {Not Verified Sign}  */}
-            {user && !user.emailVerified && (
+            {user.user && !user.emailVerified && (
               <Tooltip title="Email is Not Verified. Please check your mail inbox">
                 <Chip
                   icon={<NewReleasesIcon />}
@@ -149,7 +149,7 @@ const Navbar = () => {
                 )}
               </IconButton>
             </Tooltip>
-            {user && (
+            {user.user && (
               <>
                 <Tooltip title="Notifications">
                   <IconButton size="small" onClick={handleNotificationClick}>
@@ -182,7 +182,7 @@ const Navbar = () => {
               </>
             )}
 
-            {user && (
+            {user.user && (
               <>
                 <Tooltip title=" User Profile">
                   <Avatar

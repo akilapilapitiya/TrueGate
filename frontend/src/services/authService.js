@@ -124,15 +124,29 @@ export const userRegister = async (
 };
 
 // ############################################ USER LOGOUT #############################################
-export const userSignOut = (dispatch) => {
-  // Logout Logic From API
+export const userSignOut = async (dispatch) => {
+  try {
+    // Optional: Invalidate session on server
+    await axiosInstance.post("/logout"); // Only if you have a backend logout endpoint
+  } catch (err) {
+    console.warn("Logout API failed:", err.message);
+  }
 
-  //State management
+  // Clear browser storage
   localStorage.removeItem("authUser");
-  dispatch(removeUser());
-  return null;
-};
+  localStorage.removeItem("authToken");
+  sessionStorage.removeItem("authUser");
+  sessionStorage.removeItem("authToken");
 
+  // Clear Redux store
+  dispatch(removeUser());
+
+  // Remove token from axios headers
+  delete axiosInstance.defaults.headers["Authorization"];
+
+  // Optional: You can return a flag or redirect here
+  return { success: true };
+};
 // ############################################ USER PROFILE UPDATE #############################################
 export const userProfileUpdate = (firstName, lastName, contact) => {
   // Validate profile update data
