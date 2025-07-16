@@ -123,12 +123,18 @@ const Users = () => {
           }}
         >
           <Typography
-            variant="h5"
-            fontWeight="bold"
-            mb={3}
-            color="primary"
-            textAlign="center"
-          >
+             variant="h3"
+             sx={{
+               fontWeight: 800,
+               background: theme.palette.mode === "dark"
+                 ? "linear-gradient(90deg, #69eacf, #38b6ff)"
+                 : "linear-gradient(90deg, #004e92, #000428)",
+               WebkitBackgroundClip: "text",
+               WebkitTextFillColor: "transparent",
+               letterSpacing: 1.5,
+             }}
+             gutterBottom
+           >
             Dependants List
           </Typography>
 

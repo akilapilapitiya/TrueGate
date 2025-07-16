@@ -51,26 +51,44 @@ const Footage = () => {
         pt: 10,
         px: { xs: 2, sm: 4 },
         pb: 8,
-        background: theme.palette.mode === "dark"
-          ? `
-              radial-gradient(circle at 20% 30%, rgba(22, 113, 146, 0.15), transparent 50%),
-              radial-gradient(circle at 80% 70%, rgba(46, 204, 113, 0.12), transparent 50%),
-              linear-gradient(135deg, #0f172a 0%, #2d534fff 100%)
-            `
-          : `
-              radial-gradient(circle at 60% 40%, rgba(46, 204, 113, 0.15), transparent 50%),
-              radial-gradient(circle at 30% 80%, rgba(52, 152, 219, 0.12), transparent 50%),
-              linear-gradient(135deg, #edf4f6ff 0%, #48847af4 100%)
-            `,
+               background: theme.palette.mode === "dark"
+          ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
+          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
         color: theme.palette.text.primary,
       }}
     >
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Security Cameras
-      </Typography>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        Monitor your property with live camera footage.
-      </Typography>
+    <Box textAlign="center" mb={4}>
+  <Typography
+    variant="h3"
+    sx={{
+      fontWeight: 800,
+      background: theme.palette.mode === "dark"
+        ? "linear-gradient(90deg, #69eacf, #38b6ff)"
+        : "linear-gradient(90deg, #004e92, #000428)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      letterSpacing: 1.5,
+    }}
+    gutterBottom
+  >
+    Security Cameras
+  </Typography>
+  <Typography
+    variant="h6"
+    sx={{
+      color: theme.palette.mode === "dark"
+        ? "rgba(255, 255, 255, 0.7)"
+        : "rgba(0, 0, 0, 0.6)",
+      fontWeight: 400,
+      fontSize: { xs: "0.9rem", sm: "1rem" },
+      letterSpacing: 0.5,
+    }}
+  >
+    Monitor your property with live camera footage.
+  </Typography>
+</Box>
+
+
 
       <Grid container spacing={3} my={2}>
         {["Total Cameras", "Online", "Motion Events", "Storage Used"].map((label, index) => (
@@ -80,10 +98,10 @@ const Footage = () => {
                 p: 2,
                 borderRadius: 3,
                 backdropFilter: "blur(6px)",
-                background: theme.palette.mode === "dark" ? "#162c3caa" : "#ffffffcc",
+                background: theme.palette.mode === "dark" ? "#162c3caa" : "#c8eaf2cc",
                 boxShadow: theme.palette.mode === "dark"
                   ? "0 0 12px rgba(0, 0, 0, 0.4)"
-                  : "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  : "0 4px 12px rgba(51, 70, 199, 0.1)",
                 textAlign: "center",
               }}
             >
@@ -189,7 +207,7 @@ const Footage = () => {
       sx={{
         fontWeight: 700,
         fontSize: { xs: "1.4rem", sm: "1.8rem" },
-        color: theme.palette.mode === "dark" ? "#e3f2fd" : "#0d3c61",
+        color: theme.palette.mode === "dark" ? "#7bbbe9ff" : "#0d3c61",
         mb: 4,
       }}
     >
@@ -207,8 +225,8 @@ const Footage = () => {
               borderRadius: 4,
               backdropFilter: "blur(6px)",
               background: theme.palette.mode === "dark"
-                ? "linear-gradient(135deg, #0d3c61, #023a2f)"
-                : "linear-gradient(135deg, #d6f1f7, #ccebe3)",
+                ? "linear-gradient(135deg, #0d3c61, #1b6858ff)"
+                : "linear-gradient(135deg, #90d8ebff, #e9f4f5ff)",
               boxShadow:
                 theme.palette.mode === "dark"
                   ? "0 8px 24px rgba(0, 0, 0, 0.6)"

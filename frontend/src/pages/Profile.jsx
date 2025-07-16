@@ -83,8 +83,8 @@ const Profile = () => {
   return (
     <Box sx={{
       background: theme.palette.mode === "dark"
-        ? `linear-gradient(135deg, #0f172a, #1a847c)`
-        : `linear-gradient(135deg, #d3e7ecff 0%, #2d6659ff 100%)`,
+          ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
+          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
       py: 6,
       px: 3,
       minHeight: "100vh"
