@@ -26,7 +26,7 @@ import {
   Cloud as CloudIcon,
   NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppTheme } from "../hooks/useAppTheme";
 import { useSelector } from "react-redux";
 
@@ -38,18 +38,15 @@ const NotificationCard = lazy(() => import("./NotificationCard"));
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Safe Redux selector
-  const { user } = useSelector((state) => state.user);
 
-  // Check login status
+  const { user } = useSelector((state) => state.user);
   const isLoggedIn = user && Object.keys(user).length > 0;
 
-  // Optional: determine role dynamically
   const role = user?.role || "guest";
 
-  // Sidebar links
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
     ...(role === "houseOwner"
@@ -135,11 +132,11 @@ const Navbar = () => {
             )}
 
             {/* Theme toggle */}
-            <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+           {location.pathname !== "/" && <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
               <IconButton size="small" onClick={toggleTheme}>
                 {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
 
             {/* Notifications */}
             {isLoggedIn && (

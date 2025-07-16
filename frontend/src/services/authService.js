@@ -146,15 +146,44 @@ export const userSignOut = async (dispatch) => {
   return { success: true };
 };
 // ############################################ USER PROFILE UPDATE #############################################
-export const userProfileUpdate = (firstName, lastName, contact) => {
-  // Validate profile update data
+export const userProfileUpdate = async (firstName, lastName, contact, email) => {
+  // 1. Validate inputs
   const message = profileUpdateValidateData(firstName, lastName, contact);
-  if (message) {
-    return message;
-  }
+  if (message) return { success: false, message };
 
-  // Profile Update Logic from API
-  return null;
+  try {
+    // 2. Get CSRF token if needed
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+
+    // 3. Prepare payload
+    const payload = {
+      firstName,
+      lastName,
+      contactNumber: contact,
+    };
+
+    // 4. Send PUT request to API
+    const res = await axiosInstance.put(`/users/${email}`, payload);
+
+    // 5. Handle response
+    if (res.status === 200) {
+      return {
+        success: true,
+        message: res.data.message || "Profile updated successfully.",
+      };
+    } else {
+      return {
+        success: false,
+        message: res.data.message || "Profile update failed.",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "An error occurred during profile update.",
+    };
+  }
 };
 
 // ############################################ USER DELETE ACCOUNT #############################################
