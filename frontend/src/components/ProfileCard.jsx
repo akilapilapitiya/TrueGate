@@ -18,15 +18,26 @@ const ProfileCard = ({ onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.user);
+  const { user } = useSelector((store) => store.user);
 
-  const handleSignOut = async () => {
-    const message = userSignOut(dispatch);
-    if (message) {
+  const initials = (user?.firstName && user?.lastName)
+    ? (user.firstName + " " + user.lastName)
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "U";
+
+  const handleSignOut = () => {
+    try {
+      userSignOut(dispatch); // Your own service handles state & storage
+      onClose(); // Close popover
+      navigate("/login");
+    } catch (err) {
+      console.error("Sign-out error:", err);
       navigate("/error-page");
     }
-    onClose(); // Close popup
-    navigate("/");
   };
 
   return (
@@ -43,7 +54,7 @@ const ProfileCard = ({ onClose }) => {
     >
       <Box display="flex" alignItems="center" gap={2} mb={2}>
         <Avatar
-          alt={user?.displayName || "User"}
+          alt={user?.firstName || "User"}
           sx={{
             width: 48,
             height: 48,
@@ -54,16 +65,11 @@ const ProfileCard = ({ onClose }) => {
             fontSize: 16,
           }}
         >
-          {user?.displayName
-            ?.split(" ")
-            .map((n) => n[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase()}
+          {initials}
         </Avatar>
         <Box>
           <Typography fontWeight={600}>
-            {user?.displayName || "User"}
+            {(user?.firstName + " " +user?.lastName) || "User"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {user?.email || ""}

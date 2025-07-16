@@ -171,7 +171,7 @@ const Navbar = () => {
                   <Avatar
                     onClick={handleProfileClick}
                     src={user?.photoURL || ""}
-                    alt={user?.displayName || "User"}
+                    alt={(user?.firstName + user?.lastName) || "User"}
                     sx={{ cursor: "pointer" }}
                   />
                 </Tooltip>
