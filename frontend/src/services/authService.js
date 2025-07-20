@@ -145,7 +145,7 @@ export const userSignOut = async (dispatch) => {
   // Optional: You can return a flag or redirect here
   return { success: true };
 };
-// ############################################ USER PROFILE UPDATE #############################################
+// USER PROFILE UPDATE 
 export const userProfileUpdate = async (firstName, lastName, contact) => {
   // 1. Validate inputs
   const message = profileUpdateValidateData(firstName, lastName, contact);
@@ -196,6 +196,50 @@ export const userProfileUpdate = async (firstName, lastName, contact) => {
       success: false,
       message: err.response?.data?.error || "An error occurred during profile update.",
     };
+  }
+};
+
+// Resend Email Verification
+const sendEmailVerification = async (setIsVerificationLoading, setVerificationMessage, setVerificationSent) => {
+  setIsVerificationLoading(true);
+  setVerificationMessage(null);
+
+  try {
+    // Get user and token from storage
+    const storage = localStorage.getItem("authUser") ? localStorage : sessionStorage;
+    const storedUser = JSON.parse(storage.getItem("authUser"));
+    const token = storage.getItem("authToken");
+
+    if (!storedUser || !token) {
+      setVerificationMessage("You must be logged in to send a verification email.");
+      setIsVerificationLoading(false);
+      return;
+    }
+
+    const email = storedUser.email;
+
+    // Set auth token in headers
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+    // Get CSRF token
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+
+    // Send verification email
+    const res = await axiosInstance.post("/resend-verification", { email });
+
+    if (!res.data.success) {
+      setVerificationMessage("Failed to send verification email. Please try again.");
+    } else {
+      setVerificationMessage("Verification email sent successfully! Please check your inbox.");
+      setVerificationSent(true);
+    }
+  } catch (error) {
+    setVerificationMessage(
+      error.response?.data?.error || "An error occurred while sending the verification email."
+    );
+  } finally {
+    setIsVerificationLoading(false);
   }
 };
 

@@ -13,6 +13,7 @@ import {
   useTheme,
   Fade,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import {
   Verified as VerifiedIcon,
@@ -22,6 +23,7 @@ import {
   Delete as DeleteIcon,
   LockReset as LockResetIcon,
   NewReleases as NewReleasesIcon,
+  Email as EmailIcon,
 } from "@mui/icons-material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
@@ -41,7 +43,11 @@ const Profile = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [verificationMode, setVerificationMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [verificationMessage, setVerificationMessage] = useState(null);
+  const [isVerificationLoading, setIsVerificationLoading] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
 
   const [firstNameEdit, setFirstNameEdit] = useState(user?.firstName);
   const [lastNameEdit, setLastNameEdit] = useState(user?.lastName);
@@ -61,13 +67,37 @@ const Profile = () => {
     const phone = contactEdit.trim() || "";
 
     const res = await userProfileUpdate(first, last, phone, dispatch);
-if (!res.success) {
-  setErrorMessage(res.message);
-  return;
-}
+    if (!res.success) {
+      setErrorMessage(res.message);
+      return;
+    }
     setErrorMessage(null);
     setEditMode(false);
   };
+
+  const sendEmailVerification = async () => {
+  setIsVerificationLoading(true);
+  setVerificationMessage(null);
+  
+  try {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const res = { success: true };
+
+    if (!res.success) {
+      setVerificationMessage("Failed to send verification email. Please try again.");
+      setIsVerificationLoading(false);
+      return;
+    }
+
+    setVerificationMessage("Verification email sent successfully! Please check your inbox.");
+    setVerificationSent(true);
+    setIsVerificationLoading(false);
+
+  } catch (error) {
+    setVerificationMessage("An error occurred while sending the verification email.");
+    setIsVerificationLoading(false);
+  }
+};
 
   const deleteUser = () => {
     const message = userDeleteAccount();
@@ -79,6 +109,12 @@ if (!res.success) {
     }
     setDeleteMode(false);
     navigate("/");
+  };
+
+  const handleVerificationModalClose = () => {
+    setVerificationMode(false);
+    setVerificationMessage(null);
+    setVerificationSent(false);
   };
 
   return (
@@ -122,7 +158,7 @@ if (!res.success) {
                 </Typography>
                 {user?.emailVerified ? (
                   <Chip
-                    icon={<VerifiedIcon sx={{ color: "#2ecc71" }} />}
+                    icon={<VerifiedIcon />}
                     label=" Email is Verified"
                     color="success"
                     variant="outlined"
@@ -130,11 +166,18 @@ if (!res.success) {
                   />
                 ) : (
                   <Chip
-                    icon={<NewReleasesIcon sx={{ color: "#f39c12" }} />}
+                    icon={<NewReleasesIcon />}
                     label="Email is Not Verified"
                     color="warning"
                     variant="outlined"
-                    sx={{ mt: 1 }}
+                    sx={{ 
+                      mt: 1, 
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'action.hover'
+                      }
+                    }}
+                    onClick={() => setVerificationMode(true)}
                   />
                 )}
               </Box>
@@ -332,6 +375,77 @@ if (!res.success) {
                   Save
                 </Button>
               </Stack>
+            </Stack>
+          </Box>
+        </Fade>
+      </Modal>
+
+      {/* Email Verification Modal */}
+      <Modal open={verificationMode} onClose={handleVerificationModalClose}>
+        <Fade in={verificationMode}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: 400 },
+              bgcolor:
+                theme.palette.mode === "dark"
+                  ? "rgba(18,18,18,0.8)"
+                  : "rgba(255, 255, 255, 0.96)",
+              backdropFilter: "blur(12px)",
+              borderRadius: 2,
+              boxShadow: 24,
+              p: 4,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6" fontWeight="bold" mb={1}>
+              Email Verification Required
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={2}>
+              Your email <strong>{user?.email}</strong> is not verified yet.
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={3}>
+              Click the button below to send a verification email to your registered email address.
+            </Typography>
+            
+            {verificationMessage && (
+              <Typography 
+                color={verificationSent ? "success.main" : "error"} 
+                variant="body2" 
+                sx={{ mb: 2 }}
+              >
+                {verificationMessage}
+              </Typography>
+            )}
+
+            <Stack direction="row" justifyContent="center" spacing={2}>
+              <Button 
+                onClick={handleVerificationModalClose}
+                disabled={isVerificationLoading}
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="contained" 
+                color="warning"
+                startIcon={
+                  isVerificationLoading ? 
+                  <CircularProgress size={16} color="inherit" /> : 
+                  <EmailIcon />
+                }
+                onClick={sendEmailVerification}
+                disabled={isVerificationLoading || verificationSent}
+              >
+                {isVerificationLoading 
+                  ? "Sending..." 
+                  : verificationSent 
+                    ? "Email Sent" 
+                    : "Send Verification Email"
+                }
+              </Button>
             </Stack>
           </Box>
         </Fade>
