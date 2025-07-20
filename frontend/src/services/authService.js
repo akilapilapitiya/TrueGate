@@ -146,16 +146,60 @@ export const userSignOut = async (dispatch) => {
   return { success: true };
 };
 // ############################################ USER PROFILE UPDATE #############################################
-export const userProfileUpdate = (firstName, lastName, contact) => {
-  // Validate profile update data
+export const userProfileUpdate = async (firstName, lastName, contact) => {
+  // 1. Validate inputs
   const message = profileUpdateValidateData(firstName, lastName, contact);
-  if (message) {
-    return message;
-  }
+  if (message) return { success: false, message };
 
-  // Profile Update Logic from API
-  return null;
+  try {
+    // 2. Get user and token from storage
+    const storage = localStorage.getItem("authUser") ? localStorage : sessionStorage;
+    const storedUser = JSON.parse(storage.getItem("authUser"));
+    const token = storage.getItem("authToken");
+
+    if (!storedUser || !token) {
+      return { success: false, message: "User not authenticated" };
+    }
+
+    const email = storedUser.email;
+
+    // 3. Attach token to Axios headers
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+    // 4. Get CSRF token
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+
+    // 5. Prepare payload
+    const payload = {
+      firstName,
+      lastName,
+      contactNumber: contact,
+    };
+
+    // 6. Send PUT request
+    const res = await axiosInstance.put(`/users/${email}`, payload);
+
+    if (res.status === 200) {
+      return {
+        success: true,
+        message: res.data.message || "Profile updated successfully.",
+      };
+    } else {
+      return {
+        success: false,
+        message: res.data.message || "Profile update failed.",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "An error occurred during profile update.",
+    };
+  }
 };
+
+
 
 // ############################################ USER DELETE ACCOUNT #############################################
 export const userDeleteAccount = () => {

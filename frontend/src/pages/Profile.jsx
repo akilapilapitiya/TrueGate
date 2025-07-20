@@ -27,13 +27,14 @@ import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { profileUpdateValidateData } from "../utils/Validate";
 import { userDeleteAccount, userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
 
   const profileIcon = user?.gender === "male" ? maleIcon : femaleIcon;
@@ -54,16 +55,16 @@ const Profile = () => {
     }
   }, [editMode]);
 
-  const updateUserInfo = () => {
+  const updateUserInfo = async () => {
     const first = firstNameEdit.trim() || "";
     const last = lastNameEdit.trim() || "";
     const phone = contactEdit.trim() || "";
 
-    const message = userProfileUpdate(first, last, phone);
-    if (message) {
-      setErrorMessage(message);
-      return;
-    }
+    const res = await userProfileUpdate(first, last, phone, dispatch);
+if (!res.success) {
+  setErrorMessage(res.message);
+  return;
+}
     setErrorMessage(null);
     setEditMode(false);
   };
