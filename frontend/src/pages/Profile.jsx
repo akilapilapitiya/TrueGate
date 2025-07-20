@@ -156,7 +156,7 @@ const Profile = () => {
                 <Typography variant="h6" fontWeight="bold">
                   {user?.firstName + " " + user?.lastName}
                 </Typography>
-                {user?.emailVerified ? (
+                {user?.verified ? (
                   <Chip
                     icon={<VerifiedIcon />}
                     label=" Email is Verified"

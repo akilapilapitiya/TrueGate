@@ -15,7 +15,7 @@ const port = process.env.PORT || 4000;
 
 // Security middlewares
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // Adjust origin for your frontend
+app.use(cors({ origin: 'http://localhost:5174', credentials: true })); // Adjust origin for your frontend
 app.use(express.json());
 app.use(cookieParser());
 
