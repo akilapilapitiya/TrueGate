@@ -21,7 +21,7 @@ const Login = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [isRememeberChecked, setIsRememeberChecked] = useState(false);
@@ -33,7 +33,6 @@ const Login = () => {
     const emailValue = emailRef.current?.value || "";
     const passwordValue = passwordRef.current?.value || "";
 
-    // User Login handled
     const message = userLogin(emailValue, passwordValue, isRememeberChecked, dispatch);
     if (message) {
       setErrorMessage(message);
@@ -54,55 +53,59 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: theme.palette.background.default,
-          overflow: "hidden",
+          background: theme.palette.mode === "dark"
+           ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
+          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
         }}
       >
         <Paper
-          elevation={4}
+          elevation={6}
           sx={{
             width: "100%",
-            maxWidth: { xs: "90%", sm: 400, md: 500 },
-            height: { xs: "auto", md: 500 },
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
+            maxWidth: 500,
+            height: "auto",
             borderRadius: 4,
             overflow: "hidden",
-            m: 2,
-            boxShadow: theme.shadows[6],
+            boxShadow: theme.shadows[12],
+            background: theme.palette.mode === "dark"
+              ? "linear-gradient(135deg, #132c45ff, #212d30ff)"
+              : "linear-gradient(135deg, #c2e0f1ff, #ebf6f6ff)",
           }}
         >
-          {/* Left Panel - Login */}
           <Box
             sx={{
-              flex: 1,
-              p: 4,
+              p: { xs: 3, sm: 4 },
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              backgroundColor: theme.palette.background.paper,
+              alignItems: "center",
             }}
           >
-            <Box
+            <img src={namedLogo} alt="Logo" style={{ height: 36, marginBottom: 12 }} />
+            <Typography
+              variant="h4"
+              fontWeight={800}
+              mb={1}
               sx={{
-                mb: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                background: "linear-gradient(90deg, #38bdf8, #6366f1)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
               }}
             >
-              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
-              <Typography variant="h4" fontWeight={700} mb={1}>
-                Sign In
-              </Typography>
-              <Typography variant="body1" color="text.secondary" mb={3}>
-                Welcome back! Please enter your credentials.
-              </Typography>
-            </Box>
+              Sign In
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mb={3}
+              textAlign="center"
+            >
+              Welcome back! Enter your login details to access your account.
+            </Typography>
 
             <Box
               component="form"
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSignIn();
@@ -126,13 +129,13 @@ const Login = () => {
                 variant="outlined"
                 required
               />
+
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
                   flexWrap: "wrap",
-                  mt: 1,
                 }}
               >
                 <FormControlLabel
@@ -151,22 +154,18 @@ const Login = () => {
                   onClick={() => navigate("/password-reset")}
                   underline="hover"
                   color="primary"
-                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                  sx={{ fontWeight: 500, fontSize: "0.875rem" }}
                 >
                   Forgot password?
                 </Link>
               </Box>
 
               {errorMessage && (
-                <Typography
-                  variant="body2"
-                  color="error"
-                  textAlign="center"
-                  sx={{ mt: 1 }}
-                >
+                <Typography variant="body2" color="error" textAlign="center">
                   {errorMessage}
                 </Typography>
               )}
+
               <Button
                 variant="contained"
                 type="submit"
@@ -175,20 +174,22 @@ const Login = () => {
                   mt: 1,
                   py: 1.3,
                   borderRadius: 2,
-                  fontWeight: 600,
+                  fontWeight: 700,
+                  fontSize: "1rem",
                   textTransform: "none",
                 }}
               >
                 Login
               </Button>
-              <Typography variant="body2" mt={1} textAlign="center">
-                Don’t have an account?{" "}
+
+              <Typography variant="body2" mt={2} textAlign="center">
+                Don’t have an account?{' '}
                 <Link
                   component="button"
                   onClick={() => navigate("/register")}
                   underline="hover"
                   color="primary"
-                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                  sx={{ fontWeight: 500 }}
                 >
                   Create one
                 </Link>

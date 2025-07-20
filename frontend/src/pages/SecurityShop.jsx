@@ -531,23 +531,29 @@ const SecurityShop = () => {
 
       {/* View More Button */}
       <Box sx={{ textAlign: "center", mt: 4 }}>
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{
-            borderRadius: 3,
-            px: 4,
-            py: 1.5,
-            fontSize: "1rem",
-            fontWeight: 600,
-            "&:hover": {
-              transform: "translateY(-2px)",
-            },
-          }}
-        >
-          View All Products
-        </Button>
-      </Box>
+  <Button
+    variant="outlined"
+    size="large"
+    sx={{
+      borderRadius: 3,
+      px: 4,
+      py: 1.5,
+      fontSize: "1rem",
+      fontWeight: 600,
+      color: "#dfeceeef", 
+      borderColor: "#19d2bdff", 
+      "&:hover": {
+        backgroundColor: "#19ccd2ff", 
+        color: "#fff", 
+        transform: "translateY(-2px)",
+        borderColor: "#1bd4daff",
+      },
+    }}
+  >
+    View All Products
+  </Button>
+</Box>
+
     </Box>
   );
 };
