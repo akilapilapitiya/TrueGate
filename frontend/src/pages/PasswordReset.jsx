@@ -13,9 +13,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { emailValidation, newPasswordValidateData } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
+import { useSelector } from "react-redux";
 
 const PasswordReset = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.user);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -209,8 +211,8 @@ const PasswordReset = () => {
                 {errorMessage}
               </Typography>
             )}
-
-            <Typography variant="body2" mt={1} textAlign="center">
+            {!user && (
+              <Typography variant="body2" mt={1} textAlign="center">
               Back to{" "}
               <Link
                 component="button"
@@ -222,6 +224,8 @@ const PasswordReset = () => {
                 Login
               </Link>
             </Typography>
+            )}
+            
           </Box>
         </Paper>
       </Box>

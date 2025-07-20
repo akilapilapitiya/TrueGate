@@ -25,7 +25,7 @@ const Dashboard = () => {
   const isDarkMode = theme.palette.mode === "dark";
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((store) => store.user);
 
   const boxStyle = {
     width: "100%",

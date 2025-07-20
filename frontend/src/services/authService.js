@@ -1,47 +1,55 @@
 import { addUser, removeUser } from "../utils/UserSlice";
+import axiosInstance from "./axiosInstance";
 import {
   checkLogInValidateData,
   checkSignUpValidateData,
   profileUpdateValidateData,
 } from "../utils/Validate";
 
-// ############################################ USER LOGIN #############################################
-export const userLogin = (email, password, rememberChecked, dispatch) => {
-  // Validate email and password
+// USER LOGIN
+export const userLogin = async (email, password, rememberChecked, dispatch) => {
   const message = checkLogInValidateData(email, password);
   if (message) {
-    return message;
+    return { success: false, message };
   }
 
-  // Remember Me Check
-  if (rememberChecked) {
-    console.log("Remember Me is checked");
-    // Token Logic
+  let csrfToken;
+  try {
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    csrfToken = csrfRes.data.csrfToken;
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfToken;
+  } catch (err) {
+    return { success: false, message: "Failed to get CSRF token" };
   }
 
-  //Login Logic from API
+  try {
+    const nonce = ""; // if needed
+    const res = await axiosInstance.post("/login", { email, password, nonce });
+    const { user, token } = res.data;
 
-  // Redux Add user
-  const user = {
-    uid: "dummy-uid-123",
-    email: "testuser@example.com",
-    phone: "0123456789",
-    firstName: "John",
-    lastName: "Doe",
-    displayName: "John Doe",
-    gender: "male",
-    role: "admin",
-    emailVerified: true,
-  };
-  // Save user to localStorage
-  localStorage.setItem("authUser", JSON.stringify(user));
-  // Dispatch to Redux
-  dispatch(addUser(user));
-  return null;
+    if (!user || !token) {
+      return { success: false, message: "Login failed: No user/token" };
+    }
+
+    const storage = rememberChecked ? localStorage : sessionStorage;
+    storage.setItem("authUser", JSON.stringify(user));
+    storage.setItem("authToken", token);
+
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+    dispatch(addUser({ user, token }));
+
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "Login failed",
+    };
+  }
 };
 
-// ############################################ USER REGISTRATION #############################################
-export const userRegister = (
+// USER REGISTRATION
+
+export const userRegister = async (
   email,
   password,
   confirmPassword,
@@ -52,7 +60,6 @@ export const userRegister = (
   gender,
   agree
 ) => {
-  // Validate registration data
   const message = checkSignUpValidateData(
     email,
     password,
@@ -64,39 +71,180 @@ export const userRegister = (
     gender
   );
   if (message) {
-    return message;
+    return { success: false, message };
   }
 
-  // Terms and Conditions Check
   if (!agree) {
-    return "You must agree to the terms and conditions";
+    return {
+      success: false,
+      message: "You must agree to the terms and conditions",
+    };
   }
 
-  // Registration Logic from API
-  const mode = "admin"; // Defaulted at Resgistration here
-  return null;
+  try {
+    // CSRF token
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    const csrfToken = csrfRes.data.csrfToken;
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfToken;
+
+    const payload = {
+      email,
+      password,
+      firstName,
+      lastName,
+      birthDate: dob,
+      gender,
+      role: "admin",
+      contactNumber: contact,
+    };
+
+    const res = await axiosInstance.post("/register", payload);
+
+    // Check if registration was successful
+    if (res.status === 200) {
+      return {
+        success: true,
+        message:
+          res.data.message ||
+          "Registered successfully. Please check your email.",
+      };
+    }
+
+    return {
+      success: false,
+      message:
+        res.data.message || "Registration succeeded, but something went wrong.",
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "Registration failed",
+    };
+  }
 };
 
-// ############################################ USER LOGOUT #############################################
-export const userSignOut = (dispatch) => {
-  // Logout Logic From API
+// USER LOGOUT
+export const userSignOut = async (dispatch) => {
+  try {
+    // Optional: Invalidate session on server
+    await axiosInstance.post("/logout");
+  } catch (err) {
+    console.warn("Logout API failed:", err.message);
+  }
 
-  //State management
+  // Clear browser storage
   localStorage.removeItem("authUser");
+  localStorage.removeItem("authToken");
+  sessionStorage.removeItem("authUser");
+  sessionStorage.removeItem("authToken");
+
+  // Clear Redux store
   dispatch(removeUser());
-  return null;
+
+  // Remove token from axios headers
+  delete axiosInstance.defaults.headers["Authorization"];
+
+  // Optional: You can return a flag or redirect here
+  return { success: true };
+};
+// USER PROFILE UPDATE
+export const userProfileUpdate = async (firstName, lastName, contact) => {
+  const message = profileUpdateValidateData(firstName, lastName, contact);
+  if (message) return { success: false, message };
+
+  try {
+    const storage = localStorage.getItem("authUser")
+      ? localStorage
+      : sessionStorage;
+    const storedUser = JSON.parse(storage.getItem("authUser"));
+    const token = storage.getItem("authToken");
+
+    if (!storedUser || !token) {
+      return { success: false, message: "User not authenticated" };
+    }
+
+    const email = storedUser.email;
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+    const payload = {
+      firstName,
+      lastName,
+      contactNumber: contact,
+    };
+    const res = await axiosInstance.put(`/users/${email}`, payload);
+
+    if (res.status === 200) {
+      return {
+        success: true,
+        message: res.data.message || "Profile updated successfully.",
+      };
+    } else {
+      return {
+        success: false,
+        message: res.data.message || "Profile update failed.",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message:
+        err.response?.data?.error || "An error occurred during profile update.",
+    };
+  }
 };
 
-// ############################################ USER PROFILE UPDATE #############################################
-export const userProfileUpdate = (firstName, lastName, contact) => {
-  // Validate profile update data
-  const message = profileUpdateValidateData(firstName, lastName, contact);
-  if (message) {
-    return message;
-  }
+// Resend Email Verification
+const sendEmailVerification = async (
+  setIsVerificationLoading,
+  setVerificationMessage,
+  setVerificationSent
+) => {
+  setIsVerificationLoading(true);
+  setVerificationMessage(null);
 
-  // Profile Update Logic from API
-  return null;
+  try {
+    // Get user and token from storage
+    const storage = localStorage.getItem("authUser")
+      ? localStorage
+      : sessionStorage;
+    const storedUser = JSON.parse(storage.getItem("authUser"));
+    const token = storage.getItem("authToken");
+
+    if (!storedUser || !token) {
+      setVerificationMessage(
+        "You must be logged in to send a verification email."
+      );
+      setIsVerificationLoading(false);
+      return;
+    }
+
+    const email = storedUser.email;
+
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+    const res = await axiosInstance.post("/resend-verification", { email });
+
+    if (!res.data.success) {
+      setVerificationMessage(
+        "Failed to send verification email. Please try again."
+      );
+    } else {
+      setVerificationMessage(
+        "Verification email sent successfully! Please check your inbox."
+      );
+      setVerificationSent(true);
+    }
+  } catch (error) {
+    setVerificationMessage(
+      error.response?.data?.error ||
+        "An error occurred while sending the verification email."
+    );
+  } finally {
+    setIsVerificationLoading(false);
+  }
 };
 
 // ############################################ USER DELETE ACCOUNT #############################################
