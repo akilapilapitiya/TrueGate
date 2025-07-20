@@ -96,6 +96,7 @@ const Navbar = () => {
           bgcolor: "transparent",
           color: theme.palette.text.primary,
           borderRadius: 0,
+          backdropFilter: "blur(8px)",  
         }}
       >
         <Toolbar
@@ -176,6 +177,7 @@ const Navbar = () => {
                 <Tooltip title="User Profile">
                   <Avatar
           alt={user?.firstName || "User"}
+          onClick={handleProfileClick}
           sx={{
             width: 40,
             height: 40,

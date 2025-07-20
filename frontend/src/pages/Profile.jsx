@@ -30,7 +30,6 @@ import femaleIcon from "../assets/female.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { profileUpdateValidateData } from "../utils/Validate";
 import { userDeleteAccount, userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
