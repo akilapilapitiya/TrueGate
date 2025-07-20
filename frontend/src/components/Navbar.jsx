@@ -40,19 +40,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Safe Redux selector
-  const { user } = useSelector((state) => state.user);
-
   // Check login status
+  const { user } = useSelector((store) => store.user);
   const isLoggedIn = user && Object.keys(user).length > 0;
 
-  // Optional: determine role dynamically
-  const role = user?.role || "guest";
 
   // Sidebar links
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    ...(role === "houseOwner"
+    ...(user?.role === "admin"
       ? [
           { label: "User Management", icon: <PeopleIcon />, path: "/users" },
           { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
@@ -80,6 +76,16 @@ const Navbar = () => {
   const handleProfileClick = (e) => setProfileAnchor(e.currentTarget);
   const handleProfileClose = () => setProfileAnchor(null);
   const isProfileOpen = Boolean(profileAnchor);
+
+  // Avatar 
+  const initials = (user?.firstName && user?.lastName)
+    ? (user.firstName + " " + user.lastName)
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "U";
 
   return (
     <>
@@ -169,11 +175,19 @@ const Navbar = () => {
               <>
                 <Tooltip title="User Profile">
                   <Avatar
-                    onClick={handleProfileClick}
-                    src={user?.photoURL || ""}
-                    alt={(user?.firstName + user?.lastName) || "User"}
-                    sx={{ cursor: "pointer" }}
-                  />
+          alt={user?.firstName || "User"}
+          sx={{
+            width: 40,
+            height: 40,
+            bgcolor: theme.palette.primary.main,
+            color: theme.palette.getContrastText(theme.palette.primary.main),
+            border: `2px solid ${theme.palette.primary.light}`,
+            fontWeight: 600,
+            fontSize: 16,
+          }}
+        >
+          {initials}
+        </Avatar>
                 </Tooltip>
                 <Popover
                   open={isProfileOpen}
