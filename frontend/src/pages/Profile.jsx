@@ -54,25 +54,19 @@ const Profile = () => {
     }
   }, [editMode]);
 
-  const updateUserInfo = async () => {
-  const first = firstNameEdit.trim() || "";
-  const last = lastNameEdit.trim() || "";
-  const phone = contactEdit.trim() || "";
+  const updateUserInfo = () => {
+    const first = firstNameEdit.trim() || "";
+    const last = lastNameEdit.trim() || "";
+    const phone = contactEdit.trim() || "";
 
-  const result = await userProfileUpdate(first, last, phone, user.email); // <-- await async function
-
-  if (!result.success) {
-    setErrorMessage(result.message);
-    return;
-  }
-
-  // Optionally update local Redux state here (if needed)
-  // dispatch(updateUserProfile({ firstName: first, lastName: last, phone }));
-
-  setErrorMessage(null);
-  setEditMode(false);
-};
-
+    const message = userProfileUpdate(first, last, phone);
+    if (message) {
+      setErrorMessage(message);
+      return;
+    }
+    setErrorMessage(null);
+    setEditMode(false);
+  };
 
   const deleteUser = () => {
     const message = userDeleteAccount();
