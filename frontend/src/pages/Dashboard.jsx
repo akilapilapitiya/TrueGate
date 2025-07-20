@@ -150,7 +150,7 @@ const Dashboard = () => {
           : `
               radial-gradient(circle at 60% 40%, rgba(46, 204, 113, 0.15), transparent 50%),
               radial-gradient(circle at 30% 80%, rgba(52, 152, 219, 0.12), transparent 50%),
-              linear-gradient(135deg, #f2f5f6ff 0%, #21a4a8ff 100%)
+              linear-gradient(135deg, #9ebce9ff 0%, #bee6e8ff 30%)
             `,
         "&::before": {
           content: '""',

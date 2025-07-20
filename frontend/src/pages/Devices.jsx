@@ -13,6 +13,7 @@ import {
   Divider,
   ToggleButtonGroup,
   ToggleButton,
+  InputAdornment,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -69,23 +70,65 @@ const Devices = () => {
     <Box
       p={3}
       sx={{
-        backgroundColor: theme.palette.background.default,
-        pt: 10,
+        background: theme.palette.mode === "dark"
+          ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
+          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
         minHeight: "100vh",
+        pt: 10,
       }}
     >
-      {/* Header */}
-      <Box mb={3}>
-        <Typography variant="h4" fontWeight="bold" color="text.primary">
-          My Devices
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Manage and monitor your smart home devices
-        </Typography>
-      </Box>
+      <Box mb={6} textAlign="center">
+  <Typography
+    variant="h3"
+    sx={{
+      fontWeight: 800,
+      background: theme.palette.mode === "dark"
+        ? "linear-gradient(90deg, #69eacf, #38b6ff)"
+        : "linear-gradient(90deg, #004e92, #000428)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      letterSpacing: 1.5,
+    }}
+    gutterBottom
+  >
+    My Devices
+  </Typography>
 
-      {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
+  <Typography
+    variant="h6"
+    sx={{
+      color: theme.palette.mode === "dark"
+        ? "rgba(255, 255, 255, 0.7)"
+        : "rgba(0, 0, 0, 0.6)",
+      fontWeight: 400,
+      fontSize: { xs: "0.9rem", sm: "1rem" },
+      letterSpacing: 0.5,
+    }}
+  >
+    Manage and monitor your smart home devices
+  </Typography>
+</Box>
+
+
+     <Paper
+  elevation={theme.palette.mode === "light" ? 4 : 0}
+  sx={{
+    p: 3,
+    mb: 4,
+    borderRadius: 3,
+    backgroundColor: "transparent",
+    boxShadow:
+      theme.palette.mode === "light"
+        ? "0px 8px 16px rgba(0, 0, 0, 0.1)"
+        : "none",
+    border:
+      theme.palette.mode === "dark"
+        ? "1px solid rgba(255, 255, 255, 0.05)"
+        : "none",
+    backdropFilter: theme.palette.mode === "dark" ? "blur(4px)" : "none",
+  }}
+>
+
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={4}>
             <TextField
@@ -95,7 +138,15 @@ const Devices = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
-                endAdornment: <SearchIcon fontSize="small" />,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                background: theme.palette.background.paper,
+                borderRadius: 2,
               }}
             />
           </Grid>
@@ -107,6 +158,7 @@ const Devices = () => {
               label="Filter by Room"
               value={roomFilter}
               onChange={(e) => setRoomFilter(e.target.value)}
+              sx={{ background: theme.palette.background.paper, borderRadius: 2 }}
             >
               <MenuItem value="all">All Rooms</MenuItem>
               {rooms.map((room) => (
@@ -124,6 +176,7 @@ const Devices = () => {
               label="Filter by Type"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
+              sx={{ background: theme.palette.background.paper, borderRadius: 2 }}
             >
               <MenuItem value="all">All Types</MenuItem>
               {types.map((type) => (
@@ -151,9 +204,16 @@ const Devices = () => {
         </Grid>
       </Paper>
 
-      {/* Devices */}
       {filteredDevices.length === 0 ? (
-        <Paper sx={{ p: 5, textAlign: "center" }}>
+        <Paper
+  elevation={0}
+  sx={{
+    p: 2,
+    mb: 3,
+    backgroundColor: "transparent", 
+    boxShadow: "none",              
+  }}
+>
           <Typography variant="h6">No devices found.</Typography>
           <Typography variant="body2" color="text.secondary">
             Try adjusting your search or filters.
@@ -164,15 +224,19 @@ const Devices = () => {
           {filteredDevices.map((device) => (
             <Grid item xs={12} sm={6} md={4} key={device.id}>
               <Paper
+                elevation={4}
                 sx={{
                   p: 2,
-                  borderRadius: 2,
+                  borderRadius: 3,
                   display: "flex",
                   flexDirection: "column",
                   gap: 1,
                   backgroundColor: theme.palette.background.paper,
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.02)",
+                  },
                 }}
-                elevation={3}
               >
                 <Box display="flex" alignItems="center" gap={2}>
                   <IconButton>{iconMap[device.type]}</IconButton>
@@ -213,15 +277,25 @@ const Devices = () => {
           {filteredDevices.map((device) => (
             <Grid item key={device.id}>
               <Paper
+                elevation={2}
                 sx={{
                   p: 2,
                   borderRadius: 2,
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  backgroundColor: theme.palette.background.paper,
+                  background: theme.palette.mode === "dark"
+                ? "linear-gradient(135deg, #203448ff, #114851ff)"
+                : "linear-gradient(135deg, #dfe4e5ff, #d2e8f1ff)",
+
+                  transition: "background 0.3s",
+                  "&:hover": {
+                    background:
+                      theme.palette.mode === "dark"
+                        ? "#03242dff"
+                        : "#9dd7e2ff",
+                  },
                 }}
-                elevation={2}
               >
                 <Box display="flex" alignItems="center" gap={2}>
                   {iconMap[device.type]}
