@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { mockDevices } from "../data/dummyDevices";
+import logoBlue from "../assets/logo-name.png";
 import {
   Box,
   Grid,
@@ -14,6 +15,11 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   InputAdornment,
+  Container,
+  Card,
+  CardContent,
+  alpha,
+  Button,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -24,6 +30,10 @@ import {
   CameraAlt as CameraIcon,
   Sensors as SensorsIcon,
   Power as PowerIcon,
+  Add,
+  DevicesOther,
+  Refresh,
+  Settings,
 } from "@mui/icons-material";
 
 const iconMap = {
@@ -66,271 +76,462 @@ const Devices = () => {
     setFilteredDevices(filtered);
   }, [searchTerm, roomFilter, typeFilter, devices]);
 
+  // Device statistics
+  const deviceStats = [
+    {
+      icon: <DevicesOther sx={{ fontSize: 40 }} />,
+      title: "Total Devices",
+      count: devices.length,
+      color: theme.palette.primary.main,
+      bgColor: alpha(theme.palette.primary.main, 0.1),
+    },
+    {
+      icon: <PowerIcon sx={{ fontSize: 40 }} />,
+      title: "Online",
+      count: devices.filter(d => d.status === 'online').length,
+      color: theme.palette.success.main,
+      bgColor: alpha(theme.palette.success.main, 0.1),
+    },
+    {
+      icon: <Settings sx={{ fontSize: 40 }} />,
+      title: "Active",
+      count: devices.filter(d => d.state).length,
+      color: theme.palette.info.main,
+      bgColor: alpha(theme.palette.info.main, 0.1),
+    },
+  ];
+
   return (
-    <Box
-      p={3}
-      sx={{
-        background: theme.palette.mode === "dark"
-          ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
-          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
-        minHeight: "100vh",
-        pt: 10,
-      }}
-    >
-      <Box mb={6} textAlign="center">
-  <Typography
-    variant="h3"
-    sx={{
-      fontWeight: 800,
-      background: theme.palette.mode === "dark"
-        ? "linear-gradient(90deg, #69eacf, #38b6ff)"
-        : "linear-gradient(90deg, #004e92, #000428)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      letterSpacing: 1.5,
-    }}
-    gutterBottom
-  >
-    My Devices
-  </Typography>
+    <Box sx={{ bgcolor: theme.palette.background.default, minHeight: "100vh" }}>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          background: `linear-gradient(135deg, ${alpha(
+            theme.palette.primary.main,
+            0.1
+          )} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+          py: { xs: 6, md: 8 },
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={8}>
+              <Box>
+                {/* Logo Section */}
+                <Box sx={{ mb: 4 }}>
+                  <Box
+                    component="img"
+                    src={logoBlue}
+                    alt="TrueGate Logo"
+                    sx={{
+                      height: { xs: 40, md: 50 },
+                      width: "auto",
+                      mb: 2,
+                      filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))",
+                    }}
+                  />
+                  <Chip
+                    label="Device Management"
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                  />
+                </Box>
 
-  <Typography
-    variant="h6"
-    sx={{
-      color: theme.palette.mode === "dark"
-        ? "rgba(255, 255, 255, 0.7)"
-        : "rgba(0, 0, 0, 0.6)",
-      fontWeight: 400,
-      fontSize: { xs: "0.9rem", sm: "1rem" },
-      letterSpacing: 0.5,
-    }}
-  >
-    Manage and monitor your smart home devices
-  </Typography>
-</Box>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: "2rem", md: "3rem" },
+                    background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    mb: 2,
+                  }}
+                >
+                  My Devices
+                </Typography>
+                <Typography
+                  variant="h6"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 300,
+                    mb: 4,
+                    fontSize: { xs: "1rem", md: "1.2rem" },
+                  }}
+                >
+                  Manage and monitor all your smart home devices in one place
+                </Typography>
 
-
-     <Paper
-  elevation={theme.palette.mode === "light" ? 4 : 0}
-  sx={{
-    p: 3,
-    mb: 4,
-    borderRadius: 3,
-    backgroundColor: "transparent",
-    boxShadow:
-      theme.palette.mode === "light"
-        ? "0px 8px 16px rgba(0, 0, 0, 0.1)"
-        : "none",
-    border:
-      theme.palette.mode === "dark"
-        ? "1px solid rgba(255, 255, 255, 0.05)"
-        : "none",
-    backdropFilter: theme.palette.mode === "dark" ? "blur(4px)" : "none",
-  }}
->
-
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={4}>
-            <TextField
-              fullWidth
-              size="small"
-              label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                background: theme.palette.background.paper,
-                borderRadius: 2,
-              }}
-            />
+                <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<Add />}
+                    sx={{
+                      px: 3,
+                      py: 1,
+                      borderRadius: 3,
+                      fontSize: "0.9rem",
+                      boxShadow: 3,
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: 6,
+                      },
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    Add Device
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Refresh />}
+                    sx={{
+                      px: 3,
+                      py: 1,
+                      borderRadius: 3,
+                      fontSize: "0.9rem",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                      },
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    Refresh
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Grid container spacing={2}>
+                {deviceStats.map((stat, index) => (
+                  <Grid item xs={4} md={12} key={index}>
+                    <Card
+                      elevation={0}
+                      sx={{
+                        borderRadius: 3,
+                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                        background: stat.bgColor,
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-4px)",
+                          boxShadow: `0 20px 40px ${alpha(stat.color, 0.15)}`,
+                        },
+                      }}
+                    >
+                      <CardContent sx={{ p: 2, textAlign: "center" }}>
+                        <Box
+                          sx={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 2,
+                            bgcolor: alpha(stat.color, 0.2),
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            mx: "auto",
+                            mb: 1,
+                            color: stat.color,
+                          }}
+                        >
+                          {stat.icon}
+                        </Box>
+                        <Typography variant="h4" fontWeight="bold" color={stat.color}>
+                          {stat.count}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {stat.title}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              fullWidth
-              size="small"
-              select
-              label="Filter by Room"
-              value={roomFilter}
-              onChange={(e) => setRoomFilter(e.target.value)}
-              sx={{ background: theme.palette.background.paper, borderRadius: 2 }}
-            >
-              <MenuItem value="all">All Rooms</MenuItem>
-              {rooms.map((room) => (
-                <MenuItem key={room} value={room}>
-                  {room}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField
-              fullWidth
-              size="small"
-              select
-              label="Filter by Type"
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              sx={{ background: theme.palette.background.paper, borderRadius: 2 }}
-            >
-              <MenuItem value="all">All Types</MenuItem>
-              {types.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={2} textAlign="right">
-            <ToggleButtonGroup
-              size="small"
-              value={view}
-              exclusive
-              onChange={(_, val) => val && setView(val)}
-            >
-              <ToggleButton value="grid">
-                <GridIcon />
-              </ToggleButton>
-              <ToggleButton value="list">
-                <ListIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Grid>
-        </Grid>
-      </Paper>
+        </Container>
+      </Box>
 
-      {filteredDevices.length === 0 ? (
-        <Paper
-  elevation={0}
-  sx={{
-    p: 2,
-    mb: 3,
-    backgroundColor: "transparent", 
-    boxShadow: "none",              
-  }}
->
-          <Typography variant="h6">No devices found.</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Try adjusting your search or filters.
+      {/* Filters Section */}
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Card
+          elevation={0}
+          sx={{
+            borderRadius: 4,
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            mb: 4,
+            background: alpha(theme.palette.background.paper, 0.8),
+            backdropFilter: "blur(20px)",
+          }}
+        >
+          <CardContent sx={{ p: 3 }}>
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Search devices"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 3,
+                      backgroundColor: alpha(theme.palette.background.paper, 0.8),
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  select
+                  label="Filter by Room"
+                  value={roomFilter}
+                  onChange={(e) => setRoomFilter(e.target.value)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 3,
+                      backgroundColor: alpha(theme.palette.background.paper, 0.8),
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All Rooms</MenuItem>
+                  {rooms.map((room) => (
+                    <MenuItem key={room} value={room}>
+                      {room}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  select
+                  label="Filter by Type"
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 3,
+                      backgroundColor: alpha(theme.palette.background.paper, 0.8),
+                    },
+                  }}
+                >
+                  <MenuItem value="all">All Types</MenuItem>
+                  {types.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={2} textAlign="center">
+                <ToggleButtonGroup
+                  size="small"
+                  value={view}
+                  exclusive
+                  onChange={(_, val) => val && setView(val)}
+                  sx={{
+                    "& .MuiToggleButton-root": {
+                      borderRadius: 2,
+                      border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+                      "&:hover": {
+                        backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                      },
+                    },
+                  }}
+                >
+                  <ToggleButton value="grid">
+                    <GridIcon />
+                  </ToggleButton>
+                  <ToggleButton value="list">
+                    <ListIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+
+        {/* Devices Display */}
+        {filteredDevices.length === 0 ? (
+          <Card
+            elevation={0}
+            sx={{
+              borderRadius: 4,
+              border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+              textAlign: "center",
+              py: 6,
+            }}
+          >
+            <CardContent>
+              <DevicesOther sx={{ fontSize: 64, color: theme.palette.text.secondary, mb: 2 }} />
+              <Typography variant="h6" color="text.secondary" gutterBottom>
+                No devices found
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Try adjusting your search or filters to find your devices.
+              </Typography>
+            </CardContent>
+          </Card>
+        ) : view === "grid" ? (
+          <Grid container spacing={3}>
+            {filteredDevices.map((device) => (
+              <Grid item xs={12} sm={6} md={4} key={device.id}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: "100%",
+                    borderRadius: 4,
+                    border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      transform: "translateY(-8px)",
+                      boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.15)}`,
+                      borderColor: alpha(theme.palette.primary.main, 0.3),
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 3,
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mb: 2,
+                        color: theme.palette.primary.main,
+                      }}
+                    >
+                      {iconMap[device.type]}
+                    </Box>
+                    <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+                      {device.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {device.room} • {device.type.charAt(0).toUpperCase() + device.type.slice(1)}
+                    </Typography>
+                    <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                      <Chip
+                        label={device.status}
+                        color={
+                          device.status === "online"
+                            ? "success"
+                            : device.status === "offline"
+                            ? "error"
+                            : "default"
+                        }
+                        size="small"
+                        sx={{ borderRadius: 2 }}
+                      />
+                      <Chip
+                        label={device.state ? "Active" : "Inactive"}
+                        color={device.state ? "primary" : "default"}
+                        size="small"
+                        sx={{ borderRadius: 2 }}
+                      />
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Grid container spacing={2}>
+            {filteredDevices.map((device) => (
+              <Grid item xs={12} key={device.id}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    borderRadius: 4,
+                    border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      transform: "translateX(8px)",
+                      boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.15)}`,
+                      borderColor: alpha(theme.palette.primary.main, 0.3),
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <Box
+                          sx={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 2,
+                            bgcolor: alpha(theme.palette.primary.main, 0.1),
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: theme.palette.primary.main,
+                          }}
+                        >
+                          {iconMap[device.type]}
+                        </Box>
+                        <Box>
+                          <Typography variant="h6" fontWeight="bold">
+                            {device.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {device.room} • {device.type.charAt(0).toUpperCase() + device.type.slice(1)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                        <Chip
+                          label={device.status}
+                          color={
+                            device.status === "online"
+                              ? "success"
+                              : device.status === "offline"
+                              ? "error"
+                              : "default"
+                          }
+                          size="small"
+                          sx={{ borderRadius: 2 }}
+                        />
+                        <Chip
+                          label={device.state ? "Active" : "Inactive"}
+                          color={device.state ? "primary" : "default"}
+                          size="small"
+                          sx={{ borderRadius: 2 }}
+                        />
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
+
+      <Divider sx={{ mx: 4 }} />
+
+      {/* Footer */}
+      <Box sx={{ py: 4 }}>
+        <Container maxWidth="lg">
+          <Typography variant="body2" align="center" color="text.secondary">
+            &copy; {new Date().getFullYear()} TrueGate Inc. All rights reserved.
           </Typography>
-        </Paper>
-      ) : view === "grid" ? (
-        <Grid container spacing={3}>
-          {filteredDevices.map((device) => (
-            <Grid item xs={12} sm={6} md={4} key={device.id}>
-              <Paper
-                elevation={4}
-                sx={{
-                  p: 2,
-                  borderRadius: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                  backgroundColor: theme.palette.background.paper,
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.02)",
-                  },
-                }}
-              >
-                <Box display="flex" alignItems="center" gap={2}>
-                  <IconButton>{iconMap[device.type]}</IconButton>
-                  <Box>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {device.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {device.room} • {device.type}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Divider />
-                <Box display="flex" justifyContent="space-between" mt={1}>
-                  <Chip
-                    label={device.status}
-                    color={
-                      device.status === "online"
-                        ? "success"
-                        : device.status === "offline"
-                        ? "error"
-                        : "default"
-                    }
-                    size="small"
-                  />
-                  <Chip
-                    label={device.state ? "On" : "Off"}
-                    color={device.state ? "primary" : "default"}
-                    size="small"
-                  />
-                </Box>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Grid container direction="column" spacing={2}>
-          {filteredDevices.map((device) => (
-            <Grid item key={device.id}>
-              <Paper
-                elevation={2}
-                sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  background: theme.palette.mode === "dark"
-                ? "linear-gradient(135deg, #203448ff, #114851ff)"
-                : "linear-gradient(135deg, #dfe4e5ff, #d2e8f1ff)",
-
-                  transition: "background 0.3s",
-                  "&:hover": {
-                    background:
-                      theme.palette.mode === "dark"
-                        ? "#03242dff"
-                        : "#9dd7e2ff",
-                  },
-                }}
-              >
-                <Box display="flex" alignItems="center" gap={2}>
-                  {iconMap[device.type]}
-                  <Box>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {device.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {device.room} • {device.type}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box display="flex" gap={1}>
-                  <Chip
-                    label={device.status}
-                    color={
-                      device.status === "online"
-                        ? "success"
-                        : device.status === "offline"
-                        ? "error"
-                        : "default"
-                    }
-                    size="small"
-                  />
-                  <Chip
-                    label={device.state ? "On" : "Off"}
-                    color={device.state ? "primary" : "default"}
-                    size="small"
-                  />
-                </Box>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      )}
+        </Container>
+      </Box>
     </Box>
   );
 };
