@@ -26,6 +26,7 @@ import {
   ArrowForward,
   PlayArrow,
 } from "@mui/icons-material";
+import logo from "../../public/logo.png";
 
 const About = () => {
   const theme = useTheme();
@@ -199,10 +200,13 @@ const About = () => {
                     },
                   }}
                 >
-                  <Security
+                  <Box
+                    component="img"
+                    src={logo}
+                    alt="Logo"
                     sx={{
-                      fontSize: { xs: 80, md: 120 },
-                      color: theme.palette.primary.main,
+                      width: 100, // or any width you want
+                      height: "auto",
                     }}
                   />
                 </Box>
