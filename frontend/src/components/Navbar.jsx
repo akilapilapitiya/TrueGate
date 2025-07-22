@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Box,
   Drawer,
-  Button,
   Tooltip,
   Popover,
   Avatar,
+  Chip,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -25,9 +24,13 @@ import {
   YouTube as YouTubeIcon,
   ShoppingCart as ShoppingCartIcon,
   Cloud as CloudIcon,
+  NewReleases as NewReleasesIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAppTheme } from "../hooks/useAppTheme";
+import { useSelector } from "react-redux";
+
+// Lazy-loaded components
 const SideBar = lazy(() => import("./Sidebar"));
 const ProfileCard = lazy(() => import("./ProfileCard"));
 const NotificationCard = lazy(() => import("./NotificationCard"));
@@ -35,52 +38,54 @@ const NotificationCard = lazy(() => import("./NotificationCard"));
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const role = "houseOwner"; // Replace with dynamic role logic
-  const [user, setUser] = useState(true); // update with user state
+  // Check login status
+  const { user } = useSelector((store) => store.user);
+  const isLoggedIn = user && Object.keys(user).length > 0;
 
+
+  // Sidebar links
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    ...(role === "houseOwner"
+    ...(user?.role === "admin"
       ? [
           { label: "User Management", icon: <PeopleIcon />, path: "/users" },
-          {
-            label: "Device Management",
-            icon: <DevicesIcon />,
-            path: "/devices",
-          },
+          { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
         ]
       : []),
     { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
     { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
     { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
-    { label: "Setup Guides", icon: <YouTubeIcon />, path: "youtube" },
+    { label: "Setup Guides", icon: <YouTubeIcon />, path: "/youtube" },
     { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
     { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];
 
-  const toggleDrawer = (state) => () => setOpen(state);
+  // Drawer handlers
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
 
-  // Notification handler
-  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
-  const handleNotificationClick = (event) => {
-    setNotificationAnchorEl(event.currentTarget);
-  };
-  const handleNotificationClose = () => {
-    setNotificationAnchorEl(null);
-  };
-  const isNotificationOpen = Boolean(notificationAnchorEl);
+  // Notifications
+  const [notificationAnchor, setNotificationAnchor] = useState(null);
+  const handleNotificationClick = (e) => setNotificationAnchor(e.currentTarget);
+  const handleNotificationClose = () => setNotificationAnchor(null);
+  const isNotificationOpen = Boolean(notificationAnchor);
 
-  // Profile Icon and Popover
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseProfile = () => {
-    setAnchorEl(null);
-  };
-  const isProfileOpen = Boolean(anchorEl);
+  // Profile
+  const [profileAnchor, setProfileAnchor] = useState(null);
+  const handleProfileClick = (e) => setProfileAnchor(e.currentTarget);
+  const handleProfileClose = () => setProfileAnchor(null);
+  const isProfileOpen = Boolean(profileAnchor);
+
+  // Avatar 
+  const initials = (user?.firstName && user?.lastName)
+    ? (user.firstName + " " + user.lastName)
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "U";
 
   return (
     <>
@@ -88,10 +93,10 @@ const Navbar = () => {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.paper,
-          width: "100%",
+          bgcolor: "transparent",
           color: theme.palette.text.primary,
-          borderRadius: "0",
+          borderRadius: 0,
+          backdropFilter: "blur(8px)",  
         }}
       >
         <Toolbar
@@ -100,21 +105,18 @@ const Navbar = () => {
             flexWrap: "wrap",
             px: { xs: 1, sm: 3 },
             gap: 1,
-            borderRadius: "0",
           }}
         >
-          {/* Left: Menu Icon */}
-          {user && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title=" Side Menu">
-                <IconButton edge="start" onClick={toggleDrawer(true)}>
-                  <MenuIcon sx={{}} />
-                </IconButton>
-              </Tooltip>
-            </Box>
+          {/* Menu Icon */}
+          {isLoggedIn && (
+            <Tooltip title="Side Menu">
+              <IconButton edge="start" onClick={toggleDrawer(true)}>
+                <MenuIcon />
+              </IconButton>
+            </Tooltip>
           )}
 
-          {/* Right: Icons */}
+          {/* Right Icons */}
           <Box
             sx={{
               display: "flex",
@@ -125,81 +127,81 @@ const Navbar = () => {
               flexGrow: 1,
             }}
           >
-            <Tooltip title={isDarkMode ? "Light mode" : "Dark mode"}>
+            {/* Email not verified Chip */}
+            {isLoggedIn && user?.emailVerified === false && (
+              <Tooltip title="Email is not verified. Please check your inbox.">
+                <Chip
+                  icon={<NewReleasesIcon />}
+                  label="Email Not Verified"
+                  color="warning"
+                  variant="outlined"
+                  sx={{ mt: 1, cursor: "pointer" }}
+                  onClick={() => navigate("/profile")}
+                />
+              </Tooltip>
+            )}
+
+            {/* Theme toggle */}
+            <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
               <IconButton size="small" onClick={toggleTheme}>
-                {isDarkMode ? (
-                  <LightModeIcon fontSize="small" />
-                ) : (
-                  <DarkModeIcon fontSize="small" />
-                )}
+                {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
             </Tooltip>
 
-            {user && (
+            {/* Notifications */}
+            {isLoggedIn && (
               <>
                 <Tooltip title="Notifications">
                   <IconButton size="small" onClick={handleNotificationClick}>
                     <NotificationsIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-
                 <Popover
                   open={isNotificationOpen}
-                  anchorEl={notificationAnchorEl}
+                  anchorEl={notificationAnchor}
                   onClose={handleNotificationClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  PaperProps={{
-                    sx: {
-                      mt: 1,
-                      borderRadius: 2,
-                      boxShadow: theme.shadows[4],
-                    },
-                  }}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  PaperProps={{ sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] } }}
                 >
-                  <NotificationCard onClose={handleNotificationClose} />
+                  <Suspense fallback={<Box p={2}>Loading...</Box>}>
+                    <NotificationCard onClose={handleNotificationClose} />
+                  </Suspense>
                 </Popover>
               </>
             )}
 
-            {user && (
+            {/* User Avatar */}
+            {isLoggedIn && (
               <>
-                <Tooltip title=" User Profile">
+                <Tooltip title="User Profile">
                   <Avatar
-                    onClick={handleProfileClick}
-                    src={user?.photoURL}
-                    alt={user?.displayName || "User"}
-                    sx={{ cursor: "pointer" }}
-                  />
+          alt={user?.firstName || "User"}
+          onClick={handleProfileClick}
+          sx={{
+            width: 40,
+            height: 40,
+            bgcolor: theme.palette.primary.main,
+            color: theme.palette.getContrastText(theme.palette.primary.main),
+            border: `2px solid ${theme.palette.primary.light}`,
+            fontWeight: 600,
+            fontSize: 16,
+          }}
+        >
+          {initials}
+        </Avatar>
                 </Tooltip>
-
                 <Popover
                   open={isProfileOpen}
-                  anchorEl={anchorEl}
-                  onClose={handleCloseProfile}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  PaperProps={{
-                    sx: {
-                      mt: 1,
-                      borderRadius: 2,
-                      boxShadow: theme.shadows[4],
-                    },
-                  }}
+                  anchorEl={profileAnchor}
+                  onClose={handleProfileClose}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  PaperProps={{ sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] } }}
                 >
-                  <ProfileCard onClose={handleCloseProfile} />
+                  <Suspense fallback={<Box p={2}>Loading...</Box>}>
+                    <ProfileCard onClose={handleProfileClose} />
+                  </Suspense>
                 </Popover>
               </>
             )}
@@ -207,10 +209,10 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer with Sidebar */}
+      {/* Drawer */}
       <Drawer
         anchor="left"
-        open={open}
+        open={drawerOpen}
         onClose={toggleDrawer(false)}
         ModalProps={{
           BackdropProps: {
@@ -221,7 +223,9 @@ const Navbar = () => {
           },
         }}
       >
-        <SideBar navLinks={navLinks} onClose={toggleDrawer(false)} />
+        <Suspense fallback={<Box p={2}>Loading Sidebar...</Box>}>
+          <SideBar navLinks={navLinks} onClose={toggleDrawer(false)} />
+        </Suspense>
       </Drawer>
     </>
   );

@@ -1,26 +1,42 @@
 import {
+  Avatar,
   Box,
   Button,
   Container,
   Divider,
+  Fade,
   IconButton,
   Modal,
   Paper,
-  TextField,
-  Typography,
-  Backdrop,
-  Fade,
+  Stack,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  useTheme,
+  TextField,
+  Typography,
   useMediaQuery,
+  useTheme,
+  Card,
+  CardContent,
+  Chip,
+  alpha,
 } from "@mui/material";
 import { useState } from "react";
-import { Add, Delete } from "@mui/icons-material";
+import {
+  Add,
+  Delete,
+  People,
+  Search,
+  PersonAdd,
+  Security,
+  AccessTime,
+  Email,
+  Badge,
+  ArrowForward,
+} from "@mui/icons-material";
 
 const Users = () => {
   const theme = useTheme();
@@ -33,6 +49,8 @@ const Users = () => {
       lastName: "Bandara",
       email: "buddhika@gmail.com",
       lastLogin: "2024-10-01",
+      status: "Active",
+      role: "Admin",
     },
     {
       id: "0002",
@@ -40,6 +58,8 @@ const Users = () => {
       lastName: "Kavindya",
       email: "yonali@gmail.com",
       lastLogin: "2024-10-01",
+      status: "Active",
+      role: "User",
     },
     {
       id: "0003",
@@ -47,15 +67,19 @@ const Users = () => {
       lastName: "Hiranya",
       email: "sandali@gmail.com",
       lastLogin: "2024-10-01",
+      status: "Inactive",
+      role: "User",
     },
   ]);
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [newCustomer, setNewCustomer] = useState({
     id: "",
     firstName: "",
     lastName: "",
     email: "",
+    role: "User",
   });
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -72,9 +96,20 @@ const Users = () => {
       newCustomer.lastName &&
       newCustomer.email
     ) {
-      setCustomers((prev) => [...prev, newCustomer]);
+      const customerWithDefaults = {
+        ...newCustomer,
+        lastLogin: new Date().toISOString().split("T")[0],
+        status: "Active",
+      };
+      setCustomers((prev) => [...prev, customerWithDefaults]);
       setOpenDialog(false);
-      setNewCustomer({ id: "", firstName: "", lastName: "", email: "" });
+      setNewCustomer({
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "User",
+      });
     }
   };
 
@@ -91,94 +126,525 @@ const Users = () => {
     setSelectedCustomerId(null);
   };
 
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        minHeight: "100vh",
-        backgroundColor: theme.palette.background.default,
-        py: 6,
-        px: { xs: 2, sm: 3, md: 6 },
-        boxSizing: "border-box",
-      }}
-    >
-      <Container maxWidth="lg">
-        <Paper
-          elevation={3}
-          sx={{ p: 4, display: "flex", flexDirection: "column", gap: 3 }}
-        >
-          <Typography variant="h5" fontWeight="bold" color="text.primary">
-            Dependants List
-          </Typography>
+  const filteredCustomers = customers.filter((customer) =>
+    `${customer.firstName} ${customer.lastName} ${customer.email}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
-          <TableContainer>
-            <Table size={isMobile ? "small" : "medium"}>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    ID
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    First Name
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Last Name
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Email
-                  </TableCell>
-                  <TableCell sx={{ color: theme.palette.primary.contrastText }}>
-                    Last Login
-                  </TableCell>
-                  <TableCell
-                    sx={{ color: theme.palette.primary.contrastText }}
-                    align="center"
-                  >
-                    Action
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {customers.map((customer) => (
-                  <TableRow
-                    key={customer.id}
-                    hover
+  const getStatusColor = (status) => {
+    return status === "Active"
+      ? theme.palette.success.main
+      : theme.palette.warning.main;
+  };
+
+  const getRoleColor = (role) => {
+    return role === "Admin"
+      ? theme.palette.primary.main
+      : theme.palette.secondary.main;
+  };
+
+  return (
+    <Box sx={{ bgcolor: theme.palette.background.default, minHeight: "100vh" }}>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          background: `linear-gradient(135deg, ${alpha(
+            theme.palette.primary.main,
+            0.1
+          )} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+          py: { xs: 12, md: 6 },
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box textAlign="center">
+            <Box
+              sx={{
+                width: 80,
+                height: 80,
+                borderRadius: 3,
+                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mx: "auto",
+                mb: 3,
+                color: theme.palette.primary.main,
+              }}
+            >
+              <People sx={{ fontSize: 40 }} />
+            </Box>
+
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 800,
+                fontSize: { xs: "2rem", md: "2.5rem" },
+                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                mb: 2,
+              }}
+            >
+              Dependants Management
+            </Typography>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{
+                fontWeight: 300,
+                mb: 3,
+                maxWidth: 600,
+                mx: "auto",
+              }}
+            >
+              Manage trusted users and control access to your security system
+            </Typography>
+
+            <Chip
+              label={`${customers.length} Total Dependants`}
+              color="primary"
+              variant="outlined"
+              size="medium"
+              sx={{ px: 2 }}
+            />
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Main Content */}
+      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
+        {/* Stats Cards */}
+        <Box sx={{ mb: 4 }}>
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+            <Card
+              elevation={0}
+              sx={{
+                flex: 1,
+                borderRadius: 3,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                background: alpha(theme.palette.success.main, 0.05),
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Box
                     sx={{
-                      transition: "background-color 0.3s ease",
-                      cursor: "pointer",
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      bgcolor: alpha(theme.palette.success.main, 0.1),
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    <TableCell>{customer.id}</TableCell>
-                    <TableCell>{customer.firstName}</TableCell>
-                    <TableCell>{customer.lastName}</TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.lastLogin}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() => handleDeleteCustomer(customer.id)}
-                        color="error"
+                    <Security sx={{ color: theme.palette.success.main }} />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      fontWeight="bold"
+                      color="success.main"
+                    >
+                      {customers.filter((c) => c.status === "Active").length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Active Users
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            <Card
+              elevation={0}
+              sx={{
+                flex: 1,
+                borderRadius: 3,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                background: alpha(theme.palette.warning.main, 0.05),
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      bgcolor: alpha(theme.palette.warning.main, 0.1),
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AccessTime sx={{ color: theme.palette.warning.main }} />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      fontWeight="bold"
+                      color="warning.main"
+                    >
+                      {customers.filter((c) => c.status === "Inactive").length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Inactive Users
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            <Card
+              elevation={0}
+              sx={{
+                flex: 1,
+                borderRadius: 3,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                background: alpha(theme.palette.primary.main, 0.05),
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge sx={{ color: theme.palette.primary.main }} />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      fontWeight="bold"
+                      color="primary.main"
+                    >
+                      {customers.filter((c) => c.role === "Admin").length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Administrators
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+
+        {/* Main Table Card */}
+        <Card
+          elevation={0}
+          sx={{
+            borderRadius: 4,
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            overflow: "hidden",
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            {/* Header Actions */}
+            <Box
+              sx={{
+                mb: 4,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 2,
+              }}
+            >
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="text.primary"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <People sx={{ color: theme.palette.primary.main }} />
+                Dependants List
+              </Typography>
+
+              <Stack direction="row" spacing={2} alignItems="center">
+                <TextField
+                  label="Search dependants..."
+                  variant="outlined"
+                  size="small"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <Search sx={{ color: "text.secondary", mr: 1 }} />
+                    ),
+                  }}
+                  sx={{
+                    minWidth: { xs: "100%", sm: 250 },
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+
+                <Button
+                  startIcon={<PersonAdd />}
+                  variant="contained"
+                  onClick={() => setOpenDialog(true)}
+                  sx={{
+                    borderRadius: 2,
+                    px: 3,
+                    fontWeight: 600,
+                    textTransform: "none",
+                    boxShadow: 2,
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: 4,
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  Add Dependant
+                </Button>
+              </Stack>
+            </Box>
+
+            {/* Table */}
+            <TableContainer>
+              <Table size={isMobile ? "small" : "medium"}>
+                <TableHead>
+                  <TableRow
+                    sx={{
+                      background: `linear-gradient(135deg, ${alpha(
+                        theme.palette.primary.main,
+                        0.8
+                      )} 0%, ${alpha(theme.palette.secondary.main, 0.8)} 100%)`,
+                    }}
+                  >
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Badge sx={{ fontSize: 18 }} />
+                        <span>ID</span>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <People sx={{ fontSize: 18 }} />
+                        <span>Dependant</span>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Email sx={{ fontSize: 18 }} />
+                        <span>Contact</span>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                    >
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <AccessTime sx={{ fontSize: 18 }} />
+                        <span>Last Login</span>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                      align="center"
+                    >
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                        justifyContent="center"
                       >
-                        <Delete />
-                      </IconButton>
+                        <Security sx={{ fontSize: 18 }} />
+                        <span>Status</span>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        py: 2,
+                      }}
+                      align="center"
+                    >
+                      Actions
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {filteredCustomers.map((customer, index) => (
+                    <TableRow
+                      key={customer.id}
+                      hover
+                      sx={{
+                        backgroundColor: alpha(theme.palette.grey[900], 0.05),
+                        "&:hover": {
+                          backgroundColor: alpha(
+                            theme.palette.primary.main,
+                            0.05
+                          ),
+                          transform: "translateX(4px)",
+                        },
+                      }}
+                    >
+                      <TableCell sx={{ py: 2 }}>
+                        <Chip
+                          label={customer.id}
+                          size="small"
+                          variant="outlined"
+                          color="primary"
+                        />
+                      </TableCell>
+                      <TableCell sx={{ py: 2 }}>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                          <Avatar
+                            sx={{
+                              bgcolor: theme.palette.primary.main,
+                              color: "#fff",
+                              fontWeight: "bold",
+                              width: 45,
+                              height: 45,
+                            }}
+                          >
+                            {customer.firstName[0]}
+                            {customer.lastName[0]}
+                          </Avatar>
+                          <Box>
+                            <Typography fontWeight="600" sx={{ mb: 0.5 }}>
+                              {customer.firstName} {customer.lastName}
+                            </Typography>
+                            <Chip
+                              label={customer.role}
+                              size="small"
+                              sx={{
+                                bgcolor: alpha(
+                                  getRoleColor(customer.role),
+                                  0.1
+                                ),
+                                color: getRoleColor(customer.role),
+                                fontWeight: "bold",
+                                fontSize: "0.75rem",
+                              }}
+                            />
+                          </Box>
+                        </Stack>
+                      </TableCell>
+                      <TableCell sx={{ py: 2 }}>
+                        <Typography color="text.secondary">
+                          {customer.email}
+                        </Typography>
+                      </TableCell>
+                      <TableCell sx={{ py: 2 }}>
+                        <Typography color="text.secondary">
+                          {customer.lastLogin}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center" sx={{ py: 2 }}>
+                        <Chip
+                          label={customer.status}
+                          size="small"
+                          sx={{
+                            bgcolor: alpha(
+                              getStatusColor(customer.status),
+                              0.1
+                            ),
+                            color: getStatusColor(customer.status),
+                            fontWeight: "bold",
+                            minWidth: 70,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="center" sx={{ py: 2 }}>
+                        <IconButton
+                          onClick={() => handleDeleteCustomer(customer.id)}
+                          color="error"
+                          sx={{
+                            "&:hover": {
+                              transform: "scale(1.1)",
+                              bgcolor: alpha(theme.palette.error.main, 0.1),
+                            },
+                            transition: "all 0.2s ease",
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-          <Divider />
-
-          <Box display="flex" justifyContent="center">
-            <Button
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => setOpenDialog(true)}
-            >
-              Add New Dependant
-            </Button>
-          </Box>
-        </Paper>
+            {filteredCustomers.length === 0 && (
+              <Box
+                sx={{
+                  textAlign: "center",
+                  py: 8,
+                }}
+              >
+                <People
+                  sx={{
+                    fontSize: 60,
+                    color: alpha(theme.palette.text.secondary, 0.5),
+                    mb: 2,
+                  }}
+                />
+                <Typography variant="h6" color="text.secondary" gutterBottom>
+                  No dependants found
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {searchTerm
+                    ? "Try adjusting your search terms"
+                    : "Add your first dependant to get started"}
+                </Typography>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
       </Container>
 
       {/* Add Modal */}
@@ -194,49 +660,147 @@ const Users = () => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: { xs: "90%", sm: 400 },
+              width: { xs: "90%", sm: 500 },
               bgcolor: "background.paper",
-              borderRadius: 2,
+              borderRadius: 4,
               boxShadow: 24,
-              p: 4,
+              p: 0,
+              overflow: "hidden",
             }}
           >
-            <Typography variant="h6" fontWeight="bold" mb={2}>
-              Add New Dependant
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <TextField
-                label="ID"
-                value={newCustomer.id}
-                onChange={(e) => handleInputChange("id", e.target.value)}
-                fullWidth
-              />
-              <TextField
-                label="First Name"
-                value={newCustomer.firstName}
-                onChange={(e) => handleInputChange("firstName", e.target.value)}
-                fullWidth
-              />
-              <TextField
-                label="Last Name"
-                value={newCustomer.lastName}
-                onChange={(e) => handleInputChange("lastName", e.target.value)}
-                fullWidth
-              />
-              <TextField
-                label="Email"
-                value={newCustomer.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-                fullWidth
-              />
-              <Box display="flex" justifyContent="flex-end" gap={1} mt={2}>
-                <Button variant="outlined" onClick={() => setOpenDialog(false)}>
-                  Cancel
-                </Button>
-                <Button variant="contained" onClick={handleAddCustomer}>
-                  Add
-                </Button>
-              </Box>
+            {/* Modal Header */}
+            <Box
+              sx={{
+                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                p: 3,
+                color: "white",
+              }}
+            >
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              >
+                <PersonAdd />
+                Add New Dependant
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
+                Grant access to trusted individuals for your security system
+              </Typography>
+            </Box>
+
+            {/* Modal Content */}
+            <Box sx={{ p: 4 }}>
+              <Stack spacing={3}>
+                <TextField
+                  label="Dependant ID"
+                  value={newCustomer.id}
+                  onChange={(e) => handleInputChange("id", e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+                <Stack direction="row" spacing={2}>
+                  <TextField
+                    label="First Name"
+                    value={newCustomer.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    fullWidth
+                    variant="outlined"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                      },
+                    }}
+                  />
+                  <TextField
+                    label="Last Name"
+                    value={newCustomer.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
+                    fullWidth
+                    variant="outlined"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                      },
+                    }}
+                  />
+                </Stack>
+                <TextField
+                  label="Email Address"
+                  value={newCustomer.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  fullWidth
+                  type="email"
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                />
+                <TextField
+                  label="Role"
+                  value={newCustomer.role}
+                  onChange={(e) => handleInputChange("role", e.target.value)}
+                  fullWidth
+                  select
+                  SelectProps={{
+                    native: true,
+                  }}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                    },
+                  }}
+                >
+                  <option value="User">User</option>
+                  <option value="Admin">Admin</option>
+                </TextField>
+
+                <Box display="flex" justifyContent="flex-end" gap={2} pt={2}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setOpenDialog(false)}
+                    sx={{
+                      borderRadius: 2,
+                      px: 3,
+                      textTransform: "none",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={handleAddCustomer}
+                    endIcon={<ArrowForward />}
+                    sx={{
+                      borderRadius: 2,
+                      px: 3,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      boxShadow: 2,
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: 4,
+                      },
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    Add Dependant
+                  </Button>
+                </Box>
+              </Stack>
             </Box>
           </Box>
         </Fade>
@@ -257,33 +821,92 @@ const Users = () => {
               transform: "translate(-50%, -50%)",
               width: { xs: "90%", sm: 400 },
               bgcolor: "background.paper",
-              borderRadius: 2,
+              borderRadius: 4,
               boxShadow: 24,
-              p: 4,
-              textAlign: "center",
+              p: 0,
+              overflow: "hidden",
             }}
           >
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
-              Delete Dependant
-            </Typography>
-            <Typography variant="body1" color="text.secondary" mb={3}>
-              Are you sure you want to delete this dependant? This action cannot
-              be undone.
-            </Typography>
-            <Box display="flex" justifyContent="center" gap={2}>
-              <Button
-                variant="outlined"
-                onClick={() => setDeleteDialogOpen(false)}
+            {/* Modal Header */}
+            <Box
+              sx={{
+                background: `linear-gradient(135deg, ${theme.palette.error.main} 0%, ${theme.palette.error.dark} 100%)`,
+                p: 3,
+                color: "white",
+              }}
+            >
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={confirmDeleteCustomer}
+                <Delete />
+                Remove Dependant
+              </Typography>
+            </Box>
+
+            {/* Modal Content */}
+            <Box sx={{ p: 4, textAlign: "center" }}>
+              <Box
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: "50%",
+                  bgcolor: alpha(theme.palette.error.main, 0.1),
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mx: "auto",
+                  mb: 3,
+                }}
               >
-                Delete
-              </Button>
+                <Delete
+                  sx={{ fontSize: 40, color: theme.palette.error.main }}
+                />
+              </Box>
+
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Confirm Removal
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={4}>
+                Are you sure you want to remove this dependant? They will lose
+                access to your security system immediately. This action cannot
+                be undone.
+              </Typography>
+
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button
+                  variant="outlined"
+                  onClick={() => setDeleteDialogOpen(false)}
+                  sx={{
+                    borderRadius: 2,
+                    px: 3,
+                    textTransform: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  Keep Dependant
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={confirmDeleteCustomer}
+                  sx={{
+                    borderRadius: 2,
+                    px: 3,
+                    textTransform: "none",
+                    fontWeight: 600,
+                    boxShadow: 2,
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: 4,
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  Remove Access
+                </Button>
+              </Stack>
             </Box>
           </Box>
         </Fade>

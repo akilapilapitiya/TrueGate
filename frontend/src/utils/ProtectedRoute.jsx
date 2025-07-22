@@ -1,17 +1,21 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ user }) => {
+export const ProtectedRoute = () => {
+  const user = useSelector((state) => state.user.user);
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-const AdminRoute = ({ user, admin }) => {
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  if (!admin) {
-    return <Navigate to="/dashboard" replace />;
-  }
+export const AdminRoute = () => {
+  const user = useSelector((state) => state.user.user);
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
   return <Outlet />;
 };
 
-export { ProtectedRoute, AdminRoute };
+export const VerifiedRoute = () => {
+  const user = useSelector((state) => state.user.user);
+  if (!user) return <Navigate to="/login" replace />;
+  if (!user.emailVerified) return <Navigate to="/email-verify" replace />;
+  return <Outlet />;
+};

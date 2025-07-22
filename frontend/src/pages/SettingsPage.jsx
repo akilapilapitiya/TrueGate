@@ -54,59 +54,90 @@ const SettingsPage = () => {
       sx={{
         pt: 10,
         px: { xs: 2, sm: 4, md: 8 },
-        bgcolor: muiTheme.palette.background.default,
+        background: theme.palette.mode === "dark"
+          ? "linear-gradient(to right, #1e656eff, #0e2346ff)"
+          : "linear-gradient(to right, #9ebce9ff, #bee6e8ff)",
         color: muiTheme.palette.text.primary,
         minHeight: "100vh",
       }}
     >
       <Typography
         variant="h4"
-        fontWeight="bold"
-        mb={2}
-        display="flex"
-        alignItems="center"
-        gap={1}
+        fontWeight="800"
+        mb={3}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          letterSpacing: 1.2,
+          background: isDarkMode
+            ? "linear-gradient(90deg, #7ddaff, #38b6ff)"
+            : "linear-gradient(90deg, #004e92, #4286f4)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
       >
-        <Settings />
+        <Settings fontSize="large" />
         Settings
       </Typography>
 
-      <Paper elevation={3} sx={{ borderRadius: 3 }}>
+      <Paper
+        elevation={4}
+        sx={{
+          borderRadius: 3,
+          overflow: "hidden",
+          background: isDarkMode
+            ? "linear-gradient(135deg, #182a36ff, #345064ff)"
+            : "linear-gradient(135deg, #eaf6ff, #d9f2f2)",
+        }}
+      >
         <Tabs
           value={tab}
           onChange={(e, newTab) => setTab(newTab)}
           variant="scrollable"
           scrollButtons="auto"
-          aria-label="settings tabs"
+          sx={{
+            ".MuiTab-root": {
+              fontWeight: 600,
+              textTransform: "none",
+              color: isDarkMode ? "#b0bec5" : "#37474f",
+            },
+            ".Mui-selected": {
+              color: isDarkMode ? "#00e5ff" : "#0077c2",
+            },
+          }}
         >
           <Tab icon={<Settings />} label="General" />
           <Tab icon={<SecurityIcon />} label="Security" />
           <Tab icon={<NotificationsIcon />} label="Notifications" />
           <Tab icon={<DevicesIcon />} label="Devices" />
         </Tabs>
+
         <Divider />
 
-        <Box p={3}>
+        <Box p={4}>
           {tab === 0 && (
-            <Grid
-              container
-              spacing={4}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
+            <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={700}
+                  sx={{ mb: 1, letterSpacing: 0.5 }}
+                >
                   Theme
                 </Typography>
                 <FormControlLabel
-                  control={
-                    <Switch checked={isDarkMode} onChange={toggleTheme} />
-                  }
+                  control={<Switch checked={isDarkMode} onChange={toggleTheme} />}
                   label={isDarkMode ? "Dark Mode" : "Light Mode"}
                 />
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={700}
+                  sx={{ mb: 1, letterSpacing: 0.5 }}
+                >
                   Preferred Language
                 </Typography>
                 <Select
@@ -123,7 +154,11 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={700}
+                  sx={{ mb: 1, letterSpacing: 0.5 }}
+                >
                   Timezone
                 </Typography>
                 <Select
@@ -140,13 +175,9 @@ const SettingsPage = () => {
           )}
 
           {tab === 1 && (
-            <Grid
-              container
-              spacing={4}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
+            <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Two-Factor Authentication
                 </Typography>
                 <FormControlLabel
@@ -161,7 +192,7 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Privacy Mode
                 </Typography>
                 <FormControlLabel
@@ -174,23 +205,13 @@ const SettingsPage = () => {
                   label="Enable Privacy Mode"
                 />
               </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="body1" color="text.secondary">
-                  Security settings content goes here.
-                </Typography>
-              </Grid>
             </Grid>
           )}
 
           {tab === 2 && (
-            <Grid
-              container
-              spacing={4}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
+            <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Notifications
                 </Typography>
                 <FormControlLabel
@@ -205,7 +226,7 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Email Alerts
                 </Typography>
                 <FormControlLabel
@@ -218,23 +239,13 @@ const SettingsPage = () => {
                   label="Receive Email Alerts"
                 />
               </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="body1" color="text.secondary">
-                  Notifications settings content goes here.
-                </Typography>
-              </Grid>
             </Grid>
           )}
 
           {tab === 3 && (
-            <Grid
-              container
-              spacing={4}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
+            <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Auto-Lock Doors
                 </Typography>
                 <FormControlLabel
@@ -249,7 +260,7 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Motion Recording
                 </Typography>
                 <FormControlLabel
@@ -264,7 +275,7 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Night Vision
                 </Typography>
                 <FormControlLabel
@@ -279,7 +290,7 @@ const SettingsPage = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
                   Cloud Backup
                 </Typography>
                 <FormControlLabel

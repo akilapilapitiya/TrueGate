@@ -13,6 +13,7 @@ import {
   useTheme,
   Fade,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import {
   Verified as VerifiedIcon,
@@ -21,60 +22,129 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   LockReset as LockResetIcon,
+  NewReleases as NewReleasesIcon,
+  Email as EmailIcon,
 } from "@mui/icons-material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { profileUpdateValidateData } from "../utils/Validate";
+import { useDispatch, useSelector } from "react-redux";
+import { userDeleteAccount, userProfileUpdate } from "../services/authService";
 
 const Profile = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
 
   const profileIcon = user?.gender === "male" ? maleIcon : femaleIcon;
 
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [verificationMode, setVerificationMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [verificationMessage, setVerificationMessage] = useState(null);
+  const [isVerificationLoading, setIsVerificationLoading] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
 
   const [firstNameEdit, setFirstNameEdit] = useState(user?.firstName);
   const [lastNameEdit, setLastNameEdit] = useState(user?.lastName);
-  const [contactEdit, setContactEdit] = useState("0771234567");
+  const [contactEdit, setContactEdit] = useState(user?.phone);
 
   useEffect(() => {
     if (editMode) {
       setFirstNameEdit(user?.firstName);
       setLastNameEdit(user?.lastName);
-      setContactEdit("0771234567");
+      setContactEdit(user?.contactNumber);
     }
   }, [editMode]);
 
-  const updateUserInfo = () => {
+  const updateUserInfo = async () => {
     const first = firstNameEdit.trim() || "";
     const last = lastNameEdit.trim() || "";
     const phone = contactEdit.trim() || "";
 
-    const message = profileUpdateValidateData(first, last, phone);
-    if (message) {
-      setErrorMessage(message);
+    const res = await userProfileUpdate(first, last, phone, dispatch);
+    if (!res.success) {
+      setErrorMessage(res.message);
       return;
     }
-
     setErrorMessage(null);
     setEditMode(false);
   };
 
+  const sendEmailVerification = async () => {
+  setIsVerificationLoading(true);
+  setVerificationMessage(null);
+  
+  try {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const res = { success: true };
+
+    if (!res.success) {
+      setVerificationMessage("Failed to send verification email. Please try again.");
+      setIsVerificationLoading(false);
+      return;
+    }
+
+    setVerificationMessage("Verification email sent successfully! Please check your inbox.");
+    setVerificationSent(true);
+    setIsVerificationLoading(false);
+
+  } catch (error) {
+    setVerificationMessage("An error occurred while sending the verification email.");
+    setIsVerificationLoading(false);
+  }
+};
+
   const deleteUser = () => {
+    const message = userDeleteAccount();
+
+    if (message) {
+      setDeleteMode(false);
+      navigate("/error-page");
+      return;
+    }
     setDeleteMode(false);
+    navigate("/");
+  };
+
+  const handleVerificationModalClose = () => {
+    setVerificationMode(false);
+    setVerificationMessage(null);
+    setVerificationSent(false);
   };
 
   return (
-    <Box sx={{ bgcolor: theme.palette.background.default, py: 6, px: 3 }}>
+    <Box
+      sx={{
+        background:
+          theme.palette.mode === "dark"
+            ? `linear-gradient(135deg, #0f172a, #1a847c)`
+            : `linear-gradient(135deg, #d3e7ecff 0%, #2d6659ff 100%)`,
+        py: 6,
+        px: 3,
+        minHeight: "100vh",
+      }}
+    >
       <Container maxWidth="md">
-        <Paper elevation={3} sx={{ borderRadius: 3, p: 4 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            borderRadius: 3,
+            p: 4,
+            backdropFilter: "blur(15px)",
+            background:
+              theme.palette.mode === "dark"
+                ? "rgba(255,255,255,0.02)"
+                : "rgba(255,255,255,0.3)",
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? "0 4px 20px rgba(14, 241, 214, 0.52)"
+                : "0 8px 32px rgba(21, 121, 203, 0.2)",
+          }}
+        >
           <Grid container spacing={4}>
             <Grid item xs={12} md={5}>
               <Box display="flex" flexDirection="column" alignItems="center">
@@ -83,15 +153,32 @@ const Profile = () => {
                   sx={{ width: 100, height: 100, mb: 2 }}
                 />
                 <Typography variant="h6" fontWeight="bold">
-                  {user?.displayName}
+                  {user?.firstName + " " + user?.lastName}
                 </Typography>
-                <Chip
-                  icon={<VerifiedIcon />}
-                  label="Verified"
-                  color="success"
-                  variant="outlined"
-                  sx={{ mt: 1 }}
-                />
+                {user?.verified ? (
+                  <Chip
+                    icon={<VerifiedIcon />}
+                    label=" Email is Verified"
+                    color="success"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
+                ) : (
+                  <Chip
+                    icon={<NewReleasesIcon />}
+                    label="Email is Not Verified"
+                    color="warning"
+                    variant="outlined"
+                    sx={{ 
+                      mt: 1, 
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'action.hover'
+                      }
+                    }}
+                    onClick={() => setVerificationMode(true)}
+                  />
+                )}
               </Box>
             </Grid>
 
@@ -106,20 +193,27 @@ const Profile = () => {
                 <Typography variant="subtitle1">
                   Last Name: {user?.lastName}
                 </Typography>
-                <Typography variant="subtitle1">Phone: 0771234567</Typography>
+                <Typography variant="subtitle1">
+                  Phone: {user?.contactNumber}
+                </Typography>
                 <Typography variant="subtitle1">Role: {user?.role}</Typography>
                 <Typography variant="subtitle1">
-                  Account Created: 2023-06-01
+                  Last Login:{" "}
+                  {user?.lastLogin
+                    ? new Date(user.lastLogin).toLocaleString()
+                    : "N/A"}
                 </Typography>
-                <Typography variant="subtitle1">
-                  Last Login: 2025-07-10 09:12 AM
-                </Typography>
+
                 <Typography variant="subtitle1">Dependants: 3 users</Typography>
               </Stack>
               <Stack direction="row" spacing={2} mt={3}>
                 <Button
                   startIcon={<EditIcon />}
                   variant="contained"
+                  sx={{
+                    background: "linear-gradient(to right, #3498db, #1abc9c)",
+                    color: "#fff",
+                  }}
                   onClick={() => setEditMode(true)}
                 >
                   Edit Profile
@@ -127,7 +221,10 @@ const Profile = () => {
                 <Button
                   startIcon={<LockResetIcon />}
                   variant="contained"
-                  color="primary"
+                  sx={{
+                    background: "linear-gradient(to right, #8e44ad, #3498db)",
+                    color: "#fff",
+                  }}
                   onClick={() => navigate("/password-reset")}
                 >
                   Change Password
@@ -148,19 +245,40 @@ const Profile = () => {
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
-              <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backdropFilter: "blur(10px)",
+                  background:
+                    theme.palette.mode === "dark"
+                      ? "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(46,204,113,0.05))"
+                      : "linear-gradient(135deg, rgba(255,255,255,0.6), rgba(173, 216, 230, 0.5))",
+                  border:
+                    theme.palette.mode === "dark"
+                      ? "1px solid rgba(46,204,113,0.15)"
+                      : "1px solid rgba(22,113,146,0.2)",
+                  boxShadow:
+                    theme.palette.mode === "dark"
+                      ? "0 0 10px rgba(30, 94, 91, 0.46)"
+                      : "0 4px 15px rgba(21,121,203,0.2)",
+                  transition: "all 0.3s ease",
+                }}
+              >
                 <Typography variant="h6" gutterBottom>
                   Device Summary
                 </Typography>
                 <Stack spacing={1}>
                   <Typography>
-                    <DevicesIcon sx={{ mr: 1 }} /> 20 Devices Registered
+                    <DevicesIcon sx={{ mr: 1, color: "#3498db" }} /> 20 Devices
+                    Registered
                   </Typography>
                   <Typography>
-                    <VerifiedIcon sx={{ mr: 1 }} color="success" /> 17 Online
+                    <VerifiedIcon sx={{ mr: 1, color: "#2ecc71" }} /> 17 Online
                   </Typography>
                   <Typography>
-                    <DangerousIcon sx={{ mr: 1 }} color="warning" /> 3 Offline
+                    <DangerousIcon sx={{ mr: 1, color: "#e67e22" }} /> 3 Offline
                     or Faulty
                   </Typography>
                 </Stack>
@@ -168,7 +286,27 @@ const Profile = () => {
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  backdropFilter: "blur(10px)",
+                  background:
+                    theme.palette.mode === "dark"
+                      ? "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(46,204,113,0.05))"
+                      : "linear-gradient(135deg, rgba(255,255,255,0.6), rgba(173, 216, 230, 0.5))",
+                  border:
+                    theme.palette.mode === "dark"
+                      ? "1px solid rgba(46,204,113,0.15)"
+                      : "1px solid rgba(22,113,146,0.2)",
+                  boxShadow:
+                    theme.palette.mode === "dark"
+                      ? "0 0 10px rgba(46,204,113,0.2)"
+                      : "0 4px 15px rgba(21,121,203,0.2)",
+                  transition: "all 0.3s ease",
+                }}
+              >
                 <Typography variant="h6" gutterBottom>
                   Linked Users
                 </Typography>
@@ -196,7 +334,11 @@ const Profile = () => {
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: { xs: "90%", sm: 400 },
-              bgcolor: "background.paper",
+              bgcolor:
+                theme.palette.mode === "dark"
+                  ? "rgba(18,18,18,0.8)"
+                  : "rgba(255, 255, 255, 0.96)",
+              backdropFilter: "blur(12px)",
               borderRadius: 2,
               boxShadow: 24,
               p: 4,
@@ -237,6 +379,77 @@ const Profile = () => {
         </Fade>
       </Modal>
 
+      {/* Email Verification Modal */}
+      <Modal open={verificationMode} onClose={handleVerificationModalClose}>
+        <Fade in={verificationMode}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: 400 },
+              bgcolor:
+                theme.palette.mode === "dark"
+                  ? "rgba(18,18,18,0.8)"
+                  : "rgba(255, 255, 255, 0.96)",
+              backdropFilter: "blur(12px)",
+              borderRadius: 2,
+              boxShadow: 24,
+              p: 4,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6" fontWeight="bold" mb={1}>
+              Email Verification Required
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={2}>
+              Your email <strong>{user?.email}</strong> is not verified yet.
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={3}>
+              Click the button below to send a verification email to your registered email address.
+            </Typography>
+            
+            {verificationMessage && (
+              <Typography 
+                color={verificationSent ? "success.main" : "error"} 
+                variant="body2" 
+                sx={{ mb: 2 }}
+              >
+                {verificationMessage}
+              </Typography>
+            )}
+
+            <Stack direction="row" justifyContent="center" spacing={2}>
+              <Button 
+                onClick={handleVerificationModalClose}
+                disabled={isVerificationLoading}
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="contained" 
+                color="warning"
+                startIcon={
+                  isVerificationLoading ? 
+                  <CircularProgress size={16} color="inherit" /> : 
+                  <EmailIcon />
+                }
+                onClick={sendEmailVerification}
+                disabled={isVerificationLoading || verificationSent}
+              >
+                {isVerificationLoading 
+                  ? "Sending..." 
+                  : verificationSent 
+                    ? "Email Sent" 
+                    : "Send Verification Email"
+                }
+              </Button>
+            </Stack>
+          </Box>
+        </Fade>
+      </Modal>
+
       {/* Delete Modal */}
       <Modal open={deleteMode} onClose={() => setDeleteMode(false)}>
         <Fade in={deleteMode}>
@@ -247,7 +460,11 @@ const Profile = () => {
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: { xs: "90%", sm: 400 },
-              bgcolor: "background.paper",
+              bgcolor:
+                theme.palette.mode === "dark"
+                  ? "rgba(18,18,18,0.8)"
+                  : "rgba(255, 255, 255, 0.6)",
+              backdropFilter: "blur(12px)",
               borderRadius: 2,
               boxShadow: 24,
               p: 4,
