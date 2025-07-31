@@ -323,7 +323,7 @@ const Dashboard = () => {
       {user?.role === "admin" && (
         <Box
           sx={{
-            bgcolor: alpha(theme.palette.grey[100], 0.3),
+            bgcolor: theme.palette.background.default,
             py: { xs: 4, md: 6 },
             position: "relative",
             zIndex: 1,
