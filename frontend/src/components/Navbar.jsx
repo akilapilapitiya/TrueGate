@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import {
   AppBar,
   Toolbar,
@@ -35,11 +35,23 @@ const SideBar = lazy(() => import("./Sidebar"));
 const ProfileCard = lazy(() => import("./ProfileCard"));
 const NotificationCard = lazy(() => import("./NotificationCard"));
 
+
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+   // Scroll effect
+ const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10); // change color after 10px scroll
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   // Check login status
   const { user } = useSelector((store) => store.user);
   const isLoggedIn = user && Object.keys(user).length > 0;
@@ -90,10 +102,12 @@ const Navbar = () => {
   return (
     <>
       <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          bgcolor: "transparent",
+         position="fixed"
+  elevation={isScrolled ? 4 : 0}
+  sx={{
+    bgcolor: isScrolled
+      ? theme.palette.background.paper 
+      : "transparent",
           color: theme.palette.text.primary,
           borderRadius: 0,
           backdropFilter: "blur(8px)",  
