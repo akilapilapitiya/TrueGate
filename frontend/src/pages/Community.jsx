@@ -60,8 +60,8 @@ const Community = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      sender: "Mahinda Rajapaksa",
-      senderInitials: "MR",
+      sender: "Sandali Hiranya",
+      senderInitials: "SH",
       content: " Hey ! Welcome to the TrueGate help! ",
       timestamp: "10:30 AM",
       isCurrentUser: false,
@@ -76,8 +76,8 @@ const Community = () => {
     },
     {
       id: 3,
-      sender: "Mahinda Rajapaksa",
-      senderInitials: "MR",
+      sender: "Sandali Hiranya",
+      senderInitials: "SH",
       content: "Okay lets troubleshoot that. Can you check if the camera is powered on and connected to the network?",
       timestamp: "10:42 AM",
       isCurrentUser: false,
@@ -156,7 +156,7 @@ const Community = () => {
                 background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+               WebkitTextFillColor: "transparent",
                 mb: 1,
               }}
             >
@@ -330,7 +330,7 @@ const Community = () => {
                   General Discussion
                 </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: "0.7rem", md: "0.75rem" } }}>
-                  Mahinda is currently typing...
+                  Sandali is currently typing...
                 </Typography>
               </Box>
 

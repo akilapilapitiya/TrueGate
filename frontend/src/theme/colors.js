@@ -36,8 +36,8 @@ export const lightColors = {
     contrastText: "rgb(255, 255, 255)",
   },
   background: {
-    default: "rgba(248, 250, 252, 1)", 
-    paper: "rgba(255, 255, 255, 0.95)",
+    default: "rgba(229, 244, 241, 1)", 
+    paper: "rgba(230, 245, 244, 0.95)",
   },
   text: {
     primary: "rgb(45, 55, 72)", 
@@ -86,7 +86,7 @@ export const darkColors = {
   },
   background: {
     default: "rgba(15, 23, 42, 0.95)", 
-    paper: "rgba(34, 45, 62, 0.8)", 
+    paper: "rgba(2, 15, 47, 0.8)", 
   },
   text: {
     primary: "rgb(248, 250, 252)", 

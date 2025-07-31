@@ -2,8 +2,8 @@
 export const onlineUsers = [
   {
     id: 1,
-    name: "Mahinda Rajapaksa",
-    initials: "MR",
+    name: "Sandali Hiranya",
+    initials: "SH",
     status: "online",
     lastSeen: "Just now",
     role: "Security Expert",
