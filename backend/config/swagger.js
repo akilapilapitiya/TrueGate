@@ -18,12 +18,12 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:4000',
-        description: 'Development server'
+        url: 'https://localhost',
+        description: 'Local development server (HTTPS)'
       },
       {
-        url: 'https://api.truegate.com',
-        description: 'Production server'
+        url: 'https://truegate.live',
+        description: 'Production server (HTTPS)'
       }
     ],
     components: {
