@@ -5,12 +5,13 @@ const RootLayout = () => {
   const location = useLocation();
   return (
     <div className="root-container">
+      {/* Navigation bar View  */}
       {location.pathname !== "/" && (
         <div className="navbar-container">
           <Navbar />
         </div>
       )}
-
+      {/* Main content area */}
       <div className="main-container">
         <Outlet />
       </div>

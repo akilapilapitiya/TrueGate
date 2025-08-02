@@ -44,14 +44,15 @@ const Community = () => {
   const messagesEndRef = useRef(null);
 
   // Current user initials
-  const userInitials = (user?.firstName && user?.lastName)
-    ? (user.firstName + " " + user.lastName)
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "U";
+  const userInitials =
+    user?.firstName && user?.lastName
+      ? (user.firstName + " " + user.lastName)
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : "U";
 
   // Get filtered users based on search
   const filteredUsers = searchUsers(searchQuery);
@@ -68,9 +69,11 @@ const Community = () => {
     },
     {
       id: 2,
-      sender: `${user?.firstName || "You"} ${user?.lastName || ""}`.trim() || "You",
+      sender:
+        `${user?.firstName || "You"} ${user?.lastName || ""}`.trim() || "You",
       senderInitials: userInitials,
-      content: "I am having some issues with the camera feed. It keeps disconnecting.",
+      content:
+        "I am having some issues with the camera feed. It keeps disconnecting.",
       timestamp: "10:40 AM",
       isCurrentUser: true,
     },
@@ -78,7 +81,8 @@ const Community = () => {
       id: 3,
       sender: "Sandali Hiranya",
       senderInitials: "SH",
-      content: "Okay lets troubleshoot that. Can you check if the camera is powered on and connected to the network?",
+      content:
+        "Okay lets troubleshoot that. Can you check if the camera is powered on and connected to the network?",
       timestamp: "10:42 AM",
       isCurrentUser: false,
     },
@@ -88,10 +92,14 @@ const Community = () => {
     if (message.trim()) {
       const newMessage = {
         id: messages.length + 1,
-        sender: `${user?.firstName || "You"} ${user?.lastName || ""}`.trim() || "You",
+        sender:
+          `${user?.firstName || "You"} ${user?.lastName || ""}`.trim() || "You",
         senderInitials: userInitials,
         content: message,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         isCurrentUser: true,
       };
       setMessages([...messages, newMessage]);
@@ -100,7 +108,7 @@ const Community = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -112,27 +120,52 @@ const Community = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'online': return theme.palette.success.main;
-      case 'away': return theme.palette.warning.main;
-      default: return theme.palette.grey[400];
+      case "online":
+        return theme.palette.success.main;
+      case "away":
+        return theme.palette.warning.main;
+      default:
+        return theme.palette.grey[400];
     }
   };
 
   const communityStats = [
-    { icon: <People />, label: "Active Users", value: "1,247", color: theme.palette.primary.main },
-    { icon: <Chat />, label: "Messages Today", value: "3,891", color: theme.palette.info.main },
-    { icon: <Security />, label: "Security Tips", value: "156", color: theme.palette.success.main },
-    { icon: <Forum />, label: "Discussions", value: "89", color: theme.palette.secondary.main },
+    {
+      icon: <People />,
+      label: "Active Users",
+      value: "1,247",
+      color: theme.palette.primary.main,
+    },
+    {
+      icon: <Chat />,
+      label: "Messages Today",
+      value: "3,891",
+      color: theme.palette.info.main,
+    },
+    {
+      icon: <Security />,
+      label: "Security Tips",
+      value: "156",
+      color: theme.palette.success.main,
+    },
+    {
+      icon: <Forum />,
+      label: "Discussions",
+      value: "89",
+      color: theme.palette.secondary.main,
+    },
   ];
 
   return (
-    <Box sx={{ 
-      bgcolor: theme.palette.background.default, 
-      height: "100vh", 
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column"
-    }}>
+    <Box
+      sx={{
+        bgcolor: theme.palette.background.default,
+        height: "100vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {/* Header Section */}
       <Box
         sx={{
@@ -145,8 +178,7 @@ const Community = () => {
           flexShrink: 0,
         }}
       >
-        <Container maxWidth="lg"
-          sx={{pt: { xs: 3, md: 4 }}}>
+        <Container maxWidth="lg" sx={{ pt: { xs: 3, md: 4 } }}>
           <Box textAlign="center">
             <Typography
               variant="h3"
@@ -156,7 +188,7 @@ const Community = () => {
                 background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
-               WebkitTextFillColor: "transparent",
+                WebkitTextFillColor: "transparent",
                 mb: 1,
               }}
             >
@@ -174,14 +206,14 @@ const Community = () => {
       </Box>
 
       {/* Main Chat Section */}
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-          py: { xs: 1, md: 2 }, 
-          flex: 1, 
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 1, md: 2 },
+          flex: 1,
           overflow: "hidden",
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
         <Grid container spacing={2} sx={{ height: "100%", overflow: "hidden" }}>
@@ -203,12 +235,26 @@ const Community = () => {
                 sx={{
                   p: { xs: 1, md: 2 },
                   bgcolor: alpha(theme.palette.primary.main, 0.05),
-                  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                  borderBottom: `1px solid ${alpha(
+                    theme.palette.divider,
+                    0.1
+                  )}`,
                   flexShrink: 0,
                 }}
               >
-                <Typography variant="h6" fontWeight="bold" color="primary" sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}>
-                  <People sx={{ mr: 1, verticalAlign: "middle", fontSize: { xs: "1rem", md: "1.5rem" } }} />
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  color="primary"
+                  sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}
+                >
+                  <People
+                    sx={{
+                      mr: 1,
+                      verticalAlign: "middle",
+                      fontSize: { xs: "1rem", md: "1.5rem" },
+                    }}
+                  />
                   Online Users
                 </Typography>
                 <TextField
@@ -216,11 +262,11 @@ const Community = () => {
                   placeholder="Search users..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  sx={{ 
+                  sx={{
                     mt: 1,
                     "& .MuiInputBase-input": {
-                      fontSize: { xs: "0.8rem", md: "0.875rem" }
-                    }
+                      fontSize: { xs: "0.8rem", md: "0.875rem" },
+                    },
                   }}
                   InputProps={{
                     startAdornment: (
@@ -231,13 +277,15 @@ const Community = () => {
                   }}
                 />
               </Box>
-              <Box sx={{ 
-                flex: 1, 
-                overflow: "auto",
-                "&::-webkit-scrollbar": { display: "none" },
-                "-ms-overflow-style": "none",
-                "scrollbar-width": "none"
-              }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  overflow: "auto",
+                  "&::-webkit-scrollbar": { display: "none" },
+                  "-ms-overflow-style": "none",
+                  "scrollbar-width": "none",
+                }}
+              >
                 <List disablePadding>
                   {filteredUsers.map((user) => (
                     <ListItem
@@ -273,7 +321,11 @@ const Community = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          <Typography variant="body2" fontWeight="medium" sx={{ fontSize: { xs: "0.8rem", md: "0.875rem" } }}>
+                          <Typography
+                            variant="body2"
+                            fontWeight="medium"
+                            sx={{ fontSize: { xs: "0.8rem", md: "0.875rem" } }}
+                          >
                             {user.name}
                           </Typography>
                         }
@@ -289,7 +341,12 @@ const Community = () => {
                                 mb: 0.5,
                               }}
                             />
-                            <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: { xs: "0.6rem", md: "0.75rem" } }}>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              display="block"
+                              sx={{ fontSize: { xs: "0.6rem", md: "0.75rem" } }}
+                            >
                               {user.lastSeen}
                             </Typography>
                           </Box>
@@ -321,15 +378,33 @@ const Community = () => {
                 sx={{
                   p: { xs: 1.5, md: 2 },
                   bgcolor: alpha(theme.palette.primary.main, 0.05),
-                  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                  borderBottom: `1px solid ${alpha(
+                    theme.palette.divider,
+                    0.1
+                  )}`,
                   flexShrink: 0,
                 }}
               >
-                <Typography variant="h6" fontWeight="bold" color="primary" sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}>
-                  <Chat sx={{ mr: 1, verticalAlign: "middle", fontSize: { xs: "1rem", md: "1.5rem" } }} />
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  color="primary"
+                  sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}
+                >
+                  <Chat
+                    sx={{
+                      mr: 1,
+                      verticalAlign: "middle",
+                      fontSize: { xs: "1rem", md: "1.5rem" },
+                    }}
+                  />
                   General Discussion
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: "0.7rem", md: "0.75rem" } }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontSize: { xs: "0.7rem", md: "0.75rem" } }}
+                >
                   Sandali is currently typing...
                 </Typography>
               </Box>
@@ -362,8 +437,8 @@ const Community = () => {
                       sx={{
                         width: { xs: 28, md: 36 },
                         height: { xs: 28, md: 36 },
-                        bgcolor: msg.isCurrentUser 
-                          ? theme.palette.primary.main 
+                        bgcolor: msg.isCurrentUser
+                          ? theme.palette.primary.main
                           : theme.palette.secondary.main,
                         fontSize: { xs: "0.7rem", md: "0.8rem" },
                         fontWeight: 600,
@@ -393,15 +468,23 @@ const Community = () => {
                             ? theme.palette.primary.main
                             : alpha(theme.palette.grey[100], 0.8),
                           color: msg.isCurrentUser
-                            ? theme.palette.getContrastText(theme.palette.primary.main)
+                            ? theme.palette.getContrastText(
+                                theme.palette.primary.main
+                              )
                             : theme.palette.text.primary,
-                          border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                          border: `1px solid ${alpha(
+                            theme.palette.divider,
+                            0.1
+                          )}`,
                         }}
                       >
-                        <Typography variant="body2" sx={{ 
-                          lineHeight: 1.4,
-                          fontSize: { xs: "0.8rem", md: "0.875rem" }
-                        }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            lineHeight: 1.4,
+                            fontSize: { xs: "0.8rem", md: "0.875rem" },
+                          }}
+                        >
                           {msg.content}
                         </Typography>
                       </Paper>
@@ -420,7 +503,13 @@ const Community = () => {
                   flexShrink: 0,
                 }}
               >
-                <Box sx={{ display: "flex", gap: { xs: 0.5, md: 1 }, alignItems: "flex-end" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: { xs: 0.5, md: 1 },
+                    alignItems: "flex-end",
+                  }}
+                >
                   <TextField
                     fullWidth
                     multiline
