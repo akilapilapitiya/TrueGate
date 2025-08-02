@@ -20,19 +20,20 @@ const ProfileCard = ({ onClose }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
 
-  const initials = (user?.firstName && user?.lastName)
-    ? (user.firstName + " " + user.lastName)
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "U";
+  const initials =
+    user?.firstName && user?.lastName
+      ? (user.firstName + " " + user.lastName)
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : "U";
 
   const handleSignOut = () => {
     try {
-      userSignOut(dispatch); // Your own service handles state & storage
-      onClose(); // Close popover
+      userSignOut(dispatch);
+      onClose();
       navigate("/login");
     } catch (err) {
       console.error("Sign-out error:", err);
@@ -69,7 +70,7 @@ const ProfileCard = ({ onClose }) => {
         </Avatar>
         <Box>
           <Typography fontWeight={600}>
-            {(user?.firstName + " " +user?.lastName) || "User"}
+            {user?.firstName + " " + user?.lastName || "User"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {user?.email || ""}

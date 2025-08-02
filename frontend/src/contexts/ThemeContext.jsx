@@ -7,7 +7,7 @@ const ThemeContext = createContext(undefined);
 
 export const ThemeProviderWrapper = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check if user has a saved preference
+    // Preference Edit
     const savedTheme = localStorage.getItem("theme-preference");
     if (savedTheme) {
       return savedTheme === "dark";
@@ -61,7 +61,9 @@ export const ThemeProviderWrapper = ({ children }) => {
 export function useAppThemeContext() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useAppThemeContext must be used within a ThemeProviderWrapper");
-  } 
+    throw new Error(
+      "useAppThemeContext must be used within a ThemeProviderWrapper"
+    );
+  }
   return context;
 }

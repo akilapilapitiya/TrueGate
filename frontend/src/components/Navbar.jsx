@@ -35,14 +35,13 @@ const SideBar = lazy(() => import("./Sidebar"));
 const ProfileCard = lazy(() => import("./ProfileCard"));
 const NotificationCard = lazy(() => import("./NotificationCard"));
 
-
 const Navbar = () => {
   const { isDarkMode, toggleTheme, theme } = useAppTheme();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-   // Scroll effect
- const [isScrolled, setIsScrolled] = useState(false);
+  // Scroll effect
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,14 +55,17 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.user);
   const isLoggedIn = user && Object.keys(user).length > 0;
 
-
   // Sidebar links
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
     ...(user?.role === "admin"
       ? [
           { label: "User Management", icon: <PeopleIcon />, path: "/users" },
-          { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
+          {
+            label: "Device Management",
+            icon: <DevicesIcon />,
+            path: "/devices",
+          },
         ]
       : []),
     { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
@@ -89,28 +91,27 @@ const Navbar = () => {
   const handleProfileClose = () => setProfileAnchor(null);
   const isProfileOpen = Boolean(profileAnchor);
 
-  // Avatar 
-  const initials = (user?.firstName && user?.lastName)
-    ? (user.firstName + " " + user.lastName)
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "U";
+  // Avatar
+  const initials =
+    user?.firstName && user?.lastName
+      ? (user.firstName + " " + user.lastName)
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase()
+      : "U";
 
   return (
     <>
       <AppBar
-         position="fixed"
-  elevation={isScrolled ? 4 : 0}
-  sx={{
-    bgcolor: isScrolled
-      ? theme.palette.background.paper 
-      : "transparent",
+        position="fixed"
+        elevation={isScrolled ? 4 : 0}
+        sx={{
+          bgcolor: isScrolled ? theme.palette.background.paper : "transparent",
           color: theme.palette.text.primary,
           borderRadius: 0,
-          backdropFilter: "blur(8px)",  
+          backdropFilter: "blur(8px)",
         }}
       >
         <Toolbar
@@ -156,7 +157,11 @@ const Navbar = () => {
             )}
 
             {/* Theme toggle */}
-            <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+            <Tooltip
+              title={
+                isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"
+              }
+            >
               <IconButton size="small" onClick={toggleTheme}>
                 {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
@@ -176,7 +181,9 @@ const Navbar = () => {
                   onClose={handleNotificationClose}
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  PaperProps={{ sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] } }}
+                  PaperProps={{
+                    sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] },
+                  }}
                 >
                   <Suspense fallback={<Box p={2}>Loading...</Box>}>
                     <NotificationCard onClose={handleNotificationClose} />
@@ -190,20 +197,22 @@ const Navbar = () => {
               <>
                 <Tooltip title="User Profile">
                   <Avatar
-          alt={user?.firstName || "User"}
-          onClick={handleProfileClick}
-          sx={{
-            width: 40,
-            height: 40,
-            bgcolor: theme.palette.primary.main,
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-            border: `2px solid ${theme.palette.primary.light}`,
-            fontWeight: 600,
-            fontSize: 16,
-          }}
-        >
-          {initials}
-        </Avatar>
+                    alt={user?.firstName || "User"}
+                    onClick={handleProfileClick}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      bgcolor: theme.palette.primary.main,
+                      color: theme.palette.getContrastText(
+                        theme.palette.primary.main
+                      ),
+                      border: `2px solid ${theme.palette.primary.light}`,
+                      fontWeight: 600,
+                      fontSize: 16,
+                    }}
+                  >
+                    {initials}
+                  </Avatar>
                 </Tooltip>
                 <Popover
                   open={isProfileOpen}
@@ -211,7 +220,9 @@ const Navbar = () => {
                   onClose={handleProfileClose}
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  PaperProps={{ sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] } }}
+                  PaperProps={{
+                    sx: { mt: 1, borderRadius: 2, boxShadow: theme.shadows[4] },
+                  }}
                 >
                   <Suspense fallback={<Box p={2}>Loading...</Box>}>
                     <ProfileCard onClose={handleProfileClose} />

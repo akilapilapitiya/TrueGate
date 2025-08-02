@@ -1,10 +1,5 @@
-// hooks/useAppTheme.js
 import { useTheme } from "@mui/material/styles";
 import { useAppThemeContext } from "../contexts/ThemeContext";
-/**
- * Custom hook that combines Material-UI's useTheme with our theme context
- * Provides easy access to both theme object and theme control functions
- */
 export const useAppTheme = () => {
   const theme = useTheme();
   const { isDarkMode, toggleTheme, setDarkMode } = useAppThemeContext();

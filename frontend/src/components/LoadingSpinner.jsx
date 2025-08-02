@@ -1,11 +1,11 @@
 import { Box, Typography, useTheme, useMediaQuery, Fade } from "@mui/material";
 import { keyframes } from "@mui/system";
 
-const LoadingSpinner = ({ 
-  size = "medium", 
-  message = "Loading...", 
-  variant = "overlay", 
-  showMessage = true 
+const LoadingSpinner = ({
+  size = "medium",
+  message = "Loading...",
+  variant = "overlay",
+  showMessage = true,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -150,7 +150,9 @@ const LoadingSpinner = ({
               backgroundColor: theme.palette.primary.main,
               top: "50%",
               left: "50%",
-              transform: `rotate(${index * 120}deg) translate(${config.spinner / 2}px) rotate(-${index * 120}deg)`,
+              transform: `rotate(${index * 120}deg) translate(${
+                config.spinner / 2
+              }px) rotate(-${index * 120}deg)`,
               transformOrigin: "0 0",
               animation: `${spinAnimation} 2s linear infinite`,
               opacity: 0.7,
@@ -174,7 +176,7 @@ const LoadingSpinner = ({
             >
               {message}
             </Typography>
-            
+
             {/* Animated Dots */}
             <Box sx={{ display: "flex", justifyContent: "center", gap: 0.5 }}>
               {[0, 1, 2].map((index) => (
@@ -237,9 +239,10 @@ const LoadingSpinner = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: theme.palette.mode === "dark" 
-              ? "rgba(0, 0, 0, 0.8)" 
-              : "rgba(255, 255, 255, 0.9)",
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(0, 0, 0, 0.8)"
+                : "rgba(255, 255, 255, 0.9)",
             backdropFilter: "blur(8px)",
             zIndex: theme.zIndex.modal,
           }}
