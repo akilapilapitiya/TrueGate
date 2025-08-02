@@ -34,6 +34,8 @@ import {
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { mockFootage } from "../data/dummyFootage";
+import cctv from '../assets/Home.jpg';
+
 
 const Footage = () => {
   const theme = useTheme();
@@ -223,7 +225,7 @@ const Footage = () => {
                   <CardMedia
                     component="img"
                     height="400"
-                    image="https://plus.unsplash.com/premium_photo-1750651872632-ec586bb414b5?q=80&w=1374&auto=format&fit=crop"
+                    image={cctv}
                     alt={camera.name}
                     sx={{ objectFit: "cover" }}
                   />
@@ -431,7 +433,7 @@ const Footage = () => {
                   <CardMedia
                     component="img"
                     height="200"
-                    image="https://plus.unsplash.com/premium_photo-1750651872632-ec586bb414b5?q=80&w=1374&auto=format&fit=crop"
+                    image={cctv}
                     alt="motion-thumbnail"
                     sx={{ objectFit: "cover" }}
                   />
