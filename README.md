@@ -1,63 +1,118 @@
-# Authentication Service (Developer Guide)
+# TrueGate
+> A secure, modern web platform for seamless user access.
 
-## Project Overview
+![Homepage Screenshot](./screenshots/homepage.png)
 
-This project is an **Authentication Service** designed to provide secure user authentication and management features.  
-It serves as a development playground for adding, testing, and integrating frontend features with Firebase as a temporary backend.
+---
+## About the Project
 
+TrueGate is a full-stack web application built to provide a secure, role-based platform with modern design principles. It features authentication, protected routes, and an intuitive user experience.
 
 ---
 
-## Setup Instructions
+##  Features
 
-### Frontend
+-  Secure JWT-based login system
+-  Role-based authorization (Admin/User)
+-  Material UI design system
+-  Responsive and accessible layout
+-  Redux-based global state management
+-  RESTful API architecture
+-  Postman-tested endpoints
 
-> **Requirements:**  
-> - Node.js installed (for npm dependencies)
->
-> 1. Navigate to the frontend directory:  
-> cd frontend
->
-> 2. Install Dependancies:
-> npm install
->
-> 3. Start the development server:
-> npm run dev
+---
 
-### Back End
-Coming Soon.....
+##  Tech Stack
 
-### Testing 
-Coming Soon.....
+**Frontend:**
+- React
+- Material UI
+- React Router
+- Redux
 
-### Deployment
-Coming Soon.....
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
 
-## Branch Heirarchy
-| Branch      | Purpose                                                                      |
-| ----------- | ---------------------------------------------------------------------------- |
-| `main`      | Production-ready frontend code only.                                         |
-| `frontend`  | Development branch for new features, validations, and UI components.         |
-| `feature/*` | Feature-specific branches off `frontend` (e.g., `feature/protected-routes`). |
-| `backend`   | Backend development (coming soon).                                           |
+**DevOps:**
+- Git & GitHub
+- Netlify (Frontend)
+- Render (Backend)
+- Postman (API Testing)
 
+---
 
+## 🛠 Getting Started
 
+```bash
+# Clone the repo
+git clone https://github.com/your-username/truegate.git
 
-## Coding Guidelines
+# Navigate to backend
+cd backend
+npm install
+npm run dev
 
-- Use **Prettier** to format code for consistency.
-- Commit messages should follow conventional commit styles:
-  - `feat:` for new features
-  - `fix:` for bug fixes
-  - `test:` for tests
-  - `docs:` for documentation updates
+# Navigate to frontend
+cd ../frontend
+npm install
+npm start
+```
 
+---
 
+## Environment Variables
 
-## Important Information
+In `/backend/.env`:
 
-- **Firebase Authentication** is used as the temporary authentication provider.
-- **Firestore** is used as the temporary database backend.
-- Backend and database infrastructure will be upgraded in future versions.
-- Please Update ME everytime so that it is best for all
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+---
+
+## 📡 API Reference
+
+Full documentation → [api.doc.md](./api.doc.md)
+
+Example Endpoints:
+- POST `/api/auth/login`
+- GET `/api/users/:id`
+- POST `/api/auth/register`
+
+---
+
+## 🧪 Testing
+
+- ✅ Postman for API endpoint testing
+- ✅ Manual UI testing (forms, routing)
+- 🧪 Optional: Jest or Mocha for unit tests
+
+---
+
+## 🌍 Deployment
+
+- **Frontend:** [https://www.truegate.live](https://www.truegate.live)
+- **Backend:** [https://api.truegate.live](https://api.truegate.live)
+
+---
+
+## ⚔️ Challenges
+
+- 🔁 Handling JWT token expiration
+- 🌐 Managing CORS between frontend and backend
+- 🧩 Syncing protected routes with authentication state
+
+---
+
+## 👥 Contributors
+
+- Your Name – Frontend & DevOps
+- Teammate 2 – Backend Development
+- Teammate 3 – API & Testing
+
+---
