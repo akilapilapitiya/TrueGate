@@ -19,6 +19,10 @@ const csrfConfig = {
       const cookieToken = req.cookies && req.cookies['csrf-token'] ? req.cookies['csrf-token'] : null;
       
       if (!headerToken || !cookieToken || headerToken !== cookieToken) {
+        console.warn(
+          `CSRF token validation failed for request from IP ${req.ip || 'unknown'} to ${req.originalUrl || req.url}. ` +
+          `Header token: ${headerToken ? '[present]' : '[missing]'}, Cookie token: ${cookieToken ? '[present]' : '[missing]'}`
+        );
         return null;
       }
       return headerToken;
