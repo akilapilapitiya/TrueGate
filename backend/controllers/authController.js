@@ -292,7 +292,9 @@ async function forgotPassword(req, res) {
     const resetUrl = `${baseUrl}/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
     try {
       await sendResetPasswordEmail(email, resetUrl);
-    } catch (e) {}
+    } catch (e) {
+      console.error(`Failed to send password reset email to ${email}:`, e);
+    }
   }
   return res.status(200).json({ message: 'If your account exists, a password reset email has been sent.' });
 }
