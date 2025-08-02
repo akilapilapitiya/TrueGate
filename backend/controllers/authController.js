@@ -3,14 +3,17 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const crypto = require('crypto');
 const { body, validationResult, sanitizeBody } = require('express-validator');
-const { sendVerificationEmail } = require('../utils/mailer');
+const { sendVerificationEmail, sendResetPasswordEmail } = require('../utils/mailer');
 const { signJwt, JWT_EXPIRY } = require('../utils/auth');
 const {
   findUserByEmail,
   addUser,
   updateUser,
   getAllUsers,
-  changeUserPassword
+  changeUserPassword,
+  setResetToken,
+  findUserByResetToken,
+  clearResetToken
 } = require('../services/userService');
 
 // POST /register
@@ -272,6 +275,52 @@ async function changePassword(req, res) {
   return res.status(200).json({ message: 'Password changed successfully' });
 }
 
+// POST /forgot-password
+async function forgotPassword(req, res) {
+  await body('email').isEmail().normalizeEmail().run(req);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ message: 'If your account exists, a password reset email has been sent.' });
+  }
+  const { email } = req.body;
+  const user = await findUserByEmail(email);
+  if (user) {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = Date.now() + 1000 * 60 * 60; // 1 hour
+    await setResetToken(email, token, expires);
+    const baseUrl = process.env.BASE_URL || `http://${req.headers.host}`;
+    const resetUrl = `${baseUrl}/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
+    try {
+      await sendResetPasswordEmail(email, resetUrl);
+    } catch (e) {
+      console.error(`Failed to send password reset email to ${email}:`, e);
+    }
+  }
+  return res.status(200).json({ message: 'If your account exists, a password reset email has been sent.' });
+}
+
+// POST /reset-password
+async function resetPassword(req, res) {
+  await Promise.all([
+    body('email').isEmail().normalizeEmail().run(req),
+    body('token').isString().notEmpty().run(req),
+    body('newPassword').isStrongPassword().trim().escape().run(req)
+  ]);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: 'Invalid input', details: errors.array() });
+  }
+  const { email, token, newPassword } = req.body;
+  const user = await findUserByResetToken(token);
+  if (!user || user.email !== email || !user.resetPasswordExpires || Date.now() > user.resetPasswordExpires) {
+    return res.status(400).json({ error: 'Invalid or expired token' });
+  }
+  const hashed = await bcrypt.hash(newPassword, 12);
+  await changeUserPassword(email, hashed);
+  await clearResetToken(email);
+  return res.status(200).json({ message: 'Password has been reset successfully.' });
+}
+
 // JWT verification middleware
 async function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -332,4 +381,4 @@ async function resendVerification(req, res) {
   }
 }
 
-module.exports = { register, login, getUsers, modifyUser, changePassword, verifyToken, verifyEmail, resendVerification };
+module.exports = { register, login, getUsers, modifyUser, changePassword, verifyToken, verifyEmail, resendVerification, forgotPassword, resetPassword };

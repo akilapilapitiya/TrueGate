@@ -1,0 +1,119 @@
+name: Test and Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env file for testing
+        run: |
+          echo "MONGODB_URI=mongodb://localhost:27017/test" > .env
+          echo "JWT_SECRET=test-secret-key" >> .env
+          echo "CSRF_SECRET=test-csrf-secret" >> .env
+          echo "PORT=4000" >> .env
+          echo "BASE_URL=http://localhost:4000" >> .env
+
+      - name: Start MongoDB for testing
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '6.0'
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          sleep 10
+          echo "MongoDB should be ready now"
+
+      - name: Start backend server
+        run: |
+          npm start > server.log 2>&1 &
+          echo "Backend server starting..."
+          sleep 10
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:4000/api/csrf-token > /dev/null; then
+              echo "Backend server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run security tests
+        run: npm run test:security
+        timeout-minutes: 10
+
+      - name: Run integration tests
+        run: npm run test:integration
+        timeout-minutes: 10
+
+      - name: Run unit tests
+        run: npm run test:unit
+        timeout-minutes: 10
+
+      - name: Run comprehensive tests
+        run: npm run test:complete
+        timeout-minutes: 15
+
+      - name: Run all endpoint tests
+        run: npm run test:all-endpoints
+        timeout-minutes: 10
+
+      - name: Stop backend server
+        run: |
+          pkill -f "node app.js" || true
+          echo "Backend server stopped"
+
+      - name: Show server logs (if tests failed)
+        if: failure()
+        run: |
+          echo "=== Server Logs ==="
+          cat server.log || echo "No server logs found"
+
+  deploy-backend:
+    needs: test-backend
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd TrueGate
+            sudo git pull origin main
+            sudo docker compose down
+            sudo docker compose up -d --build 
