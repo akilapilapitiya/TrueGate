@@ -13,7 +13,7 @@ TrueGate is a full-stack web application built to provide a secure, role-based p
 ##  Features
 
 -  Secure JWT-based login system
--  Role-based authorization (Admin/User)
+-  Role-based authorization
 -  Material UI design system
 -  Responsive and accessible layout
 -  Redux-based global state management
@@ -28,6 +28,4 @@ TrueGate is a full-stack web application built to provide a secure, role-based p
 - Backend Developer - <a href = "https://github.com/budd9442">Buddhika Bandara</a>
 - Frontend Developer - <a href = "https://github.com/akilapilapitiya">Akila Pilapitiya</a>
 - Quality Assurance - <a href = "https://github.com/YonaliKavi">Yonali Kavindya</a>
-
-
 ---
