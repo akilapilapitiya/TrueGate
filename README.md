@@ -1,7 +1,7 @@
 # TrueGate
 > A secure, modern web platform for seamless user access.
 
-![Homepage Screenshot](./screenshots/homepage.png)
+<img src = "./screenshots/homepage.png" alt = "Homepage Image">
 
 ---
 ## About the Project
