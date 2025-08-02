@@ -142,18 +142,15 @@ const options = {
             },
             birthDate: {
               type: 'string',
-              description: 'User birth date',
-              required: true
+              description: 'User birth date'
             },
             gender: {
               type: 'string',
-              description: 'User gender',
-              required: true
+              description: 'User gender'
             },
             contactNumber: {
               type: 'string',
-              description: 'User contact number',
-              required: true
+              description: 'User contact number'
             },
             role: {
               type: 'string',
