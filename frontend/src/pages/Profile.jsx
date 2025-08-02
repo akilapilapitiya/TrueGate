@@ -17,6 +17,8 @@ import {
   Card,
   CardContent,
   alpha,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import {
   Verified as VerifiedIcon,
@@ -37,6 +39,9 @@ import {
   Star,
   Shield,
   CheckCircle,
+  Visibility,
+  VisibilityOff,
+  Lock as LockIcon,
 } from "@mui/icons-material";
 import maleIcon from "../assets/male.png";
 import femaleIcon from "../assets/female.png";
@@ -57,6 +62,19 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [verificationMode, setVerificationMode] = useState(false);
+  
+  // PASSWORD RESET MODAL STATES - Add these state variables for password reset functionality
+  const [passwordResetMode, setPasswordResetMode] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordResetLoading, setPasswordResetLoading] = useState(false);
+  const [passwordResetMessage, setPasswordResetMessage] = useState(null);
+  const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
+  
   const [errorMessage, setErrorMessage] = useState(null);
   const [verificationMessage, setVerificationMessage] = useState(null);
   const [isVerificationLoading, setIsVerificationLoading] = useState(false);
@@ -86,6 +104,90 @@ const Profile = () => {
     }
     setErrorMessage(null);
     setEditMode(false);
+  };
+
+  // PASSWORD RESET FUNCTION - Add your password reset API call here
+  const handlePasswordReset = async () => {
+    // Reset previous messages
+    setPasswordResetMessage(null);
+    setPasswordResetSuccess(false);
+    
+    // Validation
+    if (!currentPassword.trim()) {
+      setPasswordResetMessage("Please enter your current password.");
+      return;
+    }
+    
+    if (!newPassword.trim()) {
+      setPasswordResetMessage("Please enter a new password.");
+      return;
+    }
+    
+    if (newPassword.length < 6) {
+      setPasswordResetMessage("New password must be at least 6 characters long.");
+      return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+      setPasswordResetMessage("New password and confirm password do not match.");
+      return;
+    }
+    
+    if (currentPassword === newPassword) {
+      setPasswordResetMessage("New password must be different from current password.");
+      return;
+    }
+
+    setPasswordResetLoading(true);
+
+    try {
+      // REPLACE THIS SECTION WITH YOUR ACTUAL PASSWORD RESET API CALL
+      // Example API call structure:
+      // const response = await passwordResetService(currentPassword, newPassword, dispatch);
+      
+      // Simulating API call for demo
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = { success: true }; // Replace with actual API response
+      
+      if (!response.success) {
+        setPasswordResetMessage(response.message || "Failed to update password. Please try again.");
+        setPasswordResetLoading(false);
+        return;
+      }
+
+      // Success case
+      setPasswordResetMessage("Password updated successfully!");
+      setPasswordResetSuccess(true);
+      setPasswordResetLoading(false);
+      
+      // Clear password fields
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      
+      // Auto close modal after 2 seconds
+      setTimeout(() => {
+        handlePasswordResetModalClose();
+      }, 2000);
+
+    } catch (error) {
+      setPasswordResetMessage("An error occurred while updating password. Please try again.");
+      setPasswordResetLoading(false);
+    }
+  };
+
+  // PASSWORD RESET MODAL CLOSE HANDLER - Reset all password-related states
+  const handlePasswordResetModalClose = () => {
+    setPasswordResetMode(false);
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordResetMessage(null);
+    setPasswordResetSuccess(false);
+    setPasswordResetLoading(false);
+    setShowCurrentPassword(false);
+    setShowNewPassword(false);
+    setShowConfirmPassword(false);
   };
 
   const sendEmailVerification = async () => {
@@ -323,10 +425,11 @@ const Profile = () => {
                   >
                     Edit Profile
                   </Button>
+                  {/* UPDATED CHANGE PASSWORD BUTTON - Now opens modal instead of navigating */}
                   <Button
                     startIcon={<LockResetIcon />}
                     variant="outlined"
-                    onClick={() => navigate("/password-reset")}
+                    onClick={() => setPasswordResetMode(true)} // Changed from navigate to setPasswordResetMode
                     sx={{
                       borderRadius: 3,
                       px: 3,
@@ -746,6 +849,201 @@ const Profile = () => {
                   sx={{ borderRadius: 2, px: 3 }}
                 >
                   Save Changes
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Fade>
+      </Modal>
+
+      {/* PASSWORD RESET MODAL - New modal for password reset functionality */}
+      <Modal open={passwordResetMode} onClose={handlePasswordResetModalClose}>
+        <Fade in={passwordResetMode}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: 500 },
+              bgcolor: theme.palette.background.paper,
+              backdropFilter: "blur(12px)",
+              borderRadius: 4,
+              boxShadow: 24,
+              p: 4,
+              border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            }}
+          >
+            {/* Modal Header */}
+            <Box sx={{ textAlign: "center", mb: 3 }}>
+              <Box
+                sx={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 2,
+                  bgcolor: alpha(theme.palette.primary.main, 0.1),
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mx: "auto",
+                  mb: 2,
+                }}
+              >
+                <LockIcon
+                  sx={{ fontSize: 30, color: theme.palette.primary.main }}
+                />
+              </Box>
+              <Typography variant="h5" fontWeight="bold">
+                Change Password
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Enter your current password and choose a new secure password
+              </Typography>
+            </Box>
+
+            {/* Password Reset Form */}
+            <Stack spacing={3}>
+              {/* Current Password Field */}
+              <TextField
+                label="Current Password"
+                type={showCurrentPassword ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                fullWidth
+                variant="outlined"
+                disabled={passwordResetLoading}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        edge="end"
+                      >
+                        {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ borderRadius: 2 }}
+              />
+
+              {/* New Password Field */}
+              <TextField
+                label="New Password"
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                fullWidth
+                variant="outlined"
+                disabled={passwordResetLoading}
+                helperText="Password must be at least 6 characters long"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        edge="end"
+                      >
+                        {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ borderRadius: 2 }}
+              />
+
+              {/* Confirm Password Field */}
+              <TextField
+                label="Confirm New Password"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                fullWidth
+                variant="outlined"
+                disabled={passwordResetLoading}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ borderRadius: 2 }}
+              />
+
+              {/* Success/Error Message Display */}
+              {passwordResetMessage && (
+                <Typography
+                  color={passwordResetSuccess ? "success.main" : "error"}
+                  variant="body2"
+                  sx={{
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: alpha(
+                      passwordResetSuccess
+                        ? theme.palette.success.main
+                        : theme.palette.error.main,
+                      0.1
+                    ),
+                    border: `1px solid ${alpha(
+                      passwordResetSuccess
+                        ? theme.palette.success.main
+                        : theme.palette.error.main,
+                      0.2
+                    )}`,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  {passwordResetSuccess ? (
+                    <CheckCircle sx={{ fontSize: 20 }} />
+                  ) : (
+                    <DangerousIcon sx={{ fontSize: 20 }} />
+                  )}
+                  {passwordResetMessage}
+                </Typography>
+              )}
+
+              {/* Action Buttons */}
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                spacing={2}
+                mt={2}
+              >
+                <Button
+                  onClick={handlePasswordResetModalClose}
+                  disabled={passwordResetLoading}
+                  sx={{ borderRadius: 2, px: 3 }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  startIcon={
+                    passwordResetLoading ? (
+                      <CircularProgress size={16} color="inherit" />
+                    ) : passwordResetSuccess ? (
+                      <CheckCircle />
+                    ) : (
+                      <LockResetIcon />
+                    )
+                  }
+                  onClick={handlePasswordReset}
+                  disabled={passwordResetLoading || passwordResetSuccess}
+                  sx={{ borderRadius: 2, px: 3 }}
+                >
+                  {passwordResetLoading
+                    ? "Updating..."
+                    : passwordResetSuccess
+                    ? "Updated!"
+                    : "Update Password"}
                 </Button>
               </Stack>
             </Stack>
