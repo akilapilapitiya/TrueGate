@@ -3,7 +3,19 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:csrf": "node tests/security/csrf.test.js",
+    "test:security": "node tests/security/logging.test.js",
+    "test:hardcore": "node tests/security/hardcore.test.js",
+    "test:rate-limit": "node tests/integration/rate-limit.test.js",
+    "test:auth": "node tests/unit/auth.test.js",
+    "test:security-endpoints": "node tests/unit/security.test.js",
+    "test:all-endpoints": "node tests/unit/all-endpoints.test.js",
+    "test:all": "npm run test:csrf && npm run test:security && npm run test:hardcore && npm run test:rate-limit",
+    "test:unit": "npm run test:auth && npm run test:security-endpoints && npm run test:all-endpoints",
+    "test:integration": "npm run test:rate-limit",
+    "test:complete": "npm run test:all && npm run test:unit",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +35,9 @@
     "mongodb": "^6.17.0",
     "uuid": "^11.1.0",
     "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "axios": "^1.6.0",
+    "nodemon": "^3.0.1"
   }
 }

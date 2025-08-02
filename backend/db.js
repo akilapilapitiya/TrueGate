@@ -2,14 +2,24 @@ const { MongoClient } = require('mongodb');
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
 
-const client = new MongoClient(uri); // removed useUnifiedTopology
+let client;
 let db;
 
-const sanitizedUri = uri ? uri.split('@')[1] || uri : 'undefined'; // Extract host part if credentials are present
-console.log('MONGODB_URI (sanitized):', sanitizedUri);
-console.log('MONGODB_DB:', process.env.MONGODB_DB);
+// Only create client if URI is available
+if (uri) {
+  client = new MongoClient(uri);
+  const sanitizedUri = uri.split('@')[1] || uri; // Extract host part if credentials are present
+  console.log('MONGODB_URI (sanitized):', sanitizedUri);
+  console.log('MONGODB_DB:', process.env.MONGODB_DB);
+} else {
+  console.log('⚠️  MONGODB_URI not set - database operations will be skipped');
+}
 
 async function connectDb() {
+  if (!uri) {
+    throw new Error('MONGODB_URI not configured');
+  }
+  
   if (!db) {
     await client.connect();
     db = client.db(dbName);

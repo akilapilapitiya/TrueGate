@@ -2,8 +2,13 @@ const { getDb } = require('../db');
 
 // Find user by email
 async function findUserByEmail(email) {
-  const db = getDb();
-  return await db.collection('users').findOne({ email });
+  try {
+    const db = getDb();
+    return await db.collection('users').findOne({ email });
+  } catch (error) {
+    console.log('⚠️  Database not available for user lookup:', error.message);
+    return null;
+  }
 }
 
 // Add user
@@ -47,10 +52,50 @@ async function changeUserPassword(email, newHashedPassword) {
   );
 }
 
+// Set password reset token and expiry
+async function setResetToken(email, token, expires) {
+  const db = getDb();
+  await db.collection('users').updateOne(
+    { email },
+    { $set: { resetPasswordToken: token, resetPasswordExpires: expires } }
+  );
+}
+
+// Find user by reset token
+async function findUserByResetToken(token) {
+  const db = getDb();
+  return await db.collection('users').findOne({ resetPasswordToken: token });
+}
+
+// Clear password reset token and expiry
+async function clearResetToken(email) {
+  const db = getDb();
+  await db.collection('users').updateOne(
+    { email },
+    { $unset: { resetPasswordToken: "", resetPasswordExpires: "" } }
+  );
+}
+
+// Delete user by email
+async function deleteUser(email) {
+  try {
+    const db = getDb();
+    const result = await db.collection('users').deleteOne({ email });
+    return result.deletedCount > 0;
+  } catch (error) {
+    console.log('⚠️  Database not available for user deletion:', error.message);
+    return false;
+  }
+}
+
 module.exports = {
   findUserByEmail,
   addUser,
   updateUser,
   getAllUsers,
-  changeUserPassword
+  changeUserPassword,
+  setResetToken,
+  findUserByResetToken,
+  clearResetToken,
+  deleteUser
 };
