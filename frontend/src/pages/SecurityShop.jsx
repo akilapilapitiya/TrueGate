@@ -25,6 +25,11 @@ import {
   FlashOn,
   Star,
 } from "@mui/icons-material";
+import cameraImage1 from '../assets/Camera_1.jpg';
+import cameraImage2 from '../assets/Camera_2.jpg';
+import cameraImage3 from '../assets/Camera_3.jpg';
+import motionImage1 from '../assets/Motion_1.jpg';
+import motionImage2 from '../assets/Motion_2.jpg';
 
 const SecurityShop = () => {
   const theme = useTheme();
@@ -42,8 +47,7 @@ const SecurityShop = () => {
       discount: 19,
       rating: 4.8,
       reviews: 234,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image:cameraImage1,
       features: [
         "4MP Resolution",
         "Night Vision",
@@ -64,8 +68,7 @@ const SecurityShop = () => {
       discount: 15,
       rating: 4.6,
       reviews: 156,
-      image:
-        "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=300&h=200&fit=crop",
+      image: cameraImage2,
       features: ["4MP Resolution", "25m IR Range", "H.265 Compression", "PoE"],
       badge: "BEST SELLER",
       badgeColor: "success",
@@ -81,8 +84,7 @@ const SecurityShop = () => {
       discount: 12,
       rating: 4.4,
       reviews: 89,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image: cameraImage3,
       features: [
         "2K Resolution",
         "Color Night Vision",
@@ -103,8 +105,7 @@ const SecurityShop = () => {
       discount: 17,
       rating: 4.7,
       reviews: 167,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image:motionImage1,
       features: ["PIR Technology", "Pet Immune", "Wireless", "10 Year Battery"],
       badge: "LIMITED TIME",
       badgeColor: "warning",
@@ -120,8 +121,7 @@ const SecurityShop = () => {
       discount: 14,
       rating: 4.9,
       reviews: 203,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image:motionImage2,
       features: [
         "Dual Technology",
         "Anti-Masking",
@@ -142,12 +142,32 @@ const SecurityShop = () => {
       discount: 19,
       rating: 4.5,
       reviews: 78,
-      image:
-        "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=300&h=200&fit=crop",
+      image:cameraImage3,
       features: ["2MP Resolution", "Smart IR", "WDR", "Easy Installation"],
       badge: "NEW ARRIVAL",
       badgeColor: "primary",
       inStock: false,
+    },
+    {
+      id: 7,
+      name: "Bosch DS160",
+      brand: "Bosch",
+      type: "Motion Detector",
+      price: 16800,
+      originalPrice: 19500,
+      discount: 14,
+      rating: 4.9,
+      reviews: 203,
+      image:motionImage2,
+      features: [
+        "Dual Technology",
+        "Anti-Masking",
+        "Temperature Compensation",
+        "Long Range",
+      ],
+      badge: "PREMIUM",
+      badgeColor: "secondary",
+      inStock: true,
     },
   ];
 
