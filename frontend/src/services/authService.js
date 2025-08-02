@@ -94,7 +94,7 @@ export const userRegister = async (
       lastName,
       birthDate: dob,
       gender,
-      role: "admin",
+      role: "user",
       contactNumber: contact,
     };
 
