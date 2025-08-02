@@ -3,16 +3,17 @@ name: Deploy TrueGate Fullstack on Main
 on:
   push:
     branches:
-      - main,feature/ci-cd
+      - main
+      - feature/ci-cd
   pull_request:
     branches:
-      - main,feature/ci-cd
+      - main
+      - feature/ci-cd
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
+  
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
