@@ -32,12 +32,8 @@ const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const EmailVerificationNotice = lazy(() => import("./pages/EmailVerifivationNotice"));
 
-// Route Guards (commented out for now)
-// import { ProtectedRoute, AdminRoute, VerifiedRoute } from "./utils/ProtectedRoute";
-
-// Redux
-// import { useSelector } from "react-redux";
-// const user = useSelector((state) => state.user);
+// Route Guards
+import { ProtectedRoute, AdminRoute, VerifiedRoute } from "./utils/ProtectedRoute";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -51,16 +47,26 @@ const App = () => {
         <Route path="about" element={<About />} />
         <Route path="error-page" element={<ErrorPage />} />
 
-        {/* Previously Protected Routes - Now Public */}
-        <Route path="profile" element={<Profile />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="email-verify" element={<EmailVerificationNotice />} />
-        <Route path="devices" element={<Devices />} />
-        <Route path="users" element={<Users />} />
-        <Route path="community" element={<Community />} />
-        <Route path="footage" element={<Footage />} />
-        <Route path="history" element={<AccessHistory />} />
-        <Route path="settings" element={<SettingsPage />} />
+        {/* Protected Routes - Requires Login */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="email-verify" element={<EmailVerificationNotice />} />
+        </Route>
+
+        {/* Verified Routes - Requires Login + Verified Email */}
+        <Route element={<VerifiedRoute />}>
+          <Route path="devices" element={<Devices />} />
+          <Route path="footage" element={<Footage />} />
+          <Route path="history" element={<AccessHistory />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="community" element={<Community />} />
+        </Route>
+
+        {/* Admin Routes - Requires Login + Admin Role */}
+        <Route element={<AdminRoute />}>
+          <Route path="users" element={<Users />} />
+        </Route>
 
         {/* Catch-all Route */}
         <Route path="*" element={<NotFound />} />
