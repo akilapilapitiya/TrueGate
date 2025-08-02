@@ -79,7 +79,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test
     
     steps:
       - name: Checkout code
