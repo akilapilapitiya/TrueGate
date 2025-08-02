@@ -297,7 +297,7 @@ const About = () => {
       {/* Store & Community Section */}
       <Box
         sx={{
-          bgcolor: alpha(theme.palette.grey[100], 0.5),
+          bgcolor: alpha(theme.customColors.backgroundDark, 0.5),
           py: { xs: 6, md: 10 },
         }}
       >
