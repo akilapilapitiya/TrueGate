@@ -161,7 +161,7 @@ const Profile = () => {
     {
       icon: <AccountCircleIcon sx={{ fontSize: 24 }} />,
       label: "Account Role",
-      value: user?.role,
+      value: user?.role === "admin" ? "House Owner" : user?.role,
       color: theme.palette.secondary.main,
       bgColor: alpha(theme.palette.secondary.main, 0.1),
     },
@@ -201,7 +201,6 @@ const Profile = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={4}>
               <Box textAlign="center">
-                
                 {/* Profile Avatar */}
                 <Box
                   sx={{
@@ -211,18 +210,24 @@ const Profile = () => {
                   }}
                 >
                   <Avatar
-    src={profileIcon}
-    alt="Profile"
-    sx={{
-      width: 150,
-      height: 150,
-      position: 'relative',
-      top: '20px',
-      border: `4px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-      boxShadow: `0 8px 32px ${alpha(theme.palette.primary.main, 0.25)}`,
-      mb: 2, 
-    }}
-  />
+                    src={profileIcon}
+                    alt="Profile"
+                    sx={{
+                      width: 150,
+                      height: 150,
+                      position: "relative",
+                      top: "20px",
+                      border: `4px solid ${alpha(
+                        theme.palette.primary.main,
+                        0.2
+                      )}`,
+                      boxShadow: `0 8px 32px ${alpha(
+                        theme.palette.primary.main,
+                        0.25
+                      )}`,
+                      mb: 2,
+                    }}
+                  />
                   {user?.verified && (
                     <Box
                       sx={{
