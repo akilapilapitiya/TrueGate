@@ -1,0 +1,30 @@
+# SSL Certificates
+certs/
+
+# Environment files
+.env
+backend/.env
+frontend/.env
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore 

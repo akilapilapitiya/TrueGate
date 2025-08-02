@@ -3,7 +3,7 @@ services:
     build: ./backend
     container_name: truegate-backend
     ports:
-      - "5000:5000"  # backend exposed at http://localhost:5000
+      - "5000:5000"
     env_file:
       - ./backend/.env
     environment:
@@ -12,25 +12,20 @@ services:
     restart: unless-stopped
     networks:
       - truegate-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   frontend:
     build: ./frontend
     container_name: truegate-frontend
     ports:
-      - "80:80"  # frontend exposed on port 80 for domain access
-      - "443:443"  # HTTPS support
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
     restart: unless-stopped
     networks:
       - truegate-network
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
 
 networks:
   truegate-network:
