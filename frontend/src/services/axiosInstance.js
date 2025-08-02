@@ -1,7 +1,12 @@
 import axios from "axios";
 
+// Use local HTTPS for development, production URL for deployment
+const baseURL = process.env.NODE_ENV === 'production' 
+  ? "https://truegate.live/api"
+  : "https://localhost/api";
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL: baseURL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

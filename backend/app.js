@@ -25,11 +25,12 @@ const port = process.env.PORT || 4000;
 
 // Security middlewares
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5174',
-   credentials: true,
+app.use(cors({ 
+  origin: ['http://localhost:5174', 'https://localhost', 'https://truegate.live'],
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token']
- })); 
+})); 
  
 app.use(express.json());
 app.use(cookieParser());
@@ -40,6 +41,15 @@ app.use(cookieParser());
 //   max: 100
 // });
 // app.use(limiter);
+
+// Health check endpoint (must be before CSRF protection)
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    service: 'TrueGate Backend'
+  });
+});
 
 // Security logging middleware (must be before CSRF protection)
 app.use(logSecurityEvents);
