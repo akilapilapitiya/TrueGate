@@ -4,28 +4,18 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/main'
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup SSH for GitHub
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.GH_DEPLOY_KEY }}" > ~/.ssh/github_deploy_key
-          chmod 600 ~/.ssh/github_deploy_key
-
-          # Add GitHub to known_hosts
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-          # Use key only for github.com
-          echo "Host github.com
-            IdentityFile ~/.ssh/github_deploy_key
-            StrictHostKeyChecking no" >> ~/.ssh/config
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -35,6 +25,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd TrueGate
-            git pull origin main
+            sudo git pull origin main
             sudo docker compose down
             sudo docker compose up -d --build
