@@ -3,6 +3,13 @@ const router = express.Router();
 const { verifyToken } = require('../middleware/authMiddleware');
 const { securityLogger } = require('../utils/logger');
 
+/**
+ * @swagger
+ * tags:
+ *   name: Security
+ *   description: Security monitoring and logging endpoints (admin only)
+ */
+
 // Middleware to ensure admin access
 const requireAdmin = (req, res, next) => {
   if (!req.user || req.user.role !== 'admin') {
@@ -11,6 +18,55 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
+/**
+ * @swagger
+ * /api/security/events:
+ *   get:
+ *     summary: Get recent security events
+ *     tags: [Security]
+ *     description: Retrieve recent security events (admin only)
+ *     security:
+ *       - bearerAuth: []
+ *       - csrfToken: []
+ *     parameters:
+ *       - in: query
+ *         name: hours
+ *         schema:
+ *           type: integer
+ *           default: 24
+ *         description: Number of hours to look back
+ *         example: 24
+ *     responses:
+ *       200:
+ *         description: Security events retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     events:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/SecurityLog'
+ *                     count:
+ *                       type: integer
+ *                       example: 15
+ *                     timeRange:
+ *                       type: string
+ *                       example: "24 hours"
+ *       401:
+ *         description: Unauthorized - No token provided
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/security/events - Get recent security events
 router.get('/events', verifyToken, requireAdmin, (req, res) => {
   try {
@@ -30,6 +86,72 @@ router.get('/events', verifyToken, requireAdmin, (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/security/stats:
+ *   get:
+ *     summary: Get security statistics
+ *     tags: [Security]
+ *     description: Retrieve security statistics and metrics (admin only)
+ *     security:
+ *       - bearerAuth: []
+ *       - csrfToken: []
+ *     parameters:
+ *       - in: query
+ *         name: hours
+ *         schema:
+ *           type: integer
+ *           default: 24
+ *         description: Number of hours to look back
+ *         example: 24
+ *     responses:
+ *       200:
+ *         description: Security statistics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalEvents:
+ *                       type: integer
+ *                       example: 150
+ *                     highRiskEvents:
+ *                       type: integer
+ *                       example: 5
+ *                     mediumRiskEvents:
+ *                       type: integer
+ *                       example: 25
+ *                     lowRiskEvents:
+ *                       type: integer
+ *                       example: 120
+ *                     timeRange:
+ *                       type: string
+ *                       example: "24 hours"
+ *                     riskDistribution:
+ *                       type: object
+ *                       properties:
+ *                         high:
+ *                           type: integer
+ *                           example: 5
+ *                         medium:
+ *                           type: integer
+ *                           example: 25
+ *                         low:
+ *                           type: integer
+ *                           example: 120
+ *       401:
+ *         description: Unauthorized - No token provided
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/security/stats - Get security statistics
 router.get('/stats', verifyToken, requireAdmin, (req, res) => {
   try {

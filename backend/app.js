@@ -17,6 +17,8 @@ const {
 } = require('./middleware/securityMiddleware');
 
 const { connectDb } = require('./db');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -72,6 +74,19 @@ app.use('/api', logPasswordChangeEvents);
 // Use routes
 app.use('/api', authRoutes);
 app.use('/api/security', securityRoutes);
+
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'TrueGate API Documentation',
+  customfavIcon: '/favicon.ico',
+  swaggerOptions: {
+    persistAuthorization: true,
+    displayRequestDuration: true,
+    filter: true,
+    deepLinking: true
+  }
+}));
 
 // Enforce HTTPS except on localhost
 app.use((req, res, next) => {
