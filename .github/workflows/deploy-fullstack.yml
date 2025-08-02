@@ -3,10 +3,10 @@ name: Deploy TrueGate Fullstack on Main
 on:
   push:
     branches:
-      - main
+      - main,feature/ci-cd
   pull_request:
     branches:
-      - main
+      - main,feature/ci-cd
 
 jobs:
   deploy:
