@@ -518,7 +518,7 @@ const Footage = () => {
           >
             <CardMedia
               component="img"
-              image="https://plus.unsplash.com/premium_photo-1750651872632-ec586bb414b5?q=80&w=1374&auto=format&fit=crop"
+           image={cctv}
               alt="Full Preview"
               sx={{
                 width: "100%",
