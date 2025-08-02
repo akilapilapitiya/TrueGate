@@ -774,7 +774,7 @@ async function runHardcoreSecurityTests() {
   } catch (error) {
     clearTimeout(timeout);
     console.error('❌ Test execution error:', error);
-    return false;
+    process.exit(1);
   }
 }
 
