@@ -41,6 +41,15 @@ app.use(cookieParser());
 // });
 // app.use(limiter);
 
+// Health check endpoint (must be before CSRF protection)
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    service: 'TrueGate Backend'
+  });
+});
+
 // Security logging middleware (must be before CSRF protection)
 app.use(logSecurityEvents);
 

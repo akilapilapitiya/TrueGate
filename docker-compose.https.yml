@@ -1,15 +1,17 @@
 version: '3.8'
 
 services:
-  # NGINX reverse proxy with frontend (HTTPS always on)
+  # NGINX reverse proxy with frontend (HTTPS)
   nginx:
-    build: ./frontend
-    container_name: truegate-nginx
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.https
+    container_name: truegate-nginx-https
     ports:
       - "80:80"   # HTTP redirect
       - "443:443" # HTTPS main
     volumes:
-      - ./cert:/etc/nginx/certs:ro  # Mount existing certificates
+      - ./cert:/etc/nginx/certs:ro  # Mount certificates
     depends_on:
       - backend
     restart: unless-stopped
@@ -24,6 +26,4 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=5000
-    restart: unless-stopped
-
-
+    restart: unless-stopped 
