@@ -79,7 +79,7 @@ app.use('/api/security', securityRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'TrueGate API Documentation',
-  customfavIcon: '/favicon.ico',
+  customFavIcon: '/favicon.ico',
   swaggerOptions: {
     persistAuthorization: true,
     displayRequestDuration: true,
