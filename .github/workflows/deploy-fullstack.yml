@@ -6,9 +6,81 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Install curl (for health check)
+        run: sudo apt-get update && sudo apt-get install -y curl
+
+      - name: Start backend in development mode
+        working-directory: ./backend
+        run: |
+          # Start backend in background
+          npm run dev &
+          BACKEND_PID=$!
+          
+          # Wait for backend to start
+          echo "Waiting for backend to start..."
+          sleep 10
+          
+          # Check if backend is running
+          echo "Checking if backend is running..."
+          for i in {1..30}; do
+            if curl -f --max-time 5 http://localhost:4000/health >/dev/null 2>&1; then
+              echo "Backend is running successfully!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "Backend failed to start after 30 attempts"
+              kill $BACKEND_PID
+              exit 1
+            fi
+            echo "Waiting for backend to start... (attempt $i/30)"
+            sleep 2
+          done
+          
+          # Run all tests
+          echo "Running all tests..."
+          if npm run test:complete; then
+            echo "All tests passed successfully!"
+          else
+            echo "Tests failed!"
+            kill $BACKEND_PID
+            exit 1
+          fi
+          
+          # Kill backend after tests
+          echo "Stopping backend server..."
+          kill $BACKEND_PID
+          wait $BACKEND_PID 2>/dev/null || true
+        env:
+          NODE_ENV: development
+          PORT: 4000
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB: ${{ secrets.MONGODB_DB }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_USER: ${{ secrets.BREVO_USER }}
+
   deploy:
     runs-on: ubuntu-latest
-
+    needs: test
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
