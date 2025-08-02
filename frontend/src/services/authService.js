@@ -195,7 +195,7 @@ export const userProfileUpdate = async (firstName, lastName, contact) => {
   }
 };
 
-// Resend Email Verification
+// RESEND EMAIL VERIFICATION
 const sendEmailVerification = async (
   setIsVerificationLoading,
   setVerificationMessage,
@@ -246,6 +246,42 @@ const sendEmailVerification = async (
     setIsVerificationLoading(false);
   }
 };
+
+// FORGOT PASSWORD
+export const forgotPassword = async (email) => {
+  try {
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+
+    const res = await axiosInstance.post("/forgot-password", { email });
+    return { success: true, message: res.data.message };
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "Something went wrong.",
+    };
+  }
+};
+
+export const resetPassword = async ({ email, token, newPassword }) => {
+  try {
+    const csrfRes = await axiosInstance.get("/csrf-token");
+    axiosInstance.defaults.headers["x-csrf-token"] = csrfRes.data.csrfToken;
+
+    const res = await axiosInstance.post("/forgot-password", {
+      email,
+      token,
+      newPassword,
+    });
+    return { success: true, message: res.data.message };
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.error || "Reset failed.",
+    };
+  }
+};
+
 
 // ############################################ USER DELETE ACCOUNT #############################################
 export const userDeleteAccount = () => {

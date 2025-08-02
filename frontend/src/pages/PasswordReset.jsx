@@ -8,49 +8,39 @@ import {
   useMediaQuery,
   Paper,
   Fade,
-  Link,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { emailValidation, newPasswordValidateData } from "../utils/Validate";
+import { forgotPassword } from "../services/authService";
+import { emailValidation } from "../utils/Validate";
 import namedLogo from "../assets/logo-name.png";
-import { useSelector } from "react-redux";
 
 const PasswordReset = () => {
-  const navigate = useNavigate();
-  const { user } = useSelector((store) => store.user);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const referEmail = useRef();
-  const [errorMessage, setErrorMessage] = useState("");
   const [step, setStep] = useState(1);
-  const [otpValue, setOtpValue] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleEmailSubmit = () => {
-    const msg = emailValidation(referEmail.current.value);
+  const handleEmailSubmit = async () => {
+    const email = referEmail.current.value.trim();
+    const msg = emailValidation(email);
     if (msg) return setErrorMessage(msg);
 
-    setErrorMessage("");
-    setStep(2);
-  };
+    setLoading(true);
+    const res = await forgotPassword(email);
+    setLoading(false);
 
-  const handleOtpSubmit = () => {
-    if (otpValue.length !== 5) {
-      return setErrorMessage("OTP must be 5 digits.");
+    if (res.success || res.message?.includes("reset email")) {
+      setErrorMessage("");
+      setStep(2);
+    } else if (res.message === "CSRF token invalid") {
+      setErrorMessage("Session expired. Please refresh the page and try again.");
+    } else if (res.error === "User not found") {
+      setErrorMessage("We couldn't find an account with that email.");
+    } else {
+      setErrorMessage("Something went wrong. Please try again.");
     }
-
-    setErrorMessage("");
-    setStep(3);
-  };
-
-  const handlePasswordSubmit = () => {
-    const msg = newPasswordValidateData(newPassword, confirmPassword);
-    if (msg) return setErrorMessage(msg);
-
-    setErrorMessage("");
-    navigate("/login");
   };
 
   return (
@@ -106,7 +96,7 @@ const PasswordReset = () => {
               Enter your email and follow the steps
             </Typography>
 
-            {/* Step 1: Email */}
+            {/* Step 1: Email Input */}
             {step === 1 && (
               <>
                 <TextField
@@ -121,6 +111,7 @@ const PasswordReset = () => {
                   fullWidth
                   size="large"
                   onClick={handleEmailSubmit}
+                  disabled={loading}
                   sx={{
                     py: 1.3,
                     borderRadius: 2,
@@ -128,79 +119,26 @@ const PasswordReset = () => {
                     fontWeight: 600,
                   }}
                 >
-                  Submit Email
+                  {loading ? "Sending..." : "Submit Email"}
                 </Button>
               </>
             )}
 
-            {/* Step 2: OTP */}
+            {/* Step 2: Email Sent Message */}
             {step === 2 && (
-              <>
-                <TextField
-                  label="Enter OTP"
-                  variant="outlined"
-                  fullWidth
-                  size="medium"
-                  value={otpValue}
-                  onChange={(e) =>
-                    setOtpValue(e.target.value.replace(/\D/g, ""))
-                  }
-                />
-                <Button
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  onClick={handleOtpSubmit}
-                  sx={{
-                    py: 1.3,
-                    borderRadius: 2,
-                    textTransform: "none",
-                    fontWeight: 600,
-                  }}
-                >
-                  Confirm OTP
-                </Button>
-              </>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                textAlign="center"
+                sx={{ mt: 2 }}
+              >
+                If an account with this email exists, a password reset link has
+                been sent. <br />
+                Please check your inbox.
+              </Typography>
             )}
 
-            {/* Step 3: New Password */}
-            {step === 3 && (
-              <>
-                <TextField
-                  label="New Password"
-                  type="password"
-                  variant="outlined"
-                  fullWidth
-                  size="medium"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <TextField
-                  label="Confirm Password"
-                  type="password"
-                  variant="outlined"
-                  fullWidth
-                  size="medium"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <Button
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  onClick={handlePasswordSubmit}
-                  sx={{
-                    py: 1.3,
-                    borderRadius: 2,
-                    textTransform: "none",
-                    fontWeight: 600,
-                  }}
-                >
-                  Reset Password
-                </Button>
-              </>
-            )}
-
+            {/* Error Message */}
             {errorMessage && (
               <Typography
                 variant="body2"
@@ -211,21 +149,6 @@ const PasswordReset = () => {
                 {errorMessage}
               </Typography>
             )}
-            {!user && (
-              <Typography variant="body2" mt={1} textAlign="center">
-              Back to{" "}
-              <Link
-                component="button"
-                onClick={() => navigate("/login")}
-                underline="hover"
-                color="primary"
-                sx={{ fontWeight: 500, cursor: "pointer" }}
-              >
-                Login
-              </Link>
-            </Typography>
-            )}
-            
           </Box>
         </Paper>
       </Box>
