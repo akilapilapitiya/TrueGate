@@ -68,51 +68,37 @@ npm start
 In `/backend/.env`:
 
 ```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+PORT
+JWT_SECRET
+MONGODB_URI
+MONGODB_DB
+BREVO_API_KEY
+BREVO_USER
+CSRF_SECRET
 ```
 
 ---
 
-## 📡 API Reference
+##  Testing
 
-Full documentation → [api.doc.md](./api.doc.md)
-
-Example Endpoints:
-- POST `/api/auth/login`
-- GET `/api/users/:id`
-- POST `/api/auth/register`
-
----
-
-## 🧪 Testing
-
-- ✅ Postman for API endpoint testing
-- ✅ Manual UI testing (forms, routing)
-- 🧪 Optional: Jest or Mocha for unit tests
+-  Postman for API endpoint testing
+-  Manual UI testing 
 
 ---
 
 ## 🌍 Deployment
 
 - **Frontend:** [https://www.truegate.live](https://www.truegate.live)
-- **Backend:** [https://api.truegate.live](https://api.truegate.live)
-
----
-
-## ⚔️ Challenges
-
-- 🔁 Handling JWT token expiration
-- 🌐 Managing CORS between frontend and backend
-- 🧩 Syncing protected routes with authentication state
-
+- **Backend:** [https://api.truegate.live/api](https://api.truegate.live/api)
 ---
 
 ## 👥 Contributors
 
-- Your Name – Frontend & DevOps
-- Teammate 2 – Backend Development
-- Teammate 3 – API & Testing
+- Frontend Designer - <a href = "https://github.com/Tharuka621">Tharuka Mudunna</a>
+- Devops Enginners - <a href = "https://github.com/shpeiris">Sandali Hiranya</a>
+- Backend Developer - <a href = "https://github.com/budd9442">Buddhika Bandara</a>
+- Frontend Developer - <a href = "https://github.com/akilapilapitiya">Akila Pilapitiya</a>
+- Quality Assurance - <a href = "https://github.com/YonaliKavi">Yonali Kavindya</
+
 
 ---
