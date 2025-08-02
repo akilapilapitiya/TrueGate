@@ -54,7 +54,7 @@ const AccessHistory = () => {
       id: "LOG001",
       userId: "0001",
       userName: "Buddhika Bandara",
-      userRole: "Admin",
+      userRole: "User",
       action: "System Armed",
       location: "Main Entrance",
       timestamp: "2024-10-01 09:15:30",
