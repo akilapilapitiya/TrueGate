@@ -118,7 +118,10 @@ const logAuthEvents = (req, res, next) => {
           );
         }
       } catch (e) {
-        // Ignore parsing errors
+        securityLogger.error(`Failed to parse login response JSON: ${e.message}`, {
+          error: e,
+          data: data
+        });
       }
       return originalSend.call(this, data);
     };
