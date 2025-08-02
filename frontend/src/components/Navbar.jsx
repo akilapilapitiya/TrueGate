@@ -63,13 +63,13 @@ const Navbar = () => {
     ...(user?.role === "admin"
       ? [
           { label: "User Management", icon: <PeopleIcon />, path: "/users" },
-          { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
+          { label: "Device Management", icon: <DevicesIcon />, path: "/device" },
         ]
       : []),
-    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/dashboard" },
     { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
-    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
-    { label: "Setup Guides", icon: <YouTubeIcon />, path: "/youtube" },
+    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "https://cloud.google.com/storage" },
+    { label: "Setup Guides", icon: <YouTubeIcon />, path: "https://youtu.be/dftKArsWaCs?si=_KTBafWBXu2wn6XD" },
     { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
     { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];
