@@ -15,6 +15,9 @@ import Home from "./pages/Home";
 // Custom Loading Spinner
 import LoadingSpinner from "./components/LoadingSpinner";
 
+// Route Guards
+import { VerifiedRoute, AdminRoute } from "./utils/ProtectedRoute";
+
 // Lazy-loaded pages
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
@@ -30,14 +33,10 @@ const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Footage = lazy(() => import("./pages/Footage"));
 const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
-const EmailVerificationNotice = lazy(() => import("./pages/EmailVerifivationNotice"));
+const EmailVerificationNotice = lazy(() => import("./pages/EmailVerificationNotice"));
 
-// Route Guards (commented out for now)
-// import { ProtectedRoute, AdminRoute, VerifiedRoute } from "./utils/ProtectedRoute";
-
-// Redux
-// import { useSelector } from "react-redux";
-// const user = useSelector((state) => state.user);
+// Future Admin-only page
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard")); // example
 
 const App = () => {
   const router = createBrowserRouter(
@@ -51,18 +50,26 @@ const App = () => {
         <Route path="about" element={<About />} />
         <Route path="error-page" element={<ErrorPage />} />
 
-        {/* Previously Protected Routes - Now Public */}
-        <Route path="profile" element={<Profile />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="email-verify" element={<EmailVerificationNotice />} />
-        <Route path="devices" element={<Devices />} />
-        <Route path="users" element={<Users />} />
-        <Route path="community" element={<Community />} />
-        <Route path="footage" element={<Footage />} />
-        <Route path="history" element={<AccessHistory />} />
-        <Route path="settings" element={<SettingsPage />} />
+        {/* Verified User Routes */}
+        <Route element={<VerifiedRoute />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="email-verify" element={<EmailVerificationNotice />} />
+          <Route path="devices" element={<Devices />} />
+          <Route path="users" element={<Users />} />
+          <Route path="community" element={<Community />} />
+          <Route path="footage" element={<Footage />} />
+          <Route path="history" element={<AccessHistory />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
 
-        {/* Catch-all Route */}
+        {/* Admin-only Routes */}
+        <Route element={<AdminRoute />}>
+          <Route path="admin-dashboard" element={<AdminDashboard />} />
+          {/* Add more admin-only pages here */}
+        </Route>
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Route>
     )
