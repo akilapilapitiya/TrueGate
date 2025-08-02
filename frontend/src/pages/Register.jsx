@@ -1,92 +1,322 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import '../styles/pages/Register.css';
-import { checkInputData, checkValidData } from '../utils/Validate';
-import { use, useRef, useState } from 'react';
+import { useRef, useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  FormControlLabel,
+  Checkbox,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Fade,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { checkSignUpValidateData } from "../utils/Validate";
+import namedLogo from "../assets/logo-name.png";
+import { userRegister } from "../services/authService";
 
 const Register = () => {
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
+  // Refs for inputs
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const contactRef = useRef(null);
+  const dobRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  const [gender, setGender] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
+  const today = new Date().toISOString().split("T")[0]; // For Birthday prevent future days
 
-  const firstName = useRef(null);
-  const surName = useRef(null);
-  const day = useRef(null);
-  const month = useRef(null);
-  const year = useRef(null);
-  const genderFemale = useRef(null);
-  const genderMale = useRef(null);
-  const password = useRef(null);
-  const rePassword = useRef(null);
+  const handleGenderChange = (e) => setGender(e.target.value);
 
-  const handleSignInButtonClick =() =>{
-  //Validate if gender is selected  
-  let selectedGender = null;
-  if (genderMale.current.checked) selectedGender = genderMale.current.value;
-  if (genderFemale.current.checked) selectedGender = genderFemale.current.value;
+  const handleRegister = async () => {
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    const confirmPassword = confirmPasswordRef.current?.value || "";
+    const firstname = firstNameRef.current?.value || "";
+    const lastName = lastNameRef.current?.value || "";
+    const dob = dobRef.current?.value || "";
+    const contact = contactRef.current?.value || "";
 
-  // Validate all inputs
-  const message = checkInputData(firstName.current.value, surName.current.value, day.current.value,  month.current.value, year.current.value, selectedGender, password.current.value, rePassword.current.value)
-  setErrorMessage(message);
-  if (message) return; // If there's an error, do not proceed
+    const result = await userRegister(
+      email,
+      password,
+      confirmPassword,
+      firstname,
+      lastName,
+      dob,
+      contact,
+      gender,
+      isChecked
+    );
 
-    //Sign Up Logic
-      
-  }
+    if (result.success) {
+      // Show success message and redirect after short delay
+      setErrorMessage("Registration successful! Check your email.");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000); // Redirects to login page after 2 seconds
+    } else {
+      setErrorMessage(result.message);
+    }
+  };
 
   return (
-    <div className='register-container'>
-      <div className="register-form">
-        <form action="#" onSubmit={(e) => e.preventDefault()}>
-          <div className="header-box">
-            <h1 className='header'>Create a new account</h1>
-          </div>
-          <hr />
-          <div className="username-input">
-            <input type="text" placeholder='First name' ref={firstName}/>
-            <input type="text" placeholder='Surname' ref={surName}/>
-          </div>
-          <div className="dob-input">
-            <label htmlFor="dob">Date of Birth</label>
+    <Fade in timeout={700}>
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.default,
+          paddingTop: "64px",
+          paddingBottom: 4,
+          overflowY: "auto",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
+        <Paper
+          elevation={4}
+          sx={{
+            width: "100%",
+            maxWidth: { xs: "90%", sm: 400, md: 500 },
+            height: { xs: "auto", md: "auto" },
+            borderRadius: 4,
+            m: 2,
+            mt: 4,
+            boxShadow: theme.shadows[6],
+          }}
+        >
+          <Box
+            sx={{
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              overflowY: "auto",
+            }}
+          >
+            <Box sx={{ mb: 1, display: "flex", justifyContent: "center" }}>
+              <img src={namedLogo} alt="Logo" style={{ height: 32 }} />
+            </Box>
 
-          </div>
-          <div className="gender-input">
-            <label htmlFor="gender">Gender</label>
-            <div className="gender-instances">
-              <div className="gender-button">
-              <input type="radio" name='gender' value='male' ref={genderMale} defaultChecked/>  Male
-            </div>
-            <div className="gender-button">
-              <input type="radio" name='gender' value='female' ref={genderFemale}/>  Female
-            </div>
-          </div> 
-          </div>
-          <div className="mode-input">
-            <label htmlFor="mode">User Mode</label>
-            <div className="mode-instances">
-              <div className="mode-button">
-              <input type="radio" name='mode' value='admin'/> Administrator
-            </div>
-            <div className="mode-button">
-              <input type="radio" name='mode' value='client'/>  Client
-            </div>
-          </div> 
-          </div>
-            <div className="password-input">
-              <input type="password" placeholder='Password' ref={password}/>
-              <input type="password" placeholder='Re-Enter Password' ref={rePassword}/>   
-            </div>
-              <div className="error-message">
-              <p className='error-text'>{errorMessage}</p>
-            </div>
-            <div className="process-options-container">
-              <button className='sign-up-button' onClick={handleSignInButtonClick}>Sign Up</button>
-              <NavLink to="/login" >Already have an Account?</NavLink>
-            </div>
-        </form>
-      </div>
-    </div>
-  )
-}
+            <Typography variant="h4" fontWeight={700} mb={1} textAlign="center">
+              Create Account
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              mb={3}
+              textAlign="center"
+            >
+              Join us and start your journey
+            </Typography>
 
-export default Register
+            <Box
+              component="form"
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleRegister();
+              }}
+            >
+              {/* Responsive input pairs */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="First Name"
+                  inputRef={firstNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Last Name"
+                  inputRef={lastNameRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <TextField
+                label="Email"
+                type="email"
+                inputRef={emailRef}
+                fullWidth
+                size="medium"
+                variant="outlined"
+                required
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  type="tel"
+                  inputRef={contactRef}
+                  variant="outlined"
+                  size="medium"
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Date of Birth"
+                  type="date"
+                  inputRef={dobRef}
+                  variant="outlined"
+                  size="medium"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth={isMobile}
+                  inputProps={{
+                    max: today,
+                  }}
+                />
+              </Box>
+
+              <FormControl sx={{ mb: 1 }}>
+                <FormLabel id="gender-label" sx={{ mb: 1 }}>
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  row={!isMobile}
+                  column={isMobile ? true : false}
+                  aria-labelledby="gender-label"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  sx={{ gap: 2 }}
+                >
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: isMobile ? "column" : "row",
+                }}
+              >
+                <TextField
+                  label="Password"
+                  type="password"
+                  inputRef={passwordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  inputRef={confirmPasswordRef}
+                  variant="outlined"
+                  size="medium"
+                  required
+                  fullWidth={isMobile}
+                />
+              </Box>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
+                }
+                label="I agree to the terms and conditions"
+              />
+
+              {errorMessage && (
+                <Typography
+                  variant="body2"
+                  color={
+                    errorMessage.toLowerCase().includes("success")
+                      ? "success.main"
+                      : "error"
+                  }
+                  textAlign="center"
+                  sx={{ mt: 1 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+
+              <Button
+                variant="contained"
+                type="submit"
+                size="large"
+                sx={{
+                  mt: 1,
+                  py: 1.3,
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textTransform: "none",
+                }}
+                fullWidth
+              >
+                Register
+              </Button>
+
+              <Typography variant="body2" mt={1} textAlign="center">
+                Already have an account?{" "}
+                <Link
+                  component="button"
+                  onClick={() => navigate("/login")}
+                  underline="hover"
+                  color="primary"
+                  sx={{ fontWeight: 500, cursor: "pointer" }}
+                >
+                  Login here
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
+      </Box>
+    </Fade>
+  );
+};
+
+export default Register;
