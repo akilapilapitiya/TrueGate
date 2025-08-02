@@ -60,7 +60,7 @@ const Navbar = () => {
   // Sidebar links
   const navLinks = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-    ...(user?.role === "admin"
+    ...(user?.role === "client"
       ? [
           { label: "User Management", icon: <PeopleIcon />, path: "/users" },
           { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },

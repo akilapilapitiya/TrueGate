@@ -77,7 +77,7 @@ const Dashboard = () => {
     { label: "About TrueGate", path: "/about" },
   ];
 
-  if (user?.role === "admin") {
+  if (user?.role === "client") {
     cards.splice(
       2,
       0,
@@ -320,7 +320,7 @@ const Dashboard = () => {
       </Container>
 
       {/* Security Shop Section */}
-      {user?.role === "admin" && (
+      {user?.role === "client" && (
         <Box
           sx={{
             bgcolor: theme.palette.background.default,

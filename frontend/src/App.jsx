@@ -16,7 +16,7 @@ import Home from "./pages/Home";
 import LoadingSpinner from "./components/LoadingSpinner";
 
 // Route Guards
-import { VerifiedRoute, AdminRoute } from "./utils/ProtectedRoute";
+import { ProtectedRoute, AdminRoute, ClientRoute } from "./utils/ProtectedRoute";
 
 // Lazy-loaded pages
 const Login = lazy(() => import("./pages/Login"));
@@ -33,10 +33,10 @@ const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Footage = lazy(() => import("./pages/Footage"));
 const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
-const EmailVerificationNotice = lazy(() => import("./pages/EmailVerificationNotice"));
+import EmailVerificationNotice from "./pages/EmailVerificationNotice";
 
-// Future Admin-only page
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard")); // example
+// Optional future admin-only route
+// const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 const App = () => {
   const router = createBrowserRouter(
@@ -50,26 +50,28 @@ const App = () => {
         <Route path="about" element={<About />} />
         <Route path="error-page" element={<ErrorPage />} />
 
-        {/* Verified User Routes */}
-        <Route element={<VerifiedRoute />}>
-          <Route path="profile" element={<Profile />} />
+        {/* Authenticated Routes (Client + Admin) */}
+        <Route element={<ClientRoute />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="email-verify" element={<EmailVerificationNotice />} />
-          <Route path="devices" element={<Devices />} />
-          <Route path="users" element={<Users />} />
           <Route path="community" element={<Community />} />
           <Route path="footage" element={<Footage />} />
           <Route path="history" element={<AccessHistory />} />
           <Route path="settings" element={<SettingsPage />} />
+
+          {/* These two are client-specific, but guarded here */}
+          <Route path="devices" element={<Devices />} />
+          <Route path="users" element={<Users />} />
         </Route>
 
         {/* Admin-only Routes */}
         <Route element={<AdminRoute />}>
-          <Route path="admin-dashboard" element={<AdminDashboard />} />
-          {/* Add more admin-only pages here */}
+          {/* Add your admin-exclusive routes here, e.g.: */}
+          {/* <Route path="admin-dashboard" element={<AdminDashboard />} /> */}
         </Route>
 
-        {/* 404 */}
+        {/* Catch-all for 404 */}
         <Route path="*" element={<NotFound />} />
       </Route>
     )
