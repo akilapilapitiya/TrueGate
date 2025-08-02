@@ -35,9 +35,6 @@ const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 import EmailVerificationNotice from "./pages/EmailVerificationNotice";
 
-// Optional future admin-only route
-// const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(

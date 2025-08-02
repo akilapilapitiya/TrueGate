@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react";
 import {
   Box,
-  Paper,
   Typography,
   useTheme,
   useMediaQuery,
@@ -10,13 +9,12 @@ import {
   Card,
   CardContent,
   alpha,
-  Chip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-//  Import icons
+// Import icons
 import SecurityIcon from "@mui/icons-material/Security";
 import HistoryIcon from "@mui/icons-material/History";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -24,12 +22,12 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 
 const SecurityShop = lazy(() => import("./SecurityShop"));
 
 const Dashboard = () => {
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.user);
@@ -40,6 +38,7 @@ const Dashboard = () => {
     "Manage Security Devices": <DevicesIcon sx={{ fontSize: 40 }} />,
     "Manage Registered Users": <GroupIcon sx={{ fontSize: 40 }} />,
     "Update Profile Details": <PersonIcon sx={{ fontSize: 40 }} />,
+    "API Performance": <EqualizerIcon sx={{ fontSize: 40 }} />,
     "About TrueGate": <InfoIcon sx={{ fontSize: 40 }} />,
   };
 
@@ -68,35 +67,34 @@ const Dashboard = () => {
       color: theme.palette.error.main,
       bgColor: alpha(theme.palette.error.main, 0.1),
     },
+    "API Performance": {
+      color: theme.palette.error.main,
+      bgColor: alpha(theme.palette.error.main, 0.1),
+    },
   };
 
-  const cards = [
-    { label: "Review CCTV Footage", path: "/footage" },
-    { label: "Review Access History", path: "/history" },
-    { label: "Update Profile Details", path: "/profile" },
-    { label: "About TrueGate", path: "/about" },
-  ];
+  let cards = [];
 
-  if (user?.role === "client") {
-    cards.splice(
-      2,
-      0,
+  if (user?.role === "admin") {
+    cards = [
+      { label: "Manage Registered Users", path: "/users" },
+      { label: "API Performance", path: "/api-performance" },
+      { label: "About TrueGate", path: "/about" },
+    ];
+  } else {
+    cards = [
+      { label: "Review CCTV Footage", path: "/footage" },
+      { label: "Review Access History", path: "/history" },
+      { label: "Update Profile Details", path: "/profile" },
+      { label: "About TrueGate", path: "/about" },
       { label: "Manage Security Devices", path: "/devices" },
-      { label: "Manage Registered Users", path: "/users" }
-    );
+    ];
   }
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 17) return "Good Afternoon";
-    return "Good Evening";
-  };
-
   return (
-    <Box 
-      sx={{ 
-        bgcolor: theme.palette.background.default, 
+    <Box
+      sx={{
+        bgcolor: theme.palette.background.default,
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
@@ -118,7 +116,10 @@ const Dashboard = () => {
             left: "-10%",
             width: "30%",
             height: "30%",
-            background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.08)} 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${alpha(
+              theme.palette.primary.main,
+              0.08
+            )} 0%, transparent 70%)`,
             borderRadius: "50%",
             animation: "float 20s ease-in-out infinite",
           },
@@ -129,7 +130,10 @@ const Dashboard = () => {
             right: "-10%",
             width: "40%",
             height: "40%",
-            background: `radial-gradient(circle, ${alpha(theme.palette.secondary.main, 0.06)} 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${alpha(
+              theme.palette.secondary.main,
+              0.06
+            )} 0%, transparent 70%)`,
             borderRadius: "50%",
             animation: "float 25s ease-in-out infinite reverse",
           },
@@ -151,8 +155,18 @@ const Dashboard = () => {
       >
         <Container maxWidth="lg">
           <Box textAlign="center">
-            <Box sx={{ mb: 2, display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
-              <DashboardIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+            <Box
+              sx={{
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <DashboardIcon
+                sx={{ fontSize: 40, color: theme.palette.primary.main }}
+              />
               <Typography
                 variant="h3"
                 sx={{
@@ -185,20 +199,36 @@ const Dashboard = () => {
       </Box>
 
       {/* Dashboard Cards Section */}
-      <Container maxWidth="1400px" sx={{ px: { xs: 2, md: 4 }, pb: { xs: 4, md: 6 }, position: "relative", zIndex: 1 }}>
-        <Grid container spacing={{ xs: 2, md: 3, lg: 4 }} sx={{ justifyContent: "center" }}>
+      <Container
+        maxWidth="1400px"
+        sx={{
+          px: { xs: 2, md: 4 },
+          pb: { xs: 4, md: 6 },
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3, lg: 4 }}
+          sx={{ justifyContent: "center" }}
+        >
           {cards.map(({ label, path }) => {
-            const cardColor = cardColors[label];
+            // Safe fallback for missing cardColors
+            const cardColor = cardColors[label] || {
+              color: theme.palette.text.primary,
+              bgColor: alpha(theme.palette.text.primary, 0.1),
+            };
             return (
-              <Grid 
-                item 
-                xs={12} 
-                sm={6} 
-                md={4} 
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
                 lg={3.5}
                 xl={3}
                 key={label}
-                sx={{ 
+                sx={{
                   maxWidth: { lg: "320px", xl: "300px" },
                   display: "flex",
                 }}
@@ -222,7 +252,10 @@ const Dashboard = () => {
                       borderColor: alpha(cardColor.color, 0.3),
                       "& .card-icon": {
                         transform: "scale(1.1) rotate(5deg)",
-                        background: `linear-gradient(135deg, ${cardColor.color}, ${alpha(cardColor.color, 0.8)})`,
+                        background: `linear-gradient(135deg, ${cardColor.color}, ${alpha(
+                          cardColor.color,
+                          0.8
+                        )})`,
                         color: "white",
                         boxShadow: `0 8px 20px ${alpha(cardColor.color, 0.3)}`,
                       },
@@ -240,16 +273,19 @@ const Dashboard = () => {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      background: `linear-gradient(135deg, ${alpha(cardColor.color, 0.02)}, ${alpha(cardColor.color, 0.05)})`,
+                      background: `linear-gradient(135deg, ${alpha(
+                        cardColor.color,
+                        0.02
+                      )}, ${alpha(cardColor.color, 0.05)})`,
                       opacity: 0,
                       transition: "opacity 0.3s ease",
                       zIndex: 0,
                     },
                   }}
                 >
-                  <CardContent 
-                    sx={{ 
-                      p: { xs: 3, md: 4 }, 
+                  <CardContent
+                    sx={{
+                      p: { xs: 3, md: 4 },
                       height: "100%",
                       display: "flex",
                       flexDirection: "column",
@@ -272,7 +308,8 @@ const Dashboard = () => {
                         justifyContent: "center",
                         mb: { xs: 2, md: 3 },
                         color: cardColor.color,
-                        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                        transition:
+                          "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                         position: "relative",
                         boxShadow: `0 4px 12px ${alpha(cardColor.color, 0.1)}`,
                       }}
@@ -282,8 +319,8 @@ const Dashboard = () => {
                     <Typography
                       variant="h6"
                       fontWeight="bold"
-                      sx={{ 
-                        mb: { xs: 1, md: 1.5 }, 
+                      sx={{
+                        mb: { xs: 1, md: 1.5 },
                         color: theme.palette.text.primary,
                         fontSize: { xs: "1rem", md: "1.1rem", lg: "1.2rem" },
                         lineHeight: 1.3,
@@ -294,7 +331,7 @@ const Dashboard = () => {
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ 
+                      sx={{
                         lineHeight: 1.4,
                         fontSize: { xs: "0.8rem", md: "0.85rem" },
                         textAlign: "center",
@@ -304,12 +341,20 @@ const Dashboard = () => {
                         overflow: "hidden",
                       }}
                     >
-                      {label === "Review CCTV Footage" && "Monitor cameras and review recorded footage"}
-                      {label === "Review Access History" && "Check access logs and entry records"}
-                      {label === "Manage Security Devices" && "Configure and control security devices"}
-                      {label === "Manage Registered Users" && "Manage user permissions and access"}
-                      {label === "Update Profile Details" && "Edit personal information and settings"}
-                      {label === "About TrueGate" && "Learn about TrueGate security platform"}
+                      {label === "Review CCTV Footage" &&
+                        "Monitor cameras and review recorded footage"}
+                      {label === "Review Access History" &&
+                        "Check access logs and entry records"}
+                      {label === "Manage Security Devices" &&
+                        "Configure and control security devices"}
+                      {label === "Manage Registered Users" &&
+                        "Manage user permissions and access"}
+                      {label === "Update Profile Details" &&
+                        "Edit personal information and settings"}
+                      {label === "About TrueGate" &&
+                        "Learn about TrueGate security platform"}
+                      {label === "API Performance" &&
+                        "Monitor and analyze API performance metrics"}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -373,9 +418,15 @@ const Dashboard = () => {
             color="text.secondary"
             sx={{ fontSize: "0.9rem" }}
           >
-            Last login: {new Date().toLocaleDateString()} • 
-            Status: <Box component="span" sx={{ color: theme.palette.success.main, fontWeight: 500 }}>Active</Box> • 
-            TrueGate Security Dashboard
+            Last login: {new Date().toLocaleDateString()} •{" "}
+            Status:{" "}
+            <Box
+              component="span"
+              sx={{ color: theme.palette.success.main, fontWeight: 500 }}
+            >
+              Active
+            </Box>{" "}
+            • TrueGate Security Dashboard
           </Typography>
         </Container>
       </Box>
