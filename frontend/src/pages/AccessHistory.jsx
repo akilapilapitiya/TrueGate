@@ -136,14 +136,14 @@ const AccessHistory = () => {
   };
 
   const filteredLogs = accessLogs.filter((log) => {
-    const matchesSearch = 
+    const matchesSearch =
       log.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.location.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesStatus = statusFilter === "All" || log.status === statusFilter;
     const matchesAction = actionFilter === "All" || log.action === actionFilter;
-    
+
     return matchesSearch && matchesStatus && matchesAction;
   });
 
@@ -184,7 +184,7 @@ const AccessHistory = () => {
     return theme.palette.primary.main;
   };
 
-  const uniqueActions = [...new Set(accessLogs.map(log => log.action))];
+  const uniqueActions = [...new Set(accessLogs.map((log) => log.action))];
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, minHeight: "100vh" }}>
@@ -243,7 +243,8 @@ const AccessHistory = () => {
                 mx: "auto",
               }}
             >
-              Monitor and review all security system access events and activities
+              Monitor and review all security system access events and
+              activities
             </Typography>
 
             <Chip
@@ -292,7 +293,10 @@ const AccessHistory = () => {
                       fontWeight="bold"
                       color="success.main"
                     >
-                      {accessLogs.filter((log) => log.status === "Success").length}
+                      {
+                        accessLogs.filter((log) => log.status === "Success")
+                          .length
+                      }
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Successful Access
@@ -332,7 +336,10 @@ const AccessHistory = () => {
                       fontWeight="bold"
                       color="error.main"
                     >
-                      {accessLogs.filter((log) => log.status === "Failed").length}
+                      {
+                        accessLogs.filter((log) => log.status === "Failed")
+                          .length
+                      }
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Failed Attempts
@@ -419,7 +426,12 @@ const AccessHistory = () => {
                 Access Events Log
               </Typography>
 
-              <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
+              <Stack
+                direction="row"
+                spacing={2}
+                alignItems="center"
+                flexWrap="wrap"
+              >
                 <TextField
                   label="Search logs..."
                   variant="outlined"
@@ -592,10 +604,20 @@ const AccessHistory = () => {
                     >
                       <TableCell sx={{ py: 2 }}>
                         <Typography variant="body2" fontWeight="600">
-                          {new Date(log.timestamp).toLocaleDateString()}
+                          {new Date(log.timestamp).toLocaleString("en-LK", {
+                            timeZone: "Asia/Colombo",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {new Date(log.timestamp).toLocaleTimeString()}
+                          {new Date(log.timestamp).toLocaleTimeString("en-LK", {
+                            timeZone: "Asia/Colombo",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                          })}
                         </Typography>
                       </TableCell>
                       <TableCell sx={{ py: 2 }}>
@@ -609,7 +631,10 @@ const AccessHistory = () => {
                               height: 35,
                             }}
                           >
-                            {log.userName.split(' ').map(n => n[0]).join('')}
+                            {log.userName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
                           </Avatar>
                           <Box>
                             <Typography fontWeight="600" sx={{ mb: 0.5 }}>
@@ -619,7 +644,10 @@ const AccessHistory = () => {
                               label={log.userRole}
                               size="small"
                               sx={{
-                                bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                                bgcolor: alpha(
+                                  theme.palette.secondary.main,
+                                  0.1
+                                ),
                                 color: theme.palette.secondary.main,
                                 fontWeight: "bold",
                                 fontSize: "0.7rem",
@@ -699,7 +727,9 @@ const AccessHistory = () => {
                   No access logs found
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {searchTerm || statusFilter !== "All" || actionFilter !== "All"
+                  {searchTerm ||
+                  statusFilter !== "All" ||
+                  actionFilter !== "All"
                     ? "Try adjusting your search or filter criteria"
                     : "Access events will appear here as they occur"}
                 </Typography>
@@ -777,14 +807,29 @@ const AccessHistory = () => {
                         </Typography>
                       </Box>
                       <Box display="flex" justifyContent="space-between">
-                        <Typography variant="body2" color="text.secondary">
-                          Action:
+                        <Typography variant="body2" fontWeight="600">
+                          {new Date(selectedLog.timestamp).toLocaleString(
+                            "en-LK",
+                            {
+                              timeZone: "Asia/Colombo",
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            }
+                          )}
                         </Typography>
+
                         <Chip
                           label={selectedLog.action}
                           size="small"
                           sx={{
-                            bgcolor: alpha(getActionColor(selectedLog.action), 0.1),
+                            bgcolor: alpha(
+                              getActionColor(selectedLog.action),
+                              0.1
+                            ),
                             color: getActionColor(selectedLog.action),
                             fontWeight: "bold",
                           }}
@@ -799,7 +844,10 @@ const AccessHistory = () => {
                           label={selectedLog.status}
                           size="small"
                           sx={{
-                            bgcolor: alpha(getStatusColor(selectedLog.status), 0.1),
+                            bgcolor: alpha(
+                              getStatusColor(selectedLog.status),
+                              0.1
+                            ),
                             color: getStatusColor(selectedLog.status),
                             fontWeight: "bold",
                           }}
