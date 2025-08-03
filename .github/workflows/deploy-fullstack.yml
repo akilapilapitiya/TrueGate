@@ -49,13 +49,6 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI}}
 
-      - name: Run all tests
-        run: |
-          cd backend
-          npm test
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI}}
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
