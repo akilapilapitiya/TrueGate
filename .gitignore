@@ -1,0 +1,324 @@
+# TrueGate Fullstack Project - Root .gitignore
+
+# =============================================================================
+# Dependencies
+# =============================================================================
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =============================================================================
+# Environment Variables & Secrets
+# =============================================================================
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.example
+
+# Backend specific env files
+backend/.env
+backend/test/.env
+
+# Frontend specific env files
+frontend/.env
+frontend/.env.local
+
+# =============================================================================
+# Build Outputs & Distribution
+# =============================================================================
+
+# Frontend build outputs
+frontend/dist/
+frontend/dist-ssr/
+frontend/build/
+frontend/.vite/
+
+# Backend build outputs
+backend/dist/
+backend/build/
+
+# =============================================================================
+# Testing & Coverage
+# =============================================================================
+
+# Test coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# Backend specific coverage
+backend/coverage/
+backend/.nyc_output/
+
+# Frontend specific coverage
+frontend/coverage/
+
+# Test results
+test-results/
+junit.xml
+
+# =============================================================================
+# Logs
+# =============================================================================
+
+# Application logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Backend specific logs
+backend/logs/
+backend/*.log
+
+# Frontend specific logs
+frontend/logs/
+
+# =============================================================================
+# Runtime & Temporary Files
+# =============================================================================
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# Runtime files
+.pids
+*.pid
+*.seed
+*.pid.lock
+
+# =============================================================================
+# IDE & Editor Files
+# =============================================================================
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# Operating System Files
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Docker & Containerization
+# =============================================================================
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Container volumes
+docker-volumes/
+
+# =============================================================================
+# SSL Certificates & Security
+# =============================================================================
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+
+# Certificate directories
+cert/
+certs/
+ssl/
+
+# =============================================================================
+# Database Files
+# =============================================================================
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# MongoDB
+*.lock
+
+# =============================================================================
+# Package Manager Files
+# =============================================================================
+
+# npm
+.npm
+.eslintcache
+
+# Yarn
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# pnpm
+.pnpm-store/
+
+# =============================================================================
+# Performance & Monitoring
+# =============================================================================
+
+# Performance monitoring
+*.cpuprofile
+*.heapprofile
+
+# =============================================================================
+# Screenshots & Media (Optional - uncomment if you want to ignore)
+# =============================================================================
+
+# Screenshots
+# screenshots/
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.bmp
+# *.ico
+
+# =============================================================================
+# Project Specific
+# =============================================================================
+
+# Test performance files
+backend/test-performance.js
+
+# PowerShell scripts (if not needed in repo)
+# *.ps1
+
+# =============================================================================
+# Backup Files
+# =============================================================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# =============================================================================
+# Archive Files
+# =============================================================================
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# =============================================================================
+# Documentation Build
+# =============================================================================
+
+# Documentation build outputs
+docs/build/
+docs/_build/
+site/
+
+# =============================================================================
+# Local Development
+# =============================================================================
+
+# Local development files
+.local/
+local/
+dev/
+development/
+
+# =============================================================================
+# CI/CD
+# =============================================================================
+
+# CI/CD artifacts (if any)
+.ci/
+.cd/
+ci/
+cd/ 

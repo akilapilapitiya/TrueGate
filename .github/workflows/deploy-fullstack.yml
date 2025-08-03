@@ -11,12 +11,50 @@ on:
       - feature/ci-cd
 
 jobs:
-  deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
   
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Create test environment file
+        run: |
+          cd backend/test
+          cat > .env << EOF
+          MONGODB_URI=${{ secrets.MONGODB_URI}}
+          MONGODB_DB=truegate_test
+          JWT_SECRET=test-jwt-secret-key-for-ci-cd
+          CSRF_SECRET=test-csrf-secret-key-for-ci-cd
+          NODE_ENV=test
+          PORT=4002
+          EOF
+
+      - name: Run authentication tests
+        run: |
+          cd backend
+          npm test test/auth.test.js
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI}}
+
+      - name: Run all tests
+        run: |
+          cd backend
+          npm test
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI}}
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
