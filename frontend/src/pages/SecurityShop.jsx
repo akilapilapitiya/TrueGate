@@ -25,6 +25,12 @@ import {
   FlashOn,
   Star,
 } from "@mui/icons-material";
+import cam01 from "../assets/cam01.jpg";
+import cam02 from "../assets/cam02.jpg";
+import cam03 from "../assets/cam03.jpg";
+import cam04 from "../assets/cam04.jpg";
+import motionSense01 from "../assets/motionSense01.jpg";
+import motionSense02 from "../assets/motionSense02.jpg";
 
 const SecurityShop = () => {
   const theme = useTheme();
@@ -42,8 +48,7 @@ const SecurityShop = () => {
       discount: 19,
       rating: 4.8,
       reviews: 234,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image:cam01,
       features: [
         "4MP Resolution",
         "Night Vision",
@@ -64,8 +69,7 @@ const SecurityShop = () => {
       discount: 15,
       rating: 4.6,
       reviews: 156,
-      image:
-        "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=300&h=200&fit=crop",
+      image: cam03,
       features: ["4MP Resolution", "25m IR Range", "H.265 Compression", "PoE"],
       badge: "BEST SELLER",
       badgeColor: "success",
@@ -81,8 +85,7 @@ const SecurityShop = () => {
       discount: 12,
       rating: 4.4,
       reviews: 89,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image: cam02,
       features: [
         "2K Resolution",
         "Color Night Vision",
@@ -103,8 +106,7 @@ const SecurityShop = () => {
       discount: 17,
       rating: 4.7,
       reviews: 167,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image:motionSense01,
       features: ["PIR Technology", "Pet Immune", "Wireless", "10 Year Battery"],
       badge: "LIMITED TIME",
       badgeColor: "warning",
@@ -120,8 +122,7 @@ const SecurityShop = () => {
       discount: 14,
       rating: 4.9,
       reviews: 203,
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop",
+      image: motionSense02,
       features: [
         "Dual Technology",
         "Anti-Masking",
@@ -142,8 +143,7 @@ const SecurityShop = () => {
       discount: 19,
       rating: 4.5,
       reviews: 78,
-      image:
-        "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=300&h=200&fit=crop",
+      image: cam04,
       features: ["2MP Resolution", "Smart IR", "WDR", "Easy Installation"],
       badge: "NEW ARRIVAL",
       badgeColor: "primary",

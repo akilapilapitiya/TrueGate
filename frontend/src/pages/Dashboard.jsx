@@ -365,7 +365,7 @@ const Dashboard = () => {
       </Container>
 
       {/* Security Shop Section */}
-      {user?.role === "client" && (
+      {user?.role === "user" && (
         <Box
           sx={{
             bgcolor: theme.palette.background.default,
