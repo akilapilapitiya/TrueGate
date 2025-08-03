@@ -124,7 +124,8 @@
  
  ## Screenshots
  
- ### Login Page
+ ### Home Page
+ <img src = "./screenshots/home.PNG" alt="homepage">
  
  ### Dashboard
  
