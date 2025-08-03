@@ -33,7 +33,9 @@ const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Footage = lazy(() => import("./pages/Footage"));
 const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const Performance = lazy(() => import("./pages/Performance"));
 import EmailVerificationNotice from "./pages/EmailVerificationNotice";
+
 
 const App = () => {
   const router = createBrowserRouter(
@@ -64,7 +66,7 @@ const App = () => {
 
         {/* Admin-only Routes */}
         <Route element={<AdminRoute />}>
-          {/* Add your admin-exclusive routes here, e.g.: */}
+          <Route path="api-performance" element={<Performance />} />
           {/* <Route path="admin-dashboard" element={<AdminDashboard />} /> */}
         </Route>
 
