@@ -237,6 +237,7 @@ const SecurityShop = () => {
             <Typography
               variant="h4"
               sx={{
+                pt:4,
                 fontWeight: 700,
                 color: theme.palette.text.primary,
                 fontSize: { xs: "1.8rem", md: "2.2rem" },
