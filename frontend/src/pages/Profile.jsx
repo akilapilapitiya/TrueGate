@@ -263,7 +263,7 @@ const Profile = () => {
     {
       icon: <AccountCircleIcon sx={{ fontSize: 24 }} />,
       label: "Account Role",
-      value: user?.role,
+      value: user?.role === "admin" ? "Administrator" : "User",
       color: theme.palette.secondary.main,
       bgColor: alpha(theme.palette.secondary.main, 0.1),
     },
@@ -936,7 +936,7 @@ const Profile = () => {
                 fullWidth
                 variant="outlined"
                 disabled={passwordResetLoading}
-                helperText="Password must be at least 6 characters long"
+                helperText="Password must be at least 8 characters long"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
