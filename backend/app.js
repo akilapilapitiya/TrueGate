@@ -26,7 +26,7 @@ const port = process.env.PORT || 4000;
 // Security middlewares
 app.use(helmet());
 app.use(cors({ 
-  origin: ['http://localhost:5174', 'https://localhost', 'https://truegate.live'],
+  origin: ['http://localhost:5174', 'http://localhost:5175', 'https://localhost', 'https://truegate.live'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token']
@@ -73,6 +73,10 @@ app.use(requireCsrf);
 // Import routes
 const authRoutes = require('./routes/auth');
 const securityRoutes = require('./routes/security');
+const performanceRoutes = require('./routes/performance');
+
+// Import performance monitoring middleware
+const { monitorApiCall } = require('./controllers/performanceController');
 
 // Apply security logging to specific routes
 app.use('/api', logAuthEvents);
@@ -81,9 +85,19 @@ app.use('/api', logEmailVerificationEvents);
 app.use('/api', logPasswordResetEvents);
 app.use('/api', logPasswordChangeEvents);
 
+// Apply performance monitoring to all API routes
+app.use('/api', monitorApiCall);
+
 // Use routes
 app.use('/api', authRoutes);
 app.use('/api/security', securityRoutes);
+app.use('/api/performance', performanceRoutes);
+
+// Debug endpoint for testing filtering (no auth required)
+app.get('/debug/recent-calls', (req, res) => {
+  const { getRecentApiCalls } = require('./controllers/performanceController');
+  getRecentApiCalls(req, res);
+});
 
 // Swagger API Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
@@ -125,9 +139,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-connectDb().then(() => {
+// Start server with or without database
+const startServer = async () => {
+  try {
+    await connectDb();
+    console.log('✅ Database connected successfully');
+  } catch (error) {
+    console.log('⚠️  Database connection failed, running without database');
+    console.log('Performance monitoring will work with in-memory storage');
+  }
+  
   app.listen(port, () => {
-    console.log(`Auth server running at localhost:${port}`);
-    console.log(`Security monitoring enabled`);
+    console.log(`🚀 Auth server running at localhost:${port}`);
+    console.log(`🔒 Security monitoring enabled`);
+    console.log(`📊 Performance monitoring enabled`);
   });
-});
+};
+
+startServer();
