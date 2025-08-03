@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { verifyAdmin, logAdminAction } = require('../middleware/adminMiddleware');
-const {
-  getUsers,
-  getUserByEmail,
-  updateUserByEmail,
-  deleteUserByEmail,
+const { 
+  getUsers, 
+  getUserByEmail, 
+  updateUserByEmail, 
+  deleteUserByEmail, 
   resetUserPassword,
+  toggleUserLock,
+  resetLoginAttempts,
   getSecurityLogs,
   getSecurityStats,
   getSystemHealth,
@@ -338,6 +340,94 @@ router.delete('/users/:email', deleteUserByEmail);
  *         description: Forbidden - Admin access required
  */
 router.post('/users/:email/reset-password', resetUserPassword);
+
+/**
+ * @swagger
+ * /api/admin/users/{email}/toggle-lock:
+ *   post:
+ *     summary: Lock or unlock user
+ *     tags: [Admin]
+ *     description: Lock or unlock a user account
+ *     security:
+ *       - bearerAuth: []
+ *       - csrfToken: []
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: email
+ *         description: User email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               locked:
+ *                 type: boolean
+ *                 description: Whether to lock or unlock the user
+ *     responses:
+ *       200:
+ *         description: User locked/unlocked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       401:
+ *         description: Unauthorized - No token provided
+ *       403:
+ *         description: Forbidden - Admin access required
+ */
+router.post('/users/:email/toggle-lock', toggleUserLock);
+
+/**
+ * @swagger
+ * /api/admin/users/{email}/reset-login-attempts:
+ *   post:
+ *     summary: Reset user login attempts
+ *     tags: [Admin]
+ *     description: Reset user login attempts and unblock account
+ *     security:
+ *       - bearerAuth: []
+ *       - csrfToken: []
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: email
+ *         description: User email
+ *     responses:
+ *       200:
+ *         description: Login attempts reset successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       401:
+ *         description: Unauthorized - No token provided
+ *       403:
+ *         description: Forbidden - Admin access required
+ */
+router.post('/users/:email/reset-login-attempts', resetLoginAttempts);
 
 /**
  * @swagger

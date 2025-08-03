@@ -74,6 +74,7 @@ app.use(requireCsrf);
 const authRoutes = require('./routes/auth');
 const securityRoutes = require('./routes/security');
 const performanceRoutes = require('./routes/performance');
+const adminRoutes = require('./routes/admin');
 
 // Import performance monitoring middleware
 const { monitorApiCall } = require('./controllers/performanceController');
@@ -92,6 +93,7 @@ app.use('/api', monitorApiCall);
 app.use('/api', authRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/api/performance', performanceRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Debug endpoint for testing filtering (no auth required)
 app.get('/debug/recent-calls', (req, res) => {

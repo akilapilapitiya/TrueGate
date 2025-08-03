@@ -10,10 +10,10 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-// Get all users with pagination and filtering
+// Get all users with filtering
 const getUsers = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search = '', role = '', status = '' } = req.query;
+    const { search = '', role = '', status = '' } = req.query;
     const users = await getAllUsers();
     
     // Apply filters
@@ -39,19 +39,8 @@ const getUsers = async (req, res) => {
       }
     }
     
-    // Apply pagination
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
-    
     res.json({
-      users: paginatedUsers,
-      pagination: {
-        currentPage: parseInt(page),
-        totalPages: Math.ceil(filteredUsers.length / limit),
-        totalUsers: filteredUsers.length,
-        usersPerPage: parseInt(limit)
-      }
+      users: filteredUsers
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' });
@@ -103,6 +92,67 @@ const updateUserByEmail = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update user' });
+  }
+};
+
+// Lock/Unlock user
+const toggleUserLock = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { locked } = req.body;
+    
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const updatedUser = await updateUser(email, { locked: locked });
+    
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Remove sensitive data from response
+    const { password, hashedPassword, ...userData } = updatedUser;
+    
+    res.json({ 
+      message: `User ${locked ? 'locked' : 'unlocked'} successfully`,
+      user: userData 
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user lock status' });
+  }
+};
+
+// Reset user login attempts
+const resetLoginAttempts = async (req, res) => {
+  try {
+    const { email } = req.params;
+    
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const updatedUser = await updateUser(email, { 
+      loginAttempts: 0,
+      locked: false,
+      blockedUntil: null
+    });
+    
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Remove sensitive data from response
+    const { password, hashedPassword, ...userData } = updatedUser;
+    
+    res.json({ 
+      message: 'User login attempts reset successfully',
+      user: userData 
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to reset login attempts' });
   }
 };
 
@@ -347,7 +397,8 @@ const getDashboardSummary = async (req, res) => {
         total: users.length,
         verified: users.filter(u => u.verified).length,
         unverified: users.filter(u => !u.verified).length,
-        admins: users.filter(u => u.role === 'admin').length
+        admins: users.filter(u => u.role === 'admin').length,
+        locked: users.filter(u => u.locked).length
       },
       security: {
         totalEvents: stats.totalEvents,
@@ -375,6 +426,8 @@ module.exports = {
   updateUserByEmail,
   deleteUserByEmail,
   resetUserPassword,
+  toggleUserLock,
+  resetLoginAttempts,
   getSecurityLogs,
   getSecurityStats,
   getSystemHealth,
