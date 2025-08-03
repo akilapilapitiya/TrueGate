@@ -35,6 +35,8 @@ const AccessHistory = lazy(() => import("./pages/AccessHistory"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const Performance = lazy(() => import("./pages/Performance"));
 import EmailVerificationNotice from "./pages/EmailVerificationNotice";
+import SecurityShop from "./pages/SecurityShop";
+import CloudManage from "./pages/CloudManage";
 
 
 const App = () => {
@@ -60,7 +62,9 @@ const App = () => {
           <Route path="settings" element={<SettingsPage />} />
 
           {/* Client Specific */}
-          <Route path="devices" element={<Devices />} /> 
+          <Route path = "devices" element={<Devices />} /> 
+          <Route path = "shop" element = {<SecurityShop />} />
+          <Route path = "cloud" element = {<CloudManage />} />
         </Route>
 
         {/* Admin specific */}
@@ -68,6 +72,7 @@ const App = () => {
         <Route path="history" element={<AccessHistory />} />
           <Route path="api-performance" element={<Performance />} />
           <Route path="users" element={<Users />} />
+          
         </Route>
 
         {/* Catch-all for 404 */}
