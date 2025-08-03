@@ -80,11 +80,11 @@ const Dashboard = () => {
       { label: "Manage Registered Users", path: "/users" },
       { label: "API Performance", path: "/api-performance" },
       { label: "About TrueGate", path: "/about" },
+      { label: "Review Access History", path: "/history" },
     ];
   } else {
     cards = [
       { label: "Review CCTV Footage", path: "/footage" },
-      { label: "Review Access History", path: "/history" },
       { label: "Update Profile Details", path: "/profile" },
       { label: "About TrueGate", path: "/about" },
       { label: "Manage Security Devices", path: "/devices" },

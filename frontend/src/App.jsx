@@ -56,18 +56,17 @@ const App = () => {
           <Route path="email-verify" element={<EmailVerificationNotice />} />
           <Route path="community" element={<Community />} />
           <Route path="footage" element={<Footage />} />
-          <Route path="history" element={<AccessHistory />} />
           <Route path="settings" element={<SettingsPage />} />
 
-          {/* These two are client-specific, but guarded here */}
-          <Route path="devices" element={<Devices />} />
-          <Route path="users" element={<Users />} />
+          {/* Client Specific */}
+          <Route path="devices" element={<Devices />} /> 
         </Route>
 
-        {/* Admin-only Routes */}
+        {/* Admin specific */}
         <Route element={<AdminRoute />}>
+        <Route path="history" element={<AccessHistory />} />
           <Route path="api-performance" element={<Performance />} />
-          {/* <Route path="admin-dashboard" element={<AdminDashboard />} /> */}
+          <Route path="users" element={<Users />} />
         </Route>
 
         {/* Catch-all for 404 */}
