@@ -518,7 +518,9 @@ const Profile = () => {
       </Box>
 
       {/* Dashboard Summary Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
+      {user?.role === "user" && (
+        <>
+        <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
         <Box textAlign="center" mb={6}>
           <Typography
             variant="h3"
@@ -769,6 +771,9 @@ const Profile = () => {
           </Card>
         </Box>
       </Container>
+        </>
+      )}
+      
 
       {/* Footer */}
       <Divider sx={{ mx: 4 }} />
