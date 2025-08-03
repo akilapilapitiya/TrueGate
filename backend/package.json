@@ -4,7 +4,11 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "mocha --timeout 10000 --exit",
+    "test:watch": "mocha --timeout 10000 --watch",
+    "test:coverage": "nyc mocha --timeout 10000 --exit",
+    "test:coverage:report": "nyc --reporter=html --reporter=text mocha --timeout 10000 --exit"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +35,35 @@
   },
   "devDependencies": {
     "axios": "^1.6.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "chai-http": "^4.4.0",
+    "sinon": "^17.0.1",
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.3"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "**/*.js"
+    ],
+    "exclude": [
+      "node_modules/**",
+      "test/**",
+      "coverage/**",
+      "*.test.js",
+      "*.spec.js"
+    ],
+    "reporter": [
+      "text",
+      "html",
+      "lcov"
+    ],
+    "check-coverage": true,
+    "branches": 30,
+    "lines": 30,
+    "functions": 30,
+    "statements": 30
   }
 }
