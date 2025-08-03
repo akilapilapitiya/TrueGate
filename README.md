@@ -127,7 +127,9 @@
  ### Home Page
  <img src = "./screenshots/home.PNG" alt="homepage">
  
- ### Dashboard
+ ### Login Interface
+ <img src = "./screenshots/login.PNG" alt="Login Page">
+
  
  ---
  
@@ -184,3 +186,10 @@
  npm run lint       # Run ESLint
  npm run preview    # Preview production build
  ```
+
+ # Team
+ - Lead Frontend Designer - <a href = "https://github.com/Tharuka621">Tharuka Subashi</a>
+ - Lead DevOps Manager- <a href = "https://github.com/shpeiris">Sandali Peiris</a>
+ - Lead Backend Developer - <a href = "https://github.com/budd9442">Buddhika Bandara</a>
+ - Lead Frontend Developer - <a href = "https://github.com/akilapilapitiya">Akila Pilapitiya</a>
+ - Lead Quality Assurance - <a href = "https://github.com/YonaliKavi">Yonali Kanvindya</a>
