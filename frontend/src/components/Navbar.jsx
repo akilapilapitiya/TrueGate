@@ -62,16 +62,18 @@ const Navbar = () => {
     { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
     ...(user?.role === "admin"
       ? [
-          { label: "User Management", icon: <PeopleIcon />, path: "/users" },
-          { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
+          { label: "User Management", icon: <PeopleIcon />, path: "/users" }, 
         ]
-      : []),
-    { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+      : [
+          { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
+          { label: "Purchase Devices", icon: <ShoppingCartIcon />, path: "/shop" },
+          { label: "Setup Guides", icon: <YouTubeIcon />, path: "/youtube" },
+          { label: "Device Management", icon: <DevicesIcon />, path: "/devices" },
+          { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
+          { label: "About Us", icon: <InfoIcon />, path: "/about" },
+
+      ]),
     { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
-    { label: "Manage Cloud Storage", icon: <CloudIcon />, path: "/cloud" },
-    { label: "Setup Guides", icon: <YouTubeIcon />, path: "/youtube" },
-    { label: "Community Forum", icon: <ForumIcon />, path: "/community" },
-    { label: "About Us", icon: <InfoIcon />, path: "/about" },
   ];
 
   // Drawer handlers

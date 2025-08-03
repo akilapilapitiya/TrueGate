@@ -44,12 +44,30 @@ const ProfileCard = ({ onClose }) => {
     <Paper
       elevation={4}
       sx={{
-        minWidth: 240,
-        maxWidth: 300,
+        width: 280, // Fixed width instead of min/max
         p: 2,
         borderRadius: 3,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[6],
+        position: 'relative', // Ensure proper positioning context
+        zIndex: 1300, // High z-index to appear above other elements
+        // Prevent the card from going outside viewport
+        maxHeight: '90vh',
+        overflow: 'auto',
+        // Add a small arrow pointer
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: -8,
+          right: 20,
+          width: 16,
+          height: 16,
+          backgroundColor: theme.palette.background.paper,
+          transform: 'rotate(45deg)',
+          borderLeft: `1px solid ${theme.palette.divider}`,
+          borderTop: `1px solid ${theme.palette.divider}`,
+          zIndex: -1,
+        },
       }}
     >
       <Box display="flex" alignItems="center" gap={2} mb={2}>
@@ -63,15 +81,31 @@ const ProfileCard = ({ onClose }) => {
             border: `2px solid ${theme.palette.primary.light}`,
             fontWeight: 600,
             fontSize: 16,
+            flexShrink: 0, // Prevent avatar from shrinking
           }}
         >
           {initials}
         </Avatar>
-        <Box>
-          <Typography fontWeight={600}>
-            {(user?.firstName + " " +user?.lastName) || "User"}
+        <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+          <Typography 
+            fontWeight={600}
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {(user?.firstName + " " + user?.lastName) || "User"}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography 
+            variant="body2" 
+            color="text.secondary"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {user?.email || ""}
           </Typography>
         </Box>
@@ -85,6 +119,13 @@ const ProfileCard = ({ onClose }) => {
             navigate("/profile");
             onClose();
           }}
+          sx={{
+            borderRadius: 1,
+            mb: 0.5,
+            '&:hover': {
+              backgroundColor: theme.palette.action.hover,
+            },
+          }}
         >
           <ListItemText primary="Profile" />
         </ListItemButton>
@@ -92,6 +133,12 @@ const ProfileCard = ({ onClose }) => {
           onClick={() => {
             navigate("/settings");
             onClose();
+          }}
+          sx={{
+            borderRadius: 1,
+            '&:hover': {
+              backgroundColor: theme.palette.action.hover,
+            },
           }}
         >
           <ListItemText primary="Settings" />
@@ -103,7 +150,12 @@ const ProfileCard = ({ onClose }) => {
         variant="outlined"
         color="error"
         onClick={handleSignOut}
-        sx={{ mt: 2, textTransform: "none", fontWeight: 500 }}
+        sx={{ 
+          mt: 2, 
+          textTransform: "none", 
+          fontWeight: 500,
+          borderRadius: 2,
+        }}
       >
         Sign Out
       </Button>
