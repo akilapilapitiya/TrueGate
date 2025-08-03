@@ -53,7 +53,7 @@ describe('Authentication Endpoints', () => {
     server = app.listen(4002);
     
     // Wait for server to be ready
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 500));
   });
 
   after(async () => {
