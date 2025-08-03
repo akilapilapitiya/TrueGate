@@ -112,15 +112,7 @@
  
  ### Authentication Endpoints
  
- | Method | Endpoint | Description |
- |--------|----------|-------------|
- | POST | `/api/auth/register` | Register new user |
- | POST | `/api/auth/login` | User login |
- | POST | `/api/auth/logout` | User logout |
- | GET | `/api/auth/verify` | Verify JWT token |
- | POST | `/api/auth/forgot-password` | Password reset request |
- 
- ---
+ To view all REST API endpoints and methods, visit: https://truegate.live/api-docs
  
  ## Screenshots
  
